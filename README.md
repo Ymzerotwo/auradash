@@ -587,7 +587,7 @@ Deploy the Hono API & D1 database to Cloudflare Edge:
 
 <br/>
 
-[![Deploy Backend to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Ymzerotwo/auradash/tree/main/backend)
+[![Deploy Backend to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Ymzerotwo/auradash)
 
 </td>
 <td align="center" width="50%">
