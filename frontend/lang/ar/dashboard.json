@@ -1,0 +1,76 @@
+{
+  "pageTitle": "لوحة التحكم",
+  "greeting": "مرحباً بك، {name} 👋",
+  "greetings": {
+    "morning": "صباح الخير، {name} ☀️",
+    "afternoon": "طاب مساؤك، {name} ☕",
+    "evening": "مساء الخير، {name} 🌙"
+  },
+  "greetingDesc": "إليك نظرة سريعة على سير العمل اليوم.",
+  "moreOptions": "خيارات إضافية",
+  "vsLastMonth": "مقارنة بالشهر الماضي",
+  "stats": {
+    "totalRevenue": "إجمالي الإيرادات",
+    "bookingsCount": "حجوزات الفترة",
+    "newCustomers": "العملاء الجدد",
+    "totalCustomers": "إجمالي العملاء",
+    "newComments": "التعليقات الجديدة",
+    "newMessages": "الرسائل الواردة الجديدة"
+  },
+  "filters": {
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "day": "اليوم",
+    "week": "الأسبوع",
+    "month": "الشهر",
+    "custom": "مخصص"
+  },
+  "activityTypes": {
+    "NEW_BOOKING": "حجز جديد",
+    "BOOKING_CONFIRMED": "تأكيد الحجز",
+    "BOOKING_COMPLETED": "اكتمال الحجز",
+    "BOOKING_CANCELLED": "إلغاء الحجز",
+    "NEW_COMMENT": "تعليق جديد",
+    "NEW_INBOX_MESSAGE": "رسالة واردة جديدة"
+  },
+  "recentActivity": {
+    "title": "النشاط الأخير",
+    "viewAll": "عرض الكل",
+    "emptyState": {
+      "title": "لا توجد عمليات",
+      "description": "لم يتم تسجيل أي نشاطات هذا اليوم حتى الآن."
+    }
+  },
+  "topClients": {
+    "title": "أبرز العملاء",
+    "viewAll": "عرض الكل",
+    "columns": {
+      "client": "العميل",
+      "revenue": "الإيرادات",
+      "orders": "الطلبات",
+      "status": "الحالة"
+    }
+  },
+  "status": {
+    "active": "نشط",
+    "pending": "قيد الانتظار",
+    "in_progress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "cancelled": "ملغى",
+    "approved": "معتمد",
+    "rejected": "مرفوض",
+    "unread": "غير مقروء",
+    "read": "مقروء",
+    "spam": "بريد مزعج",
+    "converted": "محول",
+    "profile_created": "تم إنشاء الملف"
+  },
+  "success": {
+    "dashboard_stats_fetched": "تم جلب إحصائيات لوحة التحكم بنجاح.",
+    "success": "تم جلب بيانات لوحة التحكم بنجاح."
+  },
+  "errors": {
+    "server_error": "فشل جلب إحصائيات لوحة التحكم.",
+    "fetch_failed": "تعذر تحميل إحصائيات لوحة التحكم."
+  }
+}

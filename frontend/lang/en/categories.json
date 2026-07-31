@@ -1,0 +1,131 @@
+{
+  "pageTitle": "Category Services",
+  "actions": {
+    "createService": "Create Service",
+    "edit": "Edit Service",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this service?",
+    "cancel": "Cancel",
+    "back": "Back",
+    "changeImage": "Change Image",
+    "remove": "Remove",
+    "chooseShareImage": "Choose Share Image"
+  },
+  "search": {
+    "placeholder": "Search by name or slug...",
+    "filterAll": "All",
+    "filterActive": "Active",
+    "filterInactive": "Inactive",
+    "viewTable": "Table View",
+    "viewCards": "Cards View",
+    "noResults": "No services found in this category"
+  },
+  "table": {
+    "title": "Title",
+    "slug": "Slug",
+    "status": "Status",
+    "created": "Creation Date",
+    "updated": "Update Date",
+    "createdBy": "Created By",
+    "updatedBy": "Updated By",
+    "audit": "Activity Log",
+    "actions": "Actions"
+  },
+  "pagination": {
+    "pageInfo": "Page {current} of {total}",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "settingsButton": "Category Settings",
+  "settingsSheet": {
+    "title": "Category Settings",
+    "desc": "Manage category details and SEO settings.",
+    "tabs": {
+      "general": "General",
+      "seo": "SEO"
+    },
+    "seo": {
+      "metaTitle": "Meta Title",
+      "metaTitleHint": "The title that appears in search results.",
+      "metaDesc": "Meta Description",
+      "metaDescHint": "A short description of the category.",
+      "metaKeywords": "Keywords",
+      "metaKeywordsHint": "Comma-separated keywords.",
+      "ogImage": "OG Image",
+      "ogImageHint": "Image shown when shared on social media.",
+      "canonicalUrl": "Canonical URL",
+      "canonicalUrlHint": "The preferred URL for this page.",
+      "isIndexable": "Allow Indexing",
+      "schemaMarkup": "Schema Markup",
+      "schemaMarkupHint": "Structured data for search engines."
+    }
+  },
+  "form": {
+    "title": "Title",
+    "titlePlaceholder": "Enter category title...",
+    "slug": "Slug",
+    "slugPlaceholder": "enter-slug",
+    "slugTaken": "This slug is already taken.",
+    "sortOrder": "Sort Order",
+    "isActive": "Active",
+    "customFields": "Custom Fields",
+    "customFieldsDesc": "Define custom fields for this category.",
+    "addField": "Add Field",
+    "noCustomFields": "No custom fields defined yet.",
+    "bookingsWarning": "Warning: To link this service with the Bookings System, you must add fields named 'name' and 'price'. For more details: https://auradash.ymzerotwo.com",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel"
+  },
+  "customFields": {
+    "text": "Text",
+    "longText": "Long Text",
+    "url": "URL",
+    "image": "Image",
+    "video": "Video",
+    "youtube": "YouTube",
+    "icon": "Icon",
+    "list": "List",
+    "datetime": "Date and Time",
+    "selectType": "Select Field Type",
+    "fieldType": "Field Type",
+    "fieldName": "Field Name",
+    "fieldNamePlaceholder": "e.g., Hero Image",
+    "fieldValue": "Value",
+    "textPlaceholder": "Enter value...",
+    "listPlaceholder": "Add item...",
+    "listEmpty": "No items added yet.",
+    "cancel": "Cancel",
+    "add": "Add Field",
+    "errorDuplicateName": "This name already exists"
+  },
+  "success": {
+    "categories_fetched": "Categories retrieved successfully",
+    "slug_check": "Slug availability checked",
+    "category_fetched": "Category retrieved successfully",
+    "category_created": "Category created successfully",
+    "category_updated": "Category updated successfully",
+    "category_deleted": "Category deleted successfully"
+  },
+  "errors": {
+    "category_exists": "A category with this slug already exists. Please change it.",
+    "sort_order_exists": "This sort order is already taken by another category.",
+    "category_not_found": "Category not found",
+    "title_required": "Title is required",
+    "name_required": "Name is required",
+    "slug_required": "Slug is required",
+    "invalid_slug_format": "Invalid slug format",
+    "invalid_sort_order": "Sort order must be a valid integer.",
+    "too_long": "Too long"
+  },
+  "validation": {
+    "category_exists": "A category with this slug already exists. Please change it.",
+    "sort_order_exists": "This sort order is already taken by another category.",
+    "title_required": "Title is required",
+    "name_required": "Name is required",
+    "slug_required": "Slug is required",
+    "invalid_slug_format": "Invalid slug format",
+    "invalid_sort_order": "Sort order must be a valid integer.",
+    "invalid_field_value": "Invalid field value.",
+    "too_long": "Too long"
+  }
+}

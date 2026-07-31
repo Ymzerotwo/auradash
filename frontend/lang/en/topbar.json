@@ -1,0 +1,44 @@
+{
+  "toggleTheme": "Toggle Theme",
+  "switchToArabic": "Switch to Arabic",
+  "switchToEnglish": "Switch to English",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "language": "Language",
+  "guestUser": "Guest User",
+  "guestEmail": "guest@example.com",
+  "editProfile": "Edit Profile",
+  "signOut": "Sign Out",
+  "expandSidebar": "Expand Sidebar",
+  "collapseSidebar": "Collapse Sidebar",
+  "enterprise": "Enterprise Edition",
+  "toggleLanguage": "Toggle Language",
+  "openMenu": "Open Menu",
+  "arabic": "Arabic",
+  "english": "English",
+  "notifications": "Notifications",
+  "noNotifications": "No new notifications",
+  "markAllRead": "Mark all as read",
+  "events": {
+    "NEW_ARTICLE_COMMENT": {
+      "title": "New Comment",
+      "body": "{{userName}} added a new comment on the article \"{{articleTitle}}\". Please review it."
+    },
+    "NEW_INBOX_MESSAGE": {
+      "title": "New Message",
+      "body": "You have received a new message from {{userName}} in the inbox."
+    }
+  },
+  "newNotification": "New Notification 🔔",
+  "checkNotifications": "You have an unread new notification, check the notifications center.",
+  "view": "View",
+  "success": {
+    "notifications_fetched": "Notifications retrieved successfully.",
+    "notification_marked_read": "Notification marked as read.",
+    "all_notifications_marked_read": "All notifications marked as read."
+  },
+  "errors": {
+    "fetch_failed": "Failed to fetch notifications.",
+    "mark_read_failed": "Failed to update notification status."
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "success": "Success",
+  "error": "Error",
+  "warning": "Warning",
+  "info": "Info",
+  "save": "Save",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "delete": "Delete",
+  "edit": "Edit",
+  "loading": "Loading...",
+  "submit": "Submit",
+  "back": "Go Back",
+  "dashboard": "Dashboard",
+  "messages": {
+    "saved_successfully": "Saved successfully.",
+    "deleted_successfully": "Deleted successfully.",
+    "action_failed": "Action failed. Please try again."
+  },
+  "errors": {
+    "unauthorized": "Please log in to access this page.",
+    "forbidden": "You do not have sufficient permissions to perform this action.",
+    "not_found": "The requested page or resource was not found.",
+    "internal_server_error": "Internal server error occurred. Please contact technical support.",
+    "network_error": "Network error. Please check your internet connection.",
+    "invalid_session": "Invalid session. Please log in again.",
+    "session_expired": "Session expired. Please log in again.",
+    "csrf_token_mismatch": "Security token mismatch. Please refresh the page.",
+    "account_banned": "Your account has been banned. Please contact technical support.",
+    "validation_error": "Invalid input data. Please review your entries.",
+    "cannot_convert_spam": "Cannot convert a message marked as spam. Please remove the selection first.",
+    "cannot_spam_converted": "Cannot mark a converted client as spam.",
+    "unknown_error": "An unknown error occurred. Please try again.",
+    "email_taken": "Email is already registered. Please use another email.",
+    "username_taken": "Username is already in use. Please choose another name.",
+    "full_name_too_short": "Full name must be at least 2 characters.",
+    "username_too_short": "Username must be at least 3 characters.",
+    "password_too_short": "Password must be at least 6 characters.",
+    "invalid_username_format": "Username can only contain letters, numbers, and (_-.).",
+    "current_password_required": "Current password is required.",
+    "new_password_too_short": "New password must be at least 8 characters.",
+    "current_password_required_for_new": "Current password is required to set a new password."
+  },
+  "page_state": {
+    "loading_app": "Loading System...",
+    "not_found_title": "Page Not Found",
+    "not_found_desc": "The page you are looking for does not exist, may have been moved, or you do not have permission to access it.",
+    "return_to_dashboard": "Return to Dashboard",
+    "access_denied_title": "Access Denied",
+    "access_denied_desc": "You do not have the necessary permissions to view this page. Please contact the system administrator if you believe this is an error.",
+    "back_to_home": "Back to Home",
+    "banned_title": "Account Banned",
+    "banned_desc": "Your account has been suspended or banned due to a violation of the terms of use. Please contact the administration if you believe this is an error.",
+    "back_to_login": "Back to Sign In"
+  },
+  "status": {
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "upload": {
+    "uploading": "Uploading...",
+    "logo_uploaded": "Logo uploaded successfully.",
+    "photo_uploaded": "Photo uploaded successfully.",
+    "file_too_large": "File size exceeds the maximum allowed limit.",
+    "unsupported_format": "Unsupported file format.",
+    "wait_for_upload": "Please wait for the upload to complete before saving.",
+    "photo_max_size": "Profile photo size must be under 2MB.",
+    "photo_allowed_types": "Allowed photo formats are: JPG, PNG, WEBP, and GIF only.",
+    "max_file_size": "Max file size: 100MB",
+    "upload_failed": "Failed to upload file. Please try again."
+  },
+  "toast": {
+    "save_successful": "Saved successfully!",
+    "failed_to_save": "Failed to save."
+  },
+  "zod": {
+    "required": "This field is required.",
+    "too_short": "Text is too short.",
+    "invalid_email": "Invalid email address.",
+    "invalid_slug": "Slug must contain only lowercase letters, numbers, and hyphens.",
+    "invalid_time": "Invalid time.",
+    "invalid_url": "Invalid URL.",
+    "must_be_http_https": "URL must start with http:// or https://",
+    "must_be_youtube_url": "URL must be a valid YouTube link (youtube.com or youtu.be)",
+    "too_long": "Value is too long.",
+    "custom_field_label_required": "Field label is required.",
+    "custom_field_label_duplicate": "Field label must be unique.",
+    "invalid_phone_format": "Phone number must start with + followed by country code and digits (e.g. +201000000000).",
+    "fix_errors": "Please correct the fields highlighted in red."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "showing_page": "Page {page} of {totalPages}"
+  }
+}

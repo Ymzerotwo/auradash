@@ -1,0 +1,77 @@
+{
+  "pageTitle": "Comments Management",
+  "search": {
+    "placeholder": "Search by name, email, or content...",
+    "filterAll": "All Comments",
+    "filterPending": "Pending Review",
+    "filterApproved": "Approved",
+    "filterSpam": "Banned",
+    "viewTable": "Table View",
+    "viewCards": "Cards View",
+    "noResults": "No comments found."
+  },
+  "table": {
+    "author": "Author",
+    "comment": "Comment",
+    "article": "Article",
+    "status": "Status",
+    "date": "Date",
+    "approvedBy": "Approved By",
+    "approvedAt": "Approval Date",
+    "staff": "Staff",
+    "actions": "Actions"
+  },
+  "status": {
+    "pending": "Pending Review",
+    "approved": "Approved",
+    "spam": "Banned"
+  },
+  "actions": {
+    "approve": "Approve",
+    "delete": "Delete",
+    "viewArticle": "View Article",
+    "expand": "Read full comment",
+    "reply": "Reply",
+    "writeReply": "Write a reply...",
+    "submitReply": "Submit Reply",
+    "cancel": "Cancel",
+    "replyTo": "Reply To",
+    "confirmApprove": "Are you sure you want to approve this comment? It will become visible to the public.",
+    "confirmApproveButton": "Confirm Approval",
+    "confirmDelete": "Are you sure you want to permanently delete this comment? This action cannot be undone.",
+    "confirmDeleteButton": "Confirm Delete"
+  },
+  "success": {
+    "comments_fetched": "Comments retrieved successfully",
+    "comment_added": "Comment added successfully",
+    "comment_approved": "Comment approved successfully",
+    "status_updated": "Status updated successfully",
+    "comment_deleted": "Comment deleted successfully",
+    "comment_reply_created": "Reply submitted successfully"
+  },
+  "errors": {
+    "comment_not_found": "Comment not found",
+    "parent_not_found": "The parent comment you are replying to was not found.",
+    "failed_to_approve": "Failed to approve the comment. Please try again.",
+    "failed_to_delete": "Failed to delete the comment. Please try again.",
+    "comment_required": "Comment is required",
+    "article_id_required": "Article is required",
+    "name_required": "Name is required",
+    "name_too_long": "Name is too long (maximum 100 characters)",
+    "email_too_long": "Email is too long",
+    "invalid_email": "Invalid email format",
+    "content_required": "Comment content is required",
+    "content_too_long": "Comment is too long (maximum 3000 characters)"
+  },
+  "validation": {
+    "comment_required": "Comment is required",
+    "article_id_required": "Article is required",
+    "name_required": "Name is required",
+    "name_too_long": "Name is too long (maximum 100 characters)",
+    "email_too_long": "Email is too long",
+    "invalid_email": "Invalid email format",
+    "content_required": "Comment content is required",
+    "content_too_long": "Comment is too long (maximum 3000 characters)",
+    "invalid_field_value": "Invalid field value."
+  }
+}

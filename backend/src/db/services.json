@@ -1,0 +1,99 @@
+{
+    "_comment": "Template schema defining the structure of custom fields and SEO metadata for AuraDash Services.",
+    "seo_data": {
+        "_comment": "Default SEO configuration for the service page",
+        "meta_title": "",
+        "meta_description": "",
+        "og_image": "",
+        "canonical_url": "",
+        "is_indexable": true
+    },
+    "meta_data": [
+        {
+            "_comment": "Single-line short informative text field",
+            "id": "",
+            "label": "",
+            "type": "text-info",
+            "data": {
+                "text": ""
+            }
+        },
+        {
+            "_comment": "Multi-line descriptive text block",
+            "id": "",
+            "label": "",
+            "type": "text-description",
+            "data": {
+                "text": ""
+            }
+        },
+        {
+            "_comment": "Lucide icon indicator for UI display",
+            "id": "",
+            "label": "",
+            "type": "icon",
+            "data": {
+                "name": ""
+            }
+        },
+        {
+            "_comment": "Featured image URL with accessibility alt text",
+            "id": "",
+            "label": "",
+            "type": "photo",
+            "data": {
+                "url": "",
+                "alt": ""
+            }
+        },
+        {
+            "_comment": "Standard hosted video URL file link",
+            "id": "",
+            "label": "",
+            "type": "video",
+            "data": {
+                "url": ""
+            }
+        },
+        {
+            "_comment": "YouTube embeddable video URL stream link",
+            "id": "",
+            "label": "",
+            "type": "video-youtube",
+            "data": {
+                "url": ""
+            }
+        },
+        {
+            "_comment": "Date and Time timestamp value selection",
+            "id": "",
+            "label": "",
+            "type": "date_time",
+            "data": {
+                "value": ""
+            }
+        },
+        {
+            "_comment": "Interactive link/anchor tag with custom URL and label",
+            "id": "",
+            "label": "",
+            "type": "link",
+            "data": {
+                "url": "https://wa.me/123456789",
+                "label": "Contact us on WhatsApp"
+            }
+        },
+        {
+            "_comment": "Bulleted list of string items",
+            "id": "",
+            "label": "",
+            "type": "list",
+            "data": {
+                "items": [
+                    "",
+                    ""
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+  "pageTitle": "Inbox",
+  "requestedService": "Requested Service Details",
+  "table": {
+    "sender": "Sender",
+    "contact": "Contact Details",
+    "inquiryType": "Inquiry Type",
+    "message": "Message",
+    "status": "Status",
+    "date": "Date",
+    "actions": "Actions",
+    "serviceDetails": "Service Details",
+    "price": "Price"
+  },
+  "status": {
+    "all": "All",
+    "unread": "Unread",
+    "read": "Read",
+    "converted": "Converted",
+    "profile_created": "Profile Created",
+    "spam": "Spam"
+  },
+  "actions": {
+    "markRead": "Mark as Read",
+    "markUnread": "Mark as Unread",
+    "convert": "Create Booking",
+    "convertToBooking": "Create Booking",
+    "createProfile": "Create Profile",
+    "markSpam": "Mark as Spam",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this message permanently?",
+    "confirmConvert": "Are you sure you want to convert this inquiry into a booking?",
+    "confirmSpam": "Are you sure you want to mark this message as spam? This will block the sender.",
+    "spamReasonLabel": "Spam Reason (Optional)",
+    "spamReasonPlaceholder": "e.g. Fake account, Phishing links...",
+    "expand": "Read full message",
+    "clickToRead": "Click to read full message",
+    "submitSpam": "Confirm Spam",
+    "unspam": "Remove from Spam"
+  },
+  "search": {
+    "placeholder": "Search by name, email, or phone number...",
+    "noResults": "No messages found.",
+    "viewTable": "Table View",
+    "viewCards": "Card View",
+    "filterAll": "All",
+    "filterUnread": "Unread",
+    "filterRead": "Read",
+    "filterConverted": "Converted",
+    "filterProfileCreated": "Profile Created",
+    "filterSpam": "Spam"
+  },
+  "inquiryTypes": {
+    "general": "General Inquiry",
+    "service": "Service Request",
+    "offer": "Offer Inquiry"
+  },
+  "audit": {
+    "title": "Audit Trail (Admins Only)",
+    "unread": "Unread",
+    "notConverted": "Not Converted",
+    "notSpammed": "Not Spam",
+    "system": "System",
+    "reason": "Reason",
+    "actionBy": "Action By",
+    "readBy": "Read By",
+    "convertedBy": "Converted By",
+    "spammedBy": "Marked as Spam By"
+  },
+  "success": {
+    "inbox_message_created": "Message sent successfully.",
+    "messages_fetched": "Messages retrieved successfully.",
+    "unread_count_fetched": "Unread count retrieved successfully.",
+    "status_updated": "Message status updated successfully.",
+    "message_deleted": "Message deleted successfully.",
+    "threads_fetched": "Threads retrieved successfully.",
+    "thread_created": "Thread started successfully.",
+    "thread_fetched": "Thread details retrieved successfully.",
+    "thread_updated": "Thread status updated successfully.",
+    "reply_added": "Reply added successfully.",
+    "thread_deleted": "Thread deleted successfully."
+  },
+  "errors": {
+    "thread_not_found": "Thread not found.",
+    "cannot_spam_converted": "Cannot mark a converted client as spam.",
+    "cannot_convert_spam": "Cannot convert a message marked as spam. Please remove from spam first.",
+    "customer_is_spammed": "This customer is currently blocked in the CRM. Please unblock first.",
+    "only_general_can_be_profile": "Only general inquiries can be converted to profiles without bookings.",
+    "conflict": "This message was modified by another user. Please refresh the page.",
+    "missing_financial_contract": "Required financial contract configuration for this service is missing.",
+    "service_not_found": "The specified service does not exist or is inactive.",
+    "message_is_spam": "Cannot mark a spam message as unread. Please remove from spam first.",
+    "internal_server_error": "Internal server error occurred. Please try again.",
+    "message_content_required": "Message content is required.",
+    "cancellation_reason_required": "Cancellation reason is required.",
+    "customer_id_required": "Customer ID is required.",
+    "too_long": "Text exceeds the allowed limit."
+  },
+  "validation": {
+    "name_required": "Name is required and cannot be empty.",
+    "phone_required": "Phone number is required.",
+    "invalid_email": "Invalid email address format.",
+    "message_too_short": "Message content is too short.",
+    "message_content_required": "Message content is required.",
+    "cancellation_reason_required": "Cancellation reason is required.",
+    "customer_id_required": "Customer ID is required.",
+    "invalid_field_value": "Invalid input field value.",
+    "too_long": "Text exceeds the allowed limit.",
+    "validation_error": "Invalid input data."
+  }
+}

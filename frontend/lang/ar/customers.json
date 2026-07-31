@@ -1,0 +1,135 @@
+{
+  "pageTitle": "العملاء",
+  "stats": {
+    "total": "إجمالي العملاء",
+    "active": "العملاء النشطون",
+    "spammed": "العملاء المحظورون"
+  },
+  "search": {
+    "placeholder": "البحث بالاسم، أو رقم الهاتف، أو البريد الإلكتروني...",
+    "filterAll": "الكل",
+    "filterActive": "نشط",
+    "filterSpammed": "محظور",
+    "viewTable": "عرض الجدول",
+    "viewCards": "عرض البطاقات",
+    "noResults": "لم يتم العثور على عملاء."
+  },
+  "table": {
+    "customer": "العميل",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "source": "المصدر",
+    "status": "الحالة",
+    "joined": "تاريخ الانضمام",
+    "createdBy": "تم الإنشاء بواسطة",
+    "created": "تاريخ الإنشاء",
+    "actions": "الإجراءات"
+  },
+  "status": {
+    "active": "نشط",
+    "spammed": "محظور"
+  },
+  "actions": {
+    "addCustomer": "إضافة عميل",
+    "edit": "تعديل",
+    "spam": "حظر العميل",
+    "unspam": "رفع الحظر",
+    "delete": "حذف",
+    "deleteCustomer": "حذف العميل",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا العميل نهائياً؟ لا يمكن التراجع عن هذا الإجراء.",
+    "cancel": "إلغاء",
+    "confirmSpam": "تأكيد الحظر",
+    "spamCustomer": "حظر العميل",
+    "spamDescription": "يرجى تقديم سبب لحظر هذا العميل. سيتم منعه من إرسال طلبات جديدة."
+  },
+  "form": {
+    "addTitle": "إضافة عميل",
+    "editTitle": "تعديل العميل",
+    "addDescription": "أدخل تفاصيل العميل الجديد.",
+    "editDescription": "تحديث معلومات العميل.",
+    "fields": {
+      "fullName": "الاسم الكامل",
+      "phone": "رقم الهاتف",
+      "email": "البريد الإلكتروني",
+      "gender": "الجنس",
+      "genderMale": "ذكر",
+      "genderFemale": "أنثى",
+      "dateOfBirth": "تاريخ الميلاد",
+      "city": "المدينة/المنطقة",
+      "acquisitionSource": "مصدر الاستحواذ (مثال: جوجل، فيسبوك)",
+      "tags": "الوسوم (مفصولة بفاصلة)",
+      "notes": "ملاحظات إضافية"
+    },
+    "placeholders": {
+      "fullName": "مثال: يوسف محمد",
+      "phone": "مثال: 01012345678",
+      "email": "مثال: test@example.com",
+      "city": "مثال: القاهرة، الجيزة",
+      "acquisitionSource": "مثال: جوجل، فيسبوك، إحالة",
+      "tags": "مثال: نشط، VIP",
+      "notes": "اكتب أي ملاحظات إضافية هنا..."
+    },
+    "save": "حفظ",
+    "saving": "جاري الحفظ...",
+    "cancel": "إلغاء"
+  },
+  "profile": {
+    "customerProfile": "ملف العميل",
+    "backToCustomers": "العودة للعملاء",
+    "customerDetails": "تفاصيل العميل",
+    "servicesProvided": "الخدمات المقدمة",
+    "blogComments": "تعليقات المدونة",
+    "noServices": "لم يتم تقديم أي خدمات لهذا العميل بعد.",
+    "noComments": "لا توجد تعليقات مسجلة لهذا العميل.",
+    "viewBooking": "عرض الحجز",
+    "commentOn": "تعليق على:",
+    "customerNotFound": "العميل غير موجود",
+    "customerNotFoundDesc": "عذراً، لم نتمكن من العثور على العميل المطلوب في النظام.",
+    "totalCost": "التكلفة الإجمالية:",
+    "paymentStatus": "حالة الدفع:",
+    "staffNotes": "ملاحظات الموظفين",
+    "banReason": "سبب الحظر",
+    "banned": "محظور",
+    "bannedAt": "تم الحظر في:",
+    "lastVisit": "آخر زيارة",
+    "tagsAndInterests": "الوسوم والاهتمامات",
+    "notScheduled": "غير مجدول",
+    "createdAt": "تاريخ الإنشاء",
+    "createdBy": "تم الإنشاء بواسطة",
+    "updatedAt": "تاريخ التحديث",
+    "updatedBy": "تم التحديث بواسطة",
+    "joinedOn": "تاريخ الانضمام:",
+    "by": "بواسطة:"
+  },
+  "success": {
+    "customers_fetched": "تم جلب العملاء بنجاح",
+    "stats_fetched": "تم جلب إحصائيات العملاء بنجاح",
+    "customer_stats_fetched": "تم جلب إحصائيات العملاء",
+    "customer_created": "تمت إضافة العميل بنجاح",
+    "customer_fetched": "تم جلب تفاصيل العميل",
+    "customer_updated": "تم تحديث العميل بنجاح",
+    "customer_deleted": "تم حذف العميل بنجاح",
+    "customer_spammed": "تم حظر العميل بنجاح",
+    "customer_unspammed": "تم رفع الحظر عن العميل بنجاح"
+  },
+  "errors": {
+    "too_long": "المدخل طويل جداً.",
+    "phone_already_exists": "رقم الهاتف هذا مسجل لعميل آخر.",
+    "email_already_exists": "البريد الإلكتروني هذا مسجل لعميل آخر.",
+    "forbidden_delete": "ليس لديك صلاحية لحذف العملاء. يرجى التواصل مع الإدارة.",
+    "forbidden_unspam": "ليس لديك صلاحية لرفع الحظر عن العملاء. يرجى التواصل مع الإدارة.",
+    "forbidden": "ليس لديك صلاحية لتنفيذ هذا الإجراء.",
+    "customer_not_found": "العميل غير موجود",
+    "spam_reason_required": "سبب الحظر مطلوب"
+  },
+  "validation": {
+    "phone_international": "يجب أن يكون رقم الهاتف بالصيغة الدولية ويبدأ بـ +",
+    "name_min_length": "يجب أن يتكون الاسم من حرفين على الأقل",
+    "name_too_short": "الاسم قصير جداً (أقل من حرفين).",
+    "invalid_email": "صيغة البريد الإلكتروني غير صالحة",
+    "spam_reason_min": "يجب أن يتكون سبب الحظر من 3 أحرف على الأقل",
+    "spam_reason_too_short": "سبب الحظر قصير جداً.",
+    "invalid_field_value": "قيمة الحقل المدخلة غير صالحة.",
+    "too_long": "المدخل طويل جداً."
+  }
+}

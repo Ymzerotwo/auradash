@@ -1,0 +1,77 @@
+{
+  "pageTitle": "إدارة التعليقات",
+  "search": {
+    "placeholder": "البحث بالاسم، أو البريد الإلكتروني، أو المحتوى...",
+    "filterAll": "كل التعليقات",
+    "filterPending": "قيد المراجعة",
+    "filterApproved": "معتمد",
+    "filterSpam": "محظور",
+    "viewTable": "عرض الجدول",
+    "viewCards": "عرض البطاقات",
+    "noResults": "لم يتم العثور على تعليقات."
+  },
+  "table": {
+    "author": "الكاتب",
+    "comment": "التعليق",
+    "article": "المقال",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "approvedBy": "تم الاعتماد بواسطة",
+    "approvedAt": "تاريخ الاعتماد",
+    "staff": "فريق العمل",
+    "actions": "الإجراءات"
+  },
+  "status": {
+    "pending": "قيد المراجعة",
+    "approved": "معتمد",
+    "spam": "محظور"
+  },
+  "actions": {
+    "approve": "اعتماد",
+    "delete": "حذف",
+    "viewArticle": "عرض المقال",
+    "expand": "قراءة التعليق بالكامل",
+    "reply": "رد",
+    "writeReply": "اكتب رداً...",
+    "submitReply": "إرسال الرد",
+    "cancel": "إلغاء",
+    "replyTo": "الرد على",
+    "confirmApprove": "هل أنت متأكد من رغبتك في اعتماد هذا التعليق؟ سيصبح مرئياً للعامة.",
+    "confirmApproveButton": "تأكيد الاعتماد",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا التعليق نهائياً؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirmDeleteButton": "تأكيد الحذف"
+  },
+  "success": {
+    "comments_fetched": "تم جلب التعليقات بنجاح",
+    "comment_added": "تمت إضافة التعليق بنجاح",
+    "comment_approved": "تم اعتماد التعليق بنجاح",
+    "status_updated": "تم تحديث الحالة بنجاح",
+    "comment_deleted": "تم حذف التعليق بنجاح",
+    "comment_reply_created": "تم إرسال الرد بنجاح"
+  },
+  "errors": {
+    "comment_not_found": "التعليق غير موجود",
+    "parent_not_found": "التعليق الأساسي الذي تحاول الرد عليه غير موجود.",
+    "failed_to_approve": "فشل اعتماد التعليق. يرجى المحاولة مرة أخرى.",
+    "failed_to_delete": "فشل حذف التعليق. يرجى المحاولة مرة أخرى.",
+    "comment_required": "التعليق مطلوب",
+    "article_id_required": "المقال مطلوب",
+    "name_required": "الاسم مطلوب",
+    "name_too_long": "الاسم طويل جداً (الحد الأقصى 100 حرف)",
+    "email_too_long": "البريد الإلكتروني طويل جداً",
+    "invalid_email": "صيغة البريد الإلكتروني غير صالحة",
+    "content_required": "محتوى التعليق مطلوب",
+    "content_too_long": "التعليق طويل جداً (الحد الأقصى 3000 حرف)"
+  },
+  "validation": {
+    "comment_required": "التعليق مطلوب",
+    "article_id_required": "المقال مطلوب",
+    "name_required": "الاسم مطلوب",
+    "name_too_long": "الاسم طويل جداً (الحد الأقصى 100 حرف)",
+    "email_too_long": "البريد الإلكتروني طويل جداً",
+    "invalid_email": "صيغة البريد الإلكتروني غير صالحة",
+    "content_required": "محتوى التعليق مطلوب",
+    "content_too_long": "التعليق طويل جداً (الحد الأقصى 3000 حرف)",
+    "invalid_field_value": "قيمة الحقل المدخلة غير صالحة."
+  }
+}

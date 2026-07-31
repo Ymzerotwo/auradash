@@ -1,0 +1,60 @@
+{
+  "errors": {
+    "apikey_missing": "API key is missing in the request header or query parameters.",
+    "apikey_invalid": "Invalid or unrecognized API key.",
+    "apikey_inactive": "API key has been disabled by system administrator.",
+    "apikey_expired": "Your API key has expired.",
+    "apikey_ip_restricted": "IP address is not allowed for this API key.",
+    "apikey_insufficient_permissions": "API key lacks required permission scope for this action.",
+    "apikey_auth_failed": "API key authentication failed.",
+    
+    "missing_session": "Authentication token or session cookie missing.",
+    "invalid_session": "Invalid or expired session. Please login again.",
+    "corrupt_session": "Session data is corrupted.",
+    "invalid_session_data": "Session data is invalid or incomplete.",
+    "session_expired": "Session has expired, please login again.",
+    "session_invalidated": "Session invalidated for security reasons. Please login again.",
+    
+    "account_banned": "User account has been permanently banned.",
+    "account_suspended": "Your account has been suspended by administration. Please contact support to reactivate your account.",
+    
+    "unauthenticated": "User is not authenticated. Please login to continue.",
+    "forbidden": "You do not have permission to perform this action.",
+    "insufficient_role": "Role level is insufficient for this resource.",
+    
+    "csrf_token_missing": "CSRF protection token is missing.",
+    "csrf_token_invalid": "CSRF token is invalid or expired.",
+    
+    "rate_limit_exceeded": "Too many requests. Please try again later.",
+    
+    "validation_error": "Invalid input data. Please check the highlighted fields.",
+    "payload_too_large": "Uploaded file or data size exceeds the maximum allowed limit.",
+    
+    "not_found": "Route or requested resource was not found.",
+    "internal_server_error": "An unexpected server error occurred. Please contact support.",
+    "unknown_error": "An unknown error occurred. Please try again.",
+    "network_error": "Network error occurred. Please check your internet connection."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalid": "Invalid input value.",
+    "too_short": "Text is too short.",
+    "too_long": "Text exceeds maximum allowed length.",
+    "invalid_email": "Invalid email address format.",
+    "email_taken": "Email address is already registered.",
+    "username_taken": "Username is already taken.",
+    "invalid_phone_format": "Invalid phone number format.",
+    "invalid_slug": "Slug must contain lowercase alphanumeric characters and hyphens only.",
+    "slug_required": "Slug parameter is required.",
+    "invalid_field_value": "Invalid field value provided.",
+    "invalid_url": "Invalid URL format.",
+    "invalid_type": "Invalid data type provided.",
+    "invalid_format": "Invalid format provided.",
+    "fix_errors": "Please fix the highlighted errors."
+  },
+  "success": {
+    "health_check": "API is healthy and operational.",
+    "slug_checked": "Slug availability checked successfully.",
+    "slug_check": "Slug availability checked successfully."
+  }
+}

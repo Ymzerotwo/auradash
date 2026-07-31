@@ -1,0 +1,22 @@
+{
+  "dashboard": "Dashboard",
+  "bookings": "Bookings",
+  "operations": "Operations",
+  "all_records": "All Records",
+  "calendar": "Calendar",
+  "customers": "Customers",
+  "clients_directory": "Clients Directory",
+  "financials": "Financials",
+  "invoices": "Invoices",
+  "reports": "Reports",
+  "cms": "Content Management",
+  "services": "Services",
+  "articles": "Articles",
+  "inbox": "Inbox",
+  "settings": "Settings",
+  "workspace": "General Settings",
+  "team_roles": "Team & Permissions",
+  "media": "Media",
+  "api_keys": "API Keys",
+  "comments": "Comments"
+}

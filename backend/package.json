@@ -1,0 +1,40 @@
+{
+  "name": "auradash-backend",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "db:init": "npx tsx src/db/init_db.ts",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:controllers": "vitest run tests/controllers",
+    "test:services": "vitest run tests/services",
+    "test:middleware": "vitest run tests/middleware",
+    "test:validators": "vitest run tests/validators",
+    "test:utils": "vitest run tests/utils",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.6",
+    "@types/sanitize-html": "^2.16.1",
+    "cloudflare": "^6.3.0",
+    "hono": "^4.12.15",
+    "sanitize-html": "^2.17.4",
+    "zod": "^4.4.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.18.8",
+    "@cloudflare/workers-types": "^5.20260728.1",
+    "@vitest/coverage-istanbul": "^4.1.8",
+    "@vitest/coverage-v8": "^4.1.8",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8",
+    "wrangler": "^4.114.0"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "sharp": true,
+    "workerd": true
+  }
+}

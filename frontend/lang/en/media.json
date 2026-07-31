@@ -1,0 +1,95 @@
+{
+  "pageTitle": "Media Library",
+  "pageDescription": "Manage images and videos across the system.",
+  "actions": {
+    "uploadMedia": "Upload New Content",
+    "edit": "Edit",
+    "delete": "Delete",
+    "download": "Download",
+    "rename": "Rename File",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete this file? Note: If this file is linked to a service or article, it will disappear and no longer display.",
+    "confirmDeleteButton": "Confirm Delete"
+  },
+  "search": {
+    "placeholder": "Search media by name...",
+    "filterAll": "All Media",
+    "filterImages": "Images",
+    "filterVideos": "Videos",
+    "noResults": "No media found matching your search.",
+    "viewTable": "Table View",
+    "viewCards": "Card View"
+  },
+  "table": {
+    "file": "File",
+    "type": "Type",
+    "size": "Size",
+    "uploaded": "Uploaded At",
+    "uploadedBy": "Uploaded By",
+    "actions": "Actions"
+  },
+  "status": {
+    "empty": "No media available yet.",
+    "uploading": "Uploading..."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {current} of {total}"
+  },
+  "uploadModal": {
+    "title": "Upload Media",
+    "description": "Drag and drop files here or click to browse.",
+    "supportedFormats": "Supported formats: JPG, PNG, GIF, WEBP, MP4, WebM",
+    "maxSize": "Maximum file size: 100MB"
+  },
+  "units": {
+    "bytes": "Bytes",
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB",
+    "tb": "TB"
+  },
+  "picker": {
+    "title": "Select Media",
+    "searchPlaceholder": "Search media...",
+    "sortByDate": "Date Added",
+    "sortByName": "Name",
+    "uploadNew": "Upload New",
+    "emptyState": "No media found.",
+    "select": "Select",
+    "cancel": "Cancel",
+    "image": "Image",
+    "video": "Video"
+  },
+  "success": {
+    "media_retrieved": "Media retrieved successfully.",
+    "media_fetched": "Media retrieved successfully.",
+    "media_created": "Media file uploaded successfully.",
+    "media_uploaded": "Media uploaded successfully.",
+    "file_uploaded": "File uploaded successfully.",
+    "media_updated": "Media updated successfully.",
+    "media_deleted": "Media deleted successfully."
+  },
+  "errors": {
+    "media_not_found": "Media file not found.",
+    "file_name_required": "File name is required.",
+    "file_name_empty": "File name cannot be empty.",
+    "mime_type_required": "File type is required.",
+    "invalid_size": "Invalid file size.",
+    "too_long": "Value exceeds the allowed limit.",
+    "file_required": "File is required.",
+    "ids_required": "IDs are required."
+  },
+  "validation": {
+    "file_name_required": "File name is required.",
+    "file_name_empty": "File name cannot be empty.",
+    "mime_type_required": "File type is required.",
+    "invalid_size": "Invalid file size.",
+    "invalid_field_value": "Invalid input field value.",
+    "too_long": "Value exceeds the allowed limit.",
+    "file_required": "File is required.",
+    "ids_required": "IDs are required."
+  }
+}

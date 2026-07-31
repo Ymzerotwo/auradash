@@ -1,0 +1,22 @@
+{
+  "dashboard": "لوحة التحكم",
+  "bookings": "الحجوزات",
+  "operations": "العمليات",
+  "all_records": "جميع السجلات",
+  "calendar": "التقويم",
+  "customers": "العملاء",
+  "clients_directory": "دليل العملاء",
+  "financials": "المالية",
+  "invoices": "الفواتير",
+  "reports": "التقارير",
+  "cms": "إدارة المحتوى",
+  "services": "الخدمات",
+  "articles": "المقالات",
+  "inbox": "صندوق الوارد",
+  "settings": "الإعدادات",
+  "workspace": "الإعدادات العامة",
+  "team_roles": "الفريق والصلاحيات",
+  "media": "الوسائط",
+  "api_keys": "مفاتيح الربط",
+  "comments": "التعليقات"
+}

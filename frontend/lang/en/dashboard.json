@@ -1,0 +1,76 @@
+{
+  "pageTitle": "Dashboard",
+  "greeting": "Welcome, {name} 👋",
+  "greetings": {
+    "morning": "Good morning, {name} ☀️",
+    "afternoon": "Good afternoon, {name} ☕",
+    "evening": "Good evening, {name} 🌙"
+  },
+  "greetingDesc": "Here is a quick overview of today's workflow.",
+  "moreOptions": "More Options",
+  "vsLastMonth": "Compared to last month",
+  "stats": {
+    "totalRevenue": "Total Revenue",
+    "bookingsCount": "Period Bookings",
+    "newCustomers": "New Customers",
+    "totalCustomers": "Total Customers",
+    "newComments": "New Comments",
+    "newMessages": "New Inbox Messages"
+  },
+  "filters": {
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "custom": "Custom"
+  },
+  "activityTypes": {
+    "NEW_BOOKING": "New Booking",
+    "BOOKING_CONFIRMED": "Booking Confirmed",
+    "BOOKING_COMPLETED": "Booking Completed",
+    "BOOKING_CANCELLED": "Booking Cancelled",
+    "NEW_COMMENT": "New Comment",
+    "NEW_INBOX_MESSAGE": "New Inbox Message"
+  },
+  "recentActivity": {
+    "title": "Recent Activity",
+    "viewAll": "View All",
+    "emptyState": {
+      "title": "No Operations",
+      "description": "No activities have been recorded today yet."
+    }
+  },
+  "topClients": {
+    "title": "Top Clients",
+    "viewAll": "View All",
+    "columns": {
+      "client": "Client",
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "status": "Status"
+    }
+  },
+  "status": {
+    "active": "Active",
+    "pending": "Pending",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "unread": "Unread",
+    "read": "Read",
+    "spam": "Spam",
+    "converted": "Converted",
+    "profile_created": "Profile Created"
+  },
+  "success": {
+    "dashboard_stats_fetched": "Dashboard statistics retrieved successfully.",
+    "success": "Dashboard statistics retrieved successfully."
+  },
+  "errors": {
+    "server_error": "Failed to retrieve dashboard statistics.",
+    "fetch_failed": "Unable to load dashboard statistics."
+  }
+}

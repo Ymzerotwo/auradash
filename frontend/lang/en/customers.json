@@ -1,0 +1,135 @@
+{
+  "pageTitle": "Customers",
+  "stats": {
+    "total": "Total Customers",
+    "active": "Active Customers",
+    "spammed": "Banned Customers"
+  },
+  "search": {
+    "placeholder": "Search by name, phone, or email...",
+    "filterAll": "All",
+    "filterActive": "Active",
+    "filterSpammed": "Banned",
+    "viewTable": "Table View",
+    "viewCards": "Cards View",
+    "noResults": "No customers found."
+  },
+  "table": {
+    "customer": "Customer",
+    "phone": "Phone",
+    "email": "Email",
+    "source": "Source",
+    "status": "Status",
+    "joined": "Join Date",
+    "createdBy": "Created By",
+    "created": "Creation Date",
+    "actions": "Actions"
+  },
+  "status": {
+    "active": "Active",
+    "spammed": "Banned"
+  },
+  "actions": {
+    "addCustomer": "Add Customer",
+    "edit": "Edit",
+    "spam": "Ban Customer",
+    "unspam": "Unban Customer",
+    "delete": "Delete",
+    "deleteCustomer": "Delete Customer",
+    "confirmDelete": "Are you sure you want to permanently delete this customer? This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirmSpam": "Confirm Ban",
+    "spamCustomer": "Ban Customer",
+    "spamDescription": "Please provide a reason for banning this customer. They will be prevented from submitting new requests."
+  },
+  "form": {
+    "addTitle": "Add Customer",
+    "editTitle": "Edit Customer",
+    "addDescription": "Enter details for the new customer.",
+    "editDescription": "Update customer information.",
+    "fields": {
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "email": "Email Address",
+      "gender": "Gender",
+      "genderMale": "Male",
+      "genderFemale": "Female",
+      "dateOfBirth": "Date of Birth",
+      "city": "City/Region",
+      "acquisitionSource": "Acquisition Source (e.g., Google, Facebook)",
+      "tags": "Tags (comma-separated)",
+      "notes": "Additional Notes"
+    },
+    "placeholders": {
+      "fullName": "e.g., Youssef Mohamed",
+      "phone": "e.g., 01012345678",
+      "email": "e.g., test@example.com",
+      "city": "e.g., Cairo, Giza",
+      "acquisitionSource": "e.g., Google, Facebook, Referral",
+      "tags": "e.g., Active, VIP",
+      "notes": "Write any additional notes here..."
+    },
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
+  },
+  "profile": {
+    "customerProfile": "Customer Profile",
+    "backToCustomers": "Back to Customers",
+    "customerDetails": "Customer Details",
+    "servicesProvided": "Services Provided",
+    "blogComments": "Blog Comments",
+    "noServices": "No services provided to this customer yet.",
+    "noComments": "No comments recorded for this customer.",
+    "viewBooking": "View Booking",
+    "commentOn": "Comment on:",
+    "customerNotFound": "Customer Not Found",
+    "customerNotFoundDesc": "Sorry, we couldn't find the requested customer in the system.",
+    "totalCost": "Total Cost:",
+    "paymentStatus": "Payment Status:",
+    "staffNotes": "Staff Notes",
+    "banReason": "Ban Reason",
+    "banned": "Banned",
+    "bannedAt": "Banned At:",
+    "lastVisit": "Last Visit",
+    "tagsAndInterests": "Tags & Interests",
+    "notScheduled": "Not Scheduled",
+    "createdAt": "Created At",
+    "createdBy": "Created By",
+    "updatedAt": "Updated At",
+    "updatedBy": "Updated By",
+    "joinedOn": "Joined On:",
+    "by": "By:"
+  },
+  "success": {
+    "customers_fetched": "Customers retrieved successfully",
+    "stats_fetched": "Customer statistics retrieved successfully",
+    "customer_stats_fetched": "Customer statistics retrieved",
+    "customer_created": "Customer added successfully",
+    "customer_fetched": "Customer details retrieved",
+    "customer_updated": "Customer updated successfully",
+    "customer_deleted": "Customer deleted successfully",
+    "customer_spammed": "Customer banned successfully",
+    "customer_unspammed": "Customer unbanned successfully"
+  },
+  "errors": {
+    "too_long": "Input is too long.",
+    "phone_already_exists": "This phone number is registered to another customer.",
+    "email_already_exists": "This email is registered to another customer.",
+    "forbidden_delete": "You do not have permission to delete customers. Please contact management.",
+    "forbidden_unspam": "You do not have permission to unban customers. Please contact management.",
+    "forbidden": "You do not have permission for this action.",
+    "customer_not_found": "Customer not found",
+    "spam_reason_required": "Ban reason is required"
+  },
+  "validation": {
+    "phone_international": "Phone number must be in international format starting with +",
+    "name_min_length": "Name must be at least 2 characters",
+    "name_too_short": "Name is too short (minimum 2 characters).",
+    "invalid_email": "Invalid email format",
+    "spam_reason_min": "Ban reason must be at least 3 characters",
+    "spam_reason_too_short": "Ban reason is too short.",
+    "invalid_field_value": "Invalid field value.",
+    "too_long": "Input is too long."
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "pageTitle": "خدمات التصنيف",
+  "actions": {
+    "createService": "إنشاء خدمة",
+    "edit": "تعديل الخدمة",
+    "delete": "حذف",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذه الخدمة؟",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "changeImage": "تغيير الصورة",
+    "remove": "حذف",
+    "chooseShareImage": "اختر صورة المشاركة"
+  },
+  "search": {
+    "placeholder": "البحث بالاسم أو الرابط...",
+    "filterAll": "الكل",
+    "filterActive": "نشط",
+    "filterInactive": "غير نشط",
+    "viewTable": "عرض الجدول",
+    "viewCards": "عرض البطاقات",
+    "noResults": "لا توجد خدمات في هذا التصنيف"
+  },
+  "table": {
+    "title": "العنوان",
+    "slug": "الرابط",
+    "status": "الحالة",
+    "created": "تاريخ الإنشاء",
+    "updated": "تاريخ التحديث",
+    "createdBy": "تم الإنشاء بواسطة",
+    "updatedBy": "تم التحديث بواسطة",
+    "audit": "سجل النشاط",
+    "actions": "الإجراءات"
+  },
+  "pagination": {
+    "pageInfo": "الصفحة {current} من {total}",
+    "prev": "السابق",
+    "next": "التالي"
+  },
+  "settingsButton": "إعدادات التصنيف",
+  "settingsSheet": {
+    "title": "إعدادات التصنيف",
+    "desc": "إدارة تفاصيل التصنيف وإعدادات محركات البحث.",
+    "tabs": {
+      "general": "عام",
+      "seo": "محركات البحث"
+    },
+    "seo": {
+      "metaTitle": "عنوان الميتا",
+      "metaTitleHint": "العنوان الذي يظهر في نتائج البحث.",
+      "metaDesc": "وصف الميتا",
+      "metaDescHint": "وصف قصير للتصنيف.",
+      "metaKeywords": "الكلمات المفتاحية",
+      "metaKeywordsHint": "كلمات مفتاحية مفصولة بفاصلة.",
+      "ogImage": "صورة المشاركة",
+      "ogImageHint": "الصورة المعروضة عند المشاركة على وسائل التواصل الاجتماعي.",
+      "canonicalUrl": "الرابط الأساسي",
+      "canonicalUrlHint": "الرابط المفضل لهذه الصفحة.",
+      "isIndexable": "السماح بالفهرسة",
+      "schemaMarkup": "المخطط الهيكلي",
+      "schemaMarkupHint": "بيانات منظمة لمحركات البحث."
+    }
+  },
+  "form": {
+    "title": "العنوان",
+    "titlePlaceholder": "أدخل عنوان التصنيف...",
+    "slug": "الرابط",
+    "slugPlaceholder": "أدخل-الرابط",
+    "slugTaken": "هذا الرابط مستخدم بالفعل.",
+    "sortOrder": "ترتيب العرض",
+    "isActive": "نشط",
+    "customFields": "الحقول المخصصة",
+    "customFieldsDesc": "تحديد الحقول المخصصة لهذا التصنيف.",
+    "addField": "إضافة حقل",
+    "noCustomFields": "لم يتم تحديد حقول مخصصة بعد.",
+    "bookingsWarning": "تحذير: لربط هذه الخدمة بنظام الحجوزات، يجب إضافة حقول باسم 'name' و 'price'. لمزيد من التفاصيل: https://auradash.ymzerotwo.com",
+    "saveChanges": "حفظ التغييرات",
+    "cancel": "إلغاء"
+  },
+  "customFields": {
+    "text": "نص",
+    "longText": "نص طويل",
+    "url": "رابط",
+    "image": "صورة",
+    "video": "فيديو",
+    "youtube": "يوتيوب",
+    "icon": "أيقونة",
+    "list": "قائمة",
+    "datetime": "التاريخ والوقت",
+    "selectType": "تحديد نوع الحقل",
+    "fieldType": "نوع الحقل",
+    "fieldName": "اسم الحقل",
+    "fieldNamePlaceholder": "مثال: الصورة البارزة",
+    "fieldValue": "القيمة",
+    "textPlaceholder": "أدخل القيمة...",
+    "listPlaceholder": "إضافة عنصر...",
+    "listEmpty": "لم يتم إضافة عناصر بعد.",
+    "cancel": "إلغاء",
+    "add": "إضافة حقل",
+    "errorDuplicateName": "هذا الاسم موجود بالفعل"
+  },
+  "success": {
+    "categories_fetched": "تم جلب التصنيفات بنجاح",
+    "slug_check": "تم التحقق من توافر الرابط",
+    "category_fetched": "تم جلب التصنيف بنجاح",
+    "category_created": "تم إنشاء التصنيف بنجاح",
+    "category_updated": "تم تحديث التصنيف بنجاح",
+    "category_deleted": "تم حذف التصنيف بنجاح"
+  },
+  "errors": {
+    "category_exists": "الرابط مستخدم لتصنيف آخر. يرجى تغييره.",
+    "sort_order_exists": "ترتيب العرض هذا مستخدم لتصنيف آخر.",
+    "category_not_found": "التصنيف غير موجود",
+    "title_required": "العنوان مطلوب",
+    "name_required": "الاسم مطلوب",
+    "slug_required": "الرابط مطلوب",
+    "invalid_slug_format": "صيغة الرابط غير صالحة",
+    "invalid_sort_order": "ترتيب العرض يجب أن يكون رقماً صحيحاً.",
+    "too_long": "طويل جداً"
+  },
+  "validation": {
+    "category_exists": "الرابط مستخدم لتصنيف آخر. يرجى تغييره.",
+    "sort_order_exists": "ترتيب العرض هذا مستخدم لتصنيف آخر.",
+    "title_required": "العنوان مطلوب",
+    "name_required": "الاسم مطلوب",
+    "slug_required": "الرابط مطلوب",
+    "invalid_slug_format": "صيغة الرابط غير صالحة",
+    "invalid_sort_order": "ترتيب العرض يجب أن يكون رقماً صحيحاً.",
+    "invalid_field_value": "قيمة الحقل المدخلة غير صالحة.",
+    "too_long": "طويل جداً"
+  }
+}

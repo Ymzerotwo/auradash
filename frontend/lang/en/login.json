@@ -1,0 +1,34 @@
+{
+  "meta_title": "Sign In | AuraDash Enterprise",
+  "title": "Welcome Back",
+  "username_label": "Username",
+  "username_placeholder": "Enter your username",
+  "password_label": "Password",
+  "password_placeholder": "••••••••",
+  "remember_me": "Remember me for 30 days",
+  "forgot_password": "Forgot password?",
+  "submit_button": "Sign In",
+  "signing_in": "Signing in...",
+  "success_message": "Signed in successfully.",
+  "redirect_message": "Redirecting to Dashboard...",
+  "success": {
+    "login_success": "Signed in successfully.",
+    "logged_in": "Welcome back."
+  },
+  "errors": {
+    "invalid_credentials": "Incorrect username or password.",
+    "user_not_found": "No account registered with this username.",
+    "account_locked": "Your account has been locked. Please contact the support team.",
+    "account_banned": "This account has been suspended. Please contact the support team.",
+    "account_inactive": "This account is currently deactivated. Please contact the support team.",
+    "rate_limit_exceeded": "You have exceeded the allowed number of attempts. Please try again later.",
+    "username_required": "Username is required.",
+    "password_required": "Password is required.",
+    "too_long": "Text is too long."
+  },
+  "validation": {
+    "username_required": "Username is required.",
+    "password_required": "Password is required.",
+    "too_long": "Text is too long."
+  }
+}

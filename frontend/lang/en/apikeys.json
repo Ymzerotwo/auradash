@@ -1,0 +1,80 @@
+{
+  "title": "API Keys",
+  "subtitle": "Manage API keys for external access",
+  "new_api_key": "Create New Key",
+  "mobile_warning": "Open from a computer to manage your API keys",
+  "table": {
+    "name": "Name",
+    "domain": "Domain",
+    "key": "API Key",
+    "created_at": "Created At",
+    "created_by": "Created By",
+    "actions": "Actions",
+    "expired": "Expired"
+  },
+  "create_dialog": {
+    "title": "Create New API Key",
+    "description": "Generate a new API key to grant an external application access.",
+    "name_label": "Key Name",
+    "name_placeholder": "e.g. Main Website",
+    "domain_label": "Allowed Domain",
+    "domain_placeholder": "https://example.com",
+    "type_label": "Key Type",
+    "type_production": "Production",
+    "type_test": "Test",
+    "expires_label": "Expiration Duration (Hours)",
+    "submit": "Generate Key",
+    "cancel": "Cancel",
+    "creating": "Generating..."
+  },
+  "success_dialog": {
+    "title": "API Key Created Successfully",
+    "description": "Please copy this key immediately. For security reasons, it will not be shown again.",
+    "copy_button": "Copy Key",
+    "copied": "Copied!",
+    "close": "I have copied the key",
+    "warning": "Make sure to copy your API key now. You will not be able to see it again."
+  },
+  "delete_dialog": {
+    "title": "Delete API Key",
+    "warning": "Are you sure you want to remove this API key? Note: The key will continue to work in connected applications. To completely disable it, the system administrator must change the Master Secret.\nFor more information, please visit:\nhttps://auradash.ymzerotwo.com",
+    "warning_test": "Are you sure you want to remove this API key? Note: This key is for testing only and once it expires it will no longer work. If the key is already expired, don't worry, it will not work again.\nFor more information, please visit:\nhttps://auradash.ymzerotwo.com",
+    "confirm": "Confirm Delete",
+    "cancel": "Cancel",
+    "deleting": "Removing..."
+  },
+  "empty_state": {
+    "title": "No API Keys",
+    "description": "You have not generated any API keys yet."
+  },
+  "success": {
+    "api_key_created": "API key created successfully. Keep it in a secure place.",
+    "api_keys_fetched": "API keys retrieved successfully.",
+    "api_key_deleted": "API key removed successfully."
+  },
+  "errors": {
+    "fetch_failed": "Failed to fetch API keys.",
+    "create_failed": "Failed to create API key.",
+    "delete_failed": "Failed to delete API key.",
+    "missing_master_secret": "System Alert: Master Secret is missing. This code is essential to secure API keys.",
+    "not_found": "API key not found.",
+    "name_required": "Name is required.",
+    "domain_required": "Domain is required.",
+    "invalid_domain": "Invalid domain format.",
+    "name_too_short": "Name is too short.",
+    "name_too_long": "Name must not exceed 50 characters.",
+    "too_long": "Text exceeds the allowed limit.",
+    "expires_too_short": "Expiration duration must be at least 1 hour.",
+    "expires_too_long": "Expiration duration cannot exceed 24 hours."
+  },
+  "validation": {
+    "name_required": "Name is required.",
+    "domain_required": "Domain is required.",
+    "invalid_domain": "Invalid domain format.",
+    "name_too_short": "Name is too short.",
+    "name_too_long": "Name must not exceed 50 characters.",
+    "too_long": "Text exceeds the allowed limit.",
+    "expires_too_short": "Expiration duration must be at least 1 hour.",
+    "expires_too_long": "Expiration duration cannot exceed 24 hours."
+  }
+}

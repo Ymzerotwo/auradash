@@ -1,0 +1,82 @@
+{
+  "title": "تعديل الملف الشخصي",
+  "descAdmin": "بصفتك مسؤولاً، يمكنك تحديث كافة تفاصيل حسابك.",
+  "descWorker": "تحديث معلومات ملفك الشخصي العام وكلمة المرور.",
+  "sections": {
+    "identity": "المعلومات الشخصية",
+    "security": "تغيير كلمة المرور"
+  },
+  "fields": {
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "مثال: أحمد محمد",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "مثال: example@domain.com",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "مثال: ahmed_mohamed",
+    "jobTitle": "المسمى الوظيفي",
+    "jobTitlePlaceholder": "مثال: مهندس برمجيات",
+    "photoUrl": "رابط الصورة",
+    "photoHint": "أدخل رابط الصورة الشخصية الخاصة بك",
+    "changePhoto": "تغيير الصورة"
+  },
+  "password": {
+    "title": "تغيير كلمة المرور",
+    "current": "كلمة المرور الحالية",
+    "currentPlaceholder": "مطلوبة لتغيير كلمة المرور",
+    "new": "كلمة المرور الجديدة",
+    "newPlaceholder": "أدخل كلمة المرور الجديدة"
+  },
+  "actions": {
+    "updating": "جاري التحديث...",
+    "save": "حفظ التغييرات",
+    "success": "تم تحديث الملف الشخصي بنجاح."
+  },
+  "success": {
+    "profile_fetched": "تم جلب الملف الشخصي بنجاح.",
+    "profile_updated": "تم تحديث الملف الشخصي بنجاح.",
+    "sessions_fetched": "تم جلب الجلسات النشطة بنجاح.",
+    "session_revoked": "تم تسجيل الخروج من الجلسة بنجاح.",
+    "all_sessions_revoked": "تم تسجيل الخروج من كافة الأجهزة بنجاح.",
+    "password_updated": "تم تغيير كلمة المرور بنجاح."
+  },
+  "errors": {
+    "old_password_required": "كلمة المرور الحالية مطلوبة لتعيين كلمة مرور جديدة.",
+    "invalid_old_password": "كلمة المرور الحالية غير صحيحة.",
+    "no_changes": "لم يتم إجراء أي تغييرات.",
+    "user_not_found": "المستخدم غير موجود.",
+    "profile_update_failed": "فشل تحديث الملف الشخصي. يرجى المحاولة مرة أخرى.",
+    "full_name_too_short": "الاسم الكامل قصير جداً.",
+    "username_too_short": "اسم المستخدم قصير جداً.",
+    "invalid_username_format": "صيغة اسم المستخدم غير صحيحة.",
+    "current_password_required": "كلمة المرور الحالية مطلوبة.",
+    "new_password_too_short": "كلمة المرور الجديدة قصيرة جداً.",
+    "password_no_uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.",
+    "password_no_lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل.",
+    "password_no_number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.",
+    "password_no_special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل.",
+    "invalid_email": "صيغة البريد الإلكتروني غير صحيحة.",
+    "too_long": "القيمة تتجاوز الحد المسموح به.",
+    "name_required": "الاسم مطلوب.",
+    "password_required": "كلمة المرور مطلوبة.",
+    "invalid_credentials": "بيانات الدخول غير صحيحة.",
+    "username_taken": "اسم المستخدم مستخدم بالفعل.",
+    "email_taken": "البريد الإلكتروني مستخدم بالفعل."
+  },
+  "validation": {
+    "full_name_too_short": "الاسم الكامل قصير جداً.",
+    "username_too_short": "اسم المستخدم قصير جداً.",
+    "invalid_username_format": "صيغة اسم المستخدم غير صحيحة.",
+    "current_password_required": "كلمة المرور الحالية مطلوبة.",
+    "new_password_too_short": "كلمة المرور الجديدة قصيرة جداً.",
+    "invalid_email": "صيغة البريد الإلكتروني غير صحيحة.",
+    "password_no_uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.",
+    "password_no_lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل.",
+    "password_no_number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.",
+    "password_no_special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل.",
+    "too_long": "القيمة تتجاوز الحد المسموح به.",
+    "name_required": "الاسم مطلوب.",
+    "password_required": "كلمة المرور مطلوبة.",
+    "username_taken": "اسم المستخدم مستخدم بالفعل.",
+    "email_taken": "البريد الإلكتروني مستخدم بالفعل."
+  }
+}

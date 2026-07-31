@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# Cloudflare Wrangler & Local DB caches
+.wrangler/
+.dev.vars
+.dev.vars.local
+backend/wrangler.jsonc
+
+# Next.js & Build outputs
+frontend/.next/
+frontend/out/
+backend/dist/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Environment / IDE / OS files
+.DS_Store
+*.pem
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

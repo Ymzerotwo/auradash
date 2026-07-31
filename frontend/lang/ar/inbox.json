@@ -1,0 +1,111 @@
+{
+  "pageTitle": "البريد الوارد",
+  "requestedService": "تفاصيل الخدمة المطلوبة",
+  "table": {
+    "sender": "المرسل",
+    "contact": "بيانات الاتصال",
+    "inquiryType": "نوع الاستفسار",
+    "message": "الرسالة",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "actions": "الإجراءات",
+    "serviceDetails": "تفاصيل الخدمة",
+    "price": "السعر"
+  },
+  "status": {
+    "all": "الكل",
+    "unread": "غير مقروء",
+    "read": "مقروء",
+    "converted": "مُحول",
+    "profile_created": "تم إنشاء الملف",
+    "spam": "مزعج"
+  },
+  "actions": {
+    "markRead": "تحديد كمقروء",
+    "markUnread": "تحديد كغير مقروء",
+    "convert": "إنشاء حجز",
+    "convertToBooking": "إنشاء حجز",
+    "createProfile": "إنشاء ملف شخصي",
+    "markSpam": "تحديد كمزعج",
+    "delete": "حذف",
+    "confirmDelete": "هل أنت متأكد من حذف هذه الرسالة نهائياً؟",
+    "confirmConvert": "هل أنت متأكد من تحويل هذا الاستفسار إلى حجز؟",
+    "confirmSpam": "هل أنت متأكد من تحديد هذه الرسالة كمزعجة؟ سيؤدي ذلك إلى حظر المرسل.",
+    "spamReasonLabel": "سبب التصنيف كمزعج (اختياري)",
+    "spamReasonPlaceholder": "مثال: حساب وهمي، روابط احتيالية...",
+    "expand": "قراءة الرسالة كاملة",
+    "clickToRead": "انقر لقراءة الرسالة كاملة",
+    "submitSpam": "تأكيد التصنيف كمزعج",
+    "unspam": "إلغاء التصنيف كمزعج"
+  },
+  "search": {
+    "placeholder": "البحث بالاسم أو البريد الإلكتروني أو رقم الهاتف...",
+    "noResults": "لم يتم العثور على أي رسائل.",
+    "viewTable": "عرض كجدول",
+    "viewCards": "عرض كبطاقات",
+    "filterAll": "الكل",
+    "filterUnread": "غير مقروء",
+    "filterRead": "مقروء",
+    "filterConverted": "مُحول",
+    "filterProfileCreated": "تم إنشاء الملف",
+    "filterSpam": "مزعج"
+  },
+  "inquiryTypes": {
+    "general": "استفسار عام",
+    "service": "طلب خدمة",
+    "offer": "استفسار عن عرض سعر"
+  },
+  "audit": {
+    "title": "سجل التدقيق (للمسؤولين فقط)",
+    "unread": "غير مقروء",
+    "notConverted": "غير مُحول",
+    "notSpammed": "غير مزعج",
+    "system": "النظام",
+    "reason": "السبب",
+    "actionBy": "تم الإجراء بواسطة",
+    "readBy": "تمت القراءة بواسطة",
+    "convertedBy": "تم التحويل بواسطة",
+    "spammedBy": "صُنف كمزعج بواسطة"
+  },
+  "success": {
+    "inbox_message_created": "تم إرسال الرسالة بنجاح.",
+    "messages_fetched": "تم جلب الرسائل بنجاح.",
+    "unread_count_fetched": "تم جلب عدد الرسائل غير المقروءة بنجاح.",
+    "status_updated": "تم تحديث حالة الرسالة بنجاح.",
+    "message_deleted": "تم حذف الرسالة بنجاح.",
+    "threads_fetched": "تم جلب المحادثات بنجاح.",
+    "thread_created": "تم بدء المحادثة بنجاح.",
+    "thread_fetched": "تم جلب تفاصيل المحادثة بنجاح.",
+    "thread_updated": "تم تحديث حالة المحادثة بنجاح.",
+    "reply_added": "تمت إضافة الرد بنجاح.",
+    "thread_deleted": "تم حذف المحادثة بنجاح."
+  },
+  "errors": {
+    "thread_not_found": "المحادثة غير موجودة.",
+    "cannot_spam_converted": "لا يمكن تصنيف الرسالة كمزعجة بعد تحويل العميل.",
+    "cannot_convert_spam": "لا يمكن تحويل الرسالة المصنفة كمزعجة. يرجى إلغاء تصنيفها أولاً.",
+    "customer_is_spammed": "هذا العميل محظور حالياً في الـ CRM. يرجى إلغاء الحظر أولاً.",
+    "only_general_can_be_profile": "فقط الاستفسارات العامة يمكن تحويلها إلى ملفات شخصية بدون حجوزات.",
+    "conflict": "تم تعديل هذه الرسالة بواسطة مستخدم آخر. يرجى إعادة تحميل الصفحة.",
+    "missing_financial_contract": "تكوين العقد المالي المطلوب لهذه الخدمة مفقود.",
+    "service_not_found": "الخدمة المطلوبة غير موجودة أو غير نشطة حالياً.",
+    "message_is_spam": "هذه الرسالة مصنفة كمزعجة. يرجى إلغاء تصنيفها أولاً.",
+    "internal_server_error": "حدث خطأ داخلي في الخادم. يرجى المحاولة مرة أخرى.",
+    "message_content_required": "محتوى الرسالة مطلوب.",
+    "cancellation_reason_required": "سبب الإلغاء مطلوب.",
+    "customer_id_required": "معرف العميل مطلوب.",
+    "too_long": "النص يتجاوز الحد المسموح به."
+  },
+  "validation": {
+    "name_required": "الاسم مطلوب ولا يمكن أن يكون فارغاً.",
+    "phone_required": "رقم الهاتف مطلوب.",
+    "invalid_email": "صيغة البريد الإلكتروني غير صحيحة.",
+    "message_too_short": "محتوى الرسالة قصير جداً.",
+    "message_content_required": "محتوى الرسالة مطلوب.",
+    "cancellation_reason_required": "سبب الإلغاء مطلوب.",
+    "customer_id_required": "معرف العميل مطلوب.",
+    "invalid_field_value": "قيمة الحقل المدخلة غير صالحة.",
+    "too_long": "النص يتجاوز الحد المسموح به.",
+    "validation_error": "بيانات الإدخال غير صالحة."
+  }
+}

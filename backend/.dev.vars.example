@@ -1,0 +1,21 @@
+# Backend Environment Variables Example
+# Copy this file to .dev.vars for local development
+
+# Cloudflare Credentials
+CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
+CF_ACCOUNT_ID="your_cloudflare_account_id"
+
+# Master Crypto Secret (used for HMAC API Key signing)
+AURADASH_MASTER_SECRET="your_custom_master_crypto_secret_here"
+
+# R2 Bucket Storage Public Domain
+R2_PUBLIC_URL="https://pub-xxxxxx.r2.dev"
+
+# Allowed CORS Origins (Comma-separated for multiple origins)
+ALLOWED_ORIGINS="http://localhost:3000"
+
+# Email Configuration (Cloudflare Email Routing)
+EMAIL_FROM_ADDRESS="noreply@yourdomain.com"
+
+# Application Frontend Base URL
+APP_FRONTEND_URL="http://localhost:3000"

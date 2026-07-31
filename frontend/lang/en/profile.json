@@ -1,0 +1,82 @@
+{
+  "title": "Edit Profile",
+  "descAdmin": "As an admin, you can update all your account details.",
+  "descWorker": "Update your public profile information and password.",
+  "sections": {
+    "identity": "Personal Information",
+    "security": "Change Password"
+  },
+  "fields": {
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "e.g. John Doe",
+    "email": "Email",
+    "emailPlaceholder": "e.g. example@domain.com",
+    "username": "Username",
+    "usernamePlaceholder": "e.g. john_doe",
+    "jobTitle": "Job Title",
+    "jobTitlePlaceholder": "e.g. Software Engineer",
+    "photoUrl": "Photo URL",
+    "photoHint": "Enter your profile picture URL",
+    "changePhoto": "Change Photo"
+  },
+  "password": {
+    "title": "Change Password",
+    "current": "Current Password",
+    "currentPlaceholder": "Required to change password",
+    "new": "New Password",
+    "newPlaceholder": "Enter new password"
+  },
+  "actions": {
+    "updating": "Updating...",
+    "save": "Save Changes",
+    "success": "Profile updated successfully."
+  },
+  "success": {
+    "profile_fetched": "Profile retrieved successfully.",
+    "profile_updated": "Profile updated successfully.",
+    "sessions_fetched": "Active sessions retrieved successfully.",
+    "session_revoked": "Session revoked successfully.",
+    "all_sessions_revoked": "Signed out of all devices successfully.",
+    "password_updated": "Password changed successfully."
+  },
+  "errors": {
+    "old_password_required": "Current password is required to set a new password.",
+    "invalid_old_password": "Current password is incorrect.",
+    "no_changes": "No changes were made.",
+    "user_not_found": "User not found.",
+    "profile_update_failed": "Failed to update profile. Please try again.",
+    "full_name_too_short": "Full name is too short.",
+    "username_too_short": "Username is too short.",
+    "invalid_username_format": "Invalid username format.",
+    "current_password_required": "Current password is required.",
+    "new_password_too_short": "New password is too short.",
+    "password_no_uppercase": "Password must contain at least one uppercase letter.",
+    "password_no_lowercase": "Password must contain at least one lowercase letter.",
+    "password_no_number": "Password must contain at least one number.",
+    "password_no_special": "Password must contain at least one special character.",
+    "invalid_email": "Invalid email address format.",
+    "too_long": "Value exceeds the allowed limit.",
+    "name_required": "Name is required.",
+    "password_required": "Password is required.",
+    "invalid_credentials": "Invalid credentials.",
+    "username_taken": "Username is already in use.",
+    "email_taken": "Email is already in use."
+  },
+  "validation": {
+    "full_name_too_short": "Full name is too short.",
+    "username_too_short": "Username is too short.",
+    "invalid_username_format": "Invalid username format.",
+    "current_password_required": "Current password is required.",
+    "new_password_too_short": "New password is too short.",
+    "invalid_email": "Invalid email address format.",
+    "password_no_uppercase": "Password must contain at least one uppercase letter.",
+    "password_no_lowercase": "Password must contain at least one lowercase letter.",
+    "password_no_number": "Password must contain at least one number.",
+    "password_no_special": "Password must contain at least one special character.",
+    "too_long": "Value exceeds the allowed limit.",
+    "name_required": "Name is required.",
+    "password_required": "Password is required.",
+    "username_taken": "Username is already in use.",
+    "email_taken": "Email is already in use."
+  }
+}

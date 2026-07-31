@@ -1,0 +1,95 @@
+{
+  "pageTitle": "مكتبة الوسائط",
+  "pageDescription": "إدارة وصور وفيديوهات الموقع بالنظام.",
+  "actions": {
+    "uploadMedia": "رفع محتوى جديد",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "download": "تنزيل",
+    "rename": "إعادة تسمية الملف",
+    "saveChanges": "حفظ التغييرات",
+    "cancel": "إلغاء",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا الملف؟ تنبيه: إذا كان هذا الملف مرتبطاً بخدمة أو مقالة فسوف يختفي ولن يظهر فيها.",
+    "confirmDeleteButton": "تأكيد الحذف"
+  },
+  "search": {
+    "placeholder": "البحث في الوسائط بالاسم...",
+    "filterAll": "كل الوسائط",
+    "filterImages": "الصور",
+    "filterVideos": "الفيديو",
+    "noResults": "لم يتم العثور على وسائط تطابق بحثك.",
+    "viewTable": "عرض كجدول",
+    "viewCards": "عرض كبطاقات"
+  },
+  "table": {
+    "file": "الملف",
+    "type": "النوع",
+    "size": "الحجم",
+    "uploaded": "تاريخ الرفع",
+    "uploadedBy": "مرفوع بواسطة",
+    "actions": "الإجراءات"
+  },
+  "status": {
+    "empty": "لا توجد وسائط متاحة حتى الآن.",
+    "uploading": "جاري الرفع..."
+  },
+  "pagination": {
+    "prev": "السابق",
+    "next": "التالي",
+    "pageInfo": "الصفحة {current} من {total}"
+  },
+  "uploadModal": {
+    "title": "رفع وسائط",
+    "description": "اسحب الملفات وأفلتها هنا أو انقر للتصفح.",
+    "supportedFormats": "الصيغ المدعومة: JPG، PNG، GIF، WEBP، MP4، WebM",
+    "maxSize": "الحد الأقصى لحجم الملف: 100 ميجابايت"
+  },
+  "units": {
+    "bytes": "بايت",
+    "kb": "كيلوبايت",
+    "mb": "ميجابايت",
+    "gb": "جيجابايت",
+    "tb": "تيرابايت"
+  },
+  "picker": {
+    "title": "اختيار وسائط",
+    "searchPlaceholder": "البحث في الوسائط...",
+    "sortByDate": "تاريخ الإضافة",
+    "sortByName": "الاسم",
+    "uploadNew": "رفع جديد",
+    "emptyState": "لم يتم العثور على وسائط.",
+    "select": "اختيار",
+    "cancel": "إلغاء",
+    "image": "صورة",
+    "video": "فيديو"
+  },
+  "success": {
+    "media_retrieved": "تم جلب الوسائط بنجاح.",
+    "media_fetched": "تم جلب الوسائط بنجاح.",
+    "media_created": "تم رفع ملف الوسائط بنجاح.",
+    "media_uploaded": "تم رفع الوسائط بنجاح.",
+    "file_uploaded": "تم رفع الملف بنجاح.",
+    "media_updated": "تم تحديث الوسائط بنجاح.",
+    "media_deleted": "تم حذف الوسائط بنجاح."
+  },
+  "errors": {
+    "media_not_found": "ملف الوسائط غير موجود.",
+    "file_name_required": "اسم الملف مطلوب.",
+    "file_name_empty": "لا يمكن أن يكون اسم الملف فارغاً.",
+    "mime_type_required": "نوع الملف مطلوب.",
+    "invalid_size": "حجم الملف غير صالح.",
+    "too_long": "القيمة تتجاوز الحد المسموح به.",
+    "file_required": "الملف مطلوب.",
+    "ids_required": "المعرفات مطلوبة."
+  },
+  "validation": {
+    "file_name_required": "اسم الملف مطلوب.",
+    "file_name_empty": "لا يمكن أن يكون اسم الملف فارغاً.",
+    "mime_type_required": "نوع الملف مطلوب.",
+    "invalid_size": "حجم الملف غير صالح.",
+    "invalid_field_value": "قيمة الحقل المدخلة غير صالحة.",
+    "too_long": "القيمة تتجاوز الحد المسموح به.",
+    "file_required": "الملف مطلوب.",
+    "ids_required": "المعرفات مطلوبة."
+  }
+}

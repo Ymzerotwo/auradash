@@ -1,0 +1,34 @@
+{
+  "meta_title": "تسجيل الدخول | أوراداش إنتربرايز",
+  "title": "مرحباً بعودتك",
+  "username_label": "اسم المستخدم",
+  "username_placeholder": "أدخل اسم المستخدم",
+  "password_label": "كلمة المرور",
+  "password_placeholder": "••••••••",
+  "remember_me": "تذكرني لمدة 30 يوماً",
+  "forgot_password": "هل نسيت كلمة المرور؟",
+  "submit_button": "تسجيل الدخول",
+  "signing_in": "جاري تسجيل الدخول...",
+  "success_message": "تم تسجيل الدخول بنجاح.",
+  "redirect_message": "جاري التوجيه إلى لوحة التحكم...",
+  "success": {
+    "login_success": "تم تسجيل الدخول بنجاح.",
+    "logged_in": "أهلاً بك مجدداً."
+  },
+  "errors": {
+    "invalid_credentials": "اسم المستخدم أو كلمة المرور غير صحيحة.",
+    "user_not_found": "لا يوجد حساب مسجل باسم المستخدم هذا.",
+    "account_locked": "تم قفل حسابك. يرجى التواصل مع فريق الدعم.",
+    "account_banned": "تم تعليق هذا الحساب. يرجى التواصل مع فريق الدعم.",
+    "account_inactive": "هذا الحساب معطل حالياً. يرجى التواصل مع فريق الدعم.",
+    "rate_limit_exceeded": "لقد تجاوزت عدد المحاولات المسموح بها. يرجى المحاولة مرة أخرى لاحقاً.",
+    "username_required": "اسم المستخدم مطلوب.",
+    "password_required": "كلمة المرور مطلوبة.",
+    "too_long": "النص طويل جداً."
+  },
+  "validation": {
+    "username_required": "اسم المستخدم مطلوب.",
+    "password_required": "كلمة المرور مطلوبة.",
+    "too_long": "النص طويل جداً."
+  }
+}

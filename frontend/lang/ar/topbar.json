@@ -1,0 +1,44 @@
+{
+  "toggleTheme": "تبديل المظهر",
+  "switchToArabic": "التبديل إلى العربية",
+  "switchToEnglish": "التبديل إلى الإنجليزية",
+  "lightMode": "المظهر الفاتح",
+  "darkMode": "المظهر الداكن",
+  "language": "اللغة",
+  "guestUser": "مستخدم زائر",
+  "guestEmail": "guest@example.com",
+  "editProfile": "تعديل الملف الشخصي",
+  "signOut": "تسجيل الخروج",
+  "expandSidebar": "توسيع الشريط الجانبي",
+  "collapseSidebar": "طي الشريط الجانبي",
+  "enterprise": "نسخة المؤسسات",
+  "toggleLanguage": "تبديل اللغة",
+  "openMenu": "فتح القائمة",
+  "arabic": "العربية",
+  "english": "الإنجليزية",
+  "notifications": "الإشعارات",
+  "noNotifications": "لا توجد إشعارات جديدة",
+  "markAllRead": "تحديد الكل كمقروء",
+  "events": {
+    "NEW_ARTICLE_COMMENT": {
+      "title": "تعليق جديد",
+      "body": "أضاف {{userName}} تعليقاً جديداً على مقالة \"{{articleTitle}}\". يرجى الاطلاع عليه."
+    },
+    "NEW_INBOX_MESSAGE": {
+      "title": "رسالة جديدة",
+      "body": "وصلتك رسالة جديدة من {{userName}} في صندوق الوارد."
+    }
+  },
+  "newNotification": "إشعار جديد 🔔",
+  "checkNotifications": "لديك إشعار جديد لم تقرأه بعد، تفقد مركز الإشعارات.",
+  "view": "عرض",
+  "success": {
+    "notifications_fetched": "تم جلب الإشعارات بنجاح.",
+    "notification_marked_read": "تم تحديد الإشعار كمقروء.",
+    "all_notifications_marked_read": "تم تحديد جميع الإشعارات كمقروءة."
+  },
+  "errors": {
+    "fetch_failed": "فشل جلب الإشعارات.",
+    "mark_read_failed": "فشل تحديث حالة الإشعار."
+  }
+}
