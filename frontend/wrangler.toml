@@ -7,9 +7,5 @@ compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 binding = "WORKER_SELF_REFERENCE"
 service = "auradash-dashboard"
 
-[[r2_buckets]]
-binding = "NEXT_INC_CACHE_R2_BUCKET"
-bucket_name = "auradash-dashboard-opennext-cache"
-
 [images]
 binding = "IMAGES"
