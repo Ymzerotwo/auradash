@@ -581,26 +581,34 @@ npm run test:coverage
 <tr>
 <td align="center" width="50%">
 
-#### ⚡ Deploy Backend (Cloudflare Workers)
+#### ⚡ Deploy Backend (Cloudflare Workers / Hono API)
 
-Deploy the Hono API & D1 database to Cloudflare Edge:
+Deploy the Hono API & D1 database to Cloudflare Edge in one click:
 
 <br/>
 
 [![Deploy Backend to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Ymzerotwo/auradash)
+
+<br/>
+
+**Note:** After deploying, go to your Cloudflare Dashboard ➔ **Settings ➔ Variables** to add your `AURADASH_MASTER_SECRET`. The backend will automatically build and configure itself.
 
 </td>
 <td align="center" width="50%">
 
 #### 🎨 Deploy Frontend (Vercel & Cloudflare Pages)
 
-Deploy the Next.js frontend application to Vercel or Cloudflare Pages:
+Deploy the Next.js frontend application in one click:
 
 <br/>
 
 [![Deploy Frontend with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FYmzerotwo%2Fauradash&root-directory=frontend&env=NEXT_PUBLIC_API_URL&envDescription=AuraDash%20Backend%20API%20URL%20(e.g.%20https%3A%2F%2Fauradash-backend.workers.dev%2Fapi))
-&nbsp;&nbsp;
+<br/><br/>
 [![Deploy Frontend to Cloudflare Pages](https://img.shields.io/badge/Deploy_to-Cloudflare_Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/pages)
+
+<br/>
+
+**Note:** Vercel will automatically set the root directory to `frontend`.
 
 </td>
 </tr>
