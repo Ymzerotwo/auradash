@@ -6,7 +6,7 @@ import { useTheme } from '@/app/components/ThemeProvider';
 import { ShieldAlert, ArrowLeft, Moon, Sun, Languages } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import logoImg from '@/app/icon.png';
+import logoImg from '@/public/icon.png';
 
 export default function BannedPage() {
   const { t, dir, locale, setLocale } = useTranslation();

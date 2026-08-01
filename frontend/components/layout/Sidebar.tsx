@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from "react"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import logoImg from "@/app/icon.png";
+import logoImg from "@/public/icon.png";
 import { ChevronRight, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getNavigation, type NavItem } from "@/lib/navigation";

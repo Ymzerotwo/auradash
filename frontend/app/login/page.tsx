@@ -9,7 +9,7 @@ import { useLoginForm } from '@/lib/hooks/useAuth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import logoImg from '@/app/icon.png';
+import logoImg from '@/public/icon.png';
 
 export default function LoginPage() {
   const { t, dir, locale, setLocale } = useTranslation();
