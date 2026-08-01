@@ -10,9 +10,6 @@ import { cookies } from "next/headers";
 import { getDictionary, Locale } from "@/lib/i18n/dictionaries";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { QueryProvider } from "@/lib/providers/QueryProvider";
-
-export const runtime = 'edge';
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],

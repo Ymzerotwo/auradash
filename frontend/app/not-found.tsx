@@ -4,9 +4,6 @@ import { ArrowLeft, SearchX } from "lucide-react";
 import { cookies } from "next/headers";
 import arCommon from "@/lang/ar/common.json";
 import enCommon from "@/lang/en/common.json";
-
-export const runtime = 'edge';
-
 export default async function NotFound() {
   const cookieStore = await cookies();
   const localeCookie = cookieStore.get("NEXT_LOCALE")?.value;
