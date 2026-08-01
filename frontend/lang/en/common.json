@@ -51,7 +51,10 @@
     "back_to_home": "Back to Home",
     "banned_title": "Account Banned",
     "banned_desc": "Your account has been suspended or banned due to a violation of the terms of use. Please contact the administration if you believe this is an error.",
-    "back_to_login": "Back to Sign In"
+    "back_to_login": "Back to Sign In",
+    "global_error_title": "An Unexpected Error Occurred",
+    "global_error_desc": "An unexpected error occurred in the system. Please try again.",
+    "retry": "Retry"
   },
   "status": {
     "open": "Open",
