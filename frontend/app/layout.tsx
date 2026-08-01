@@ -35,6 +35,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "AuraDash",
   description: "AuraDash",
+  icons: {
+    icon: "/icon.png",
+  },
   robots: {
     index: false,
     follow: false,
