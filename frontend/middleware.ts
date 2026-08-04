@@ -40,3 +40,6 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
+
+// Fix for OpenNext components.ComponentMod.handler error
+export const handler = middleware;
