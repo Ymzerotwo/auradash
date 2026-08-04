@@ -29,7 +29,7 @@ export default function middleware(request: NextRequest) {
 
 // Ensure the middleware only runs on page routes, not on static files or Next.js internals
 export const config = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
