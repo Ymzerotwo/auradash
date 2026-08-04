@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
-// @ts-nocheck
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   output: 'standalone',
   async headers() {
     return [
@@ -42,9 +39,6 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { dev, isServer }) => {
     return config;
-  },
-  turbopack: {
-    root: __dirname,
   }
 };
 

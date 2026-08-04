@@ -6,8 +6,8 @@
 <p align="center"><strong>A Full-Stack Business Management Dashboard for Service-Based Businesses</strong></p>
 
 <p align="center">
-  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-^16.2.4-black?logo=next.js" alt="Next.js" /></a>
-  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-^19.2.4-blue?logo=react" alt="React" /></a>
+  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-14.2.15-black?logo=next.js" alt="Next.js" /></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18.3.1-blue?logo=react" alt="React" /></a>
   <a href="https://hono.dev/"><img src="https://img.shields.io/badge/Hono-^4.12.15-orange?logo=hono" alt="Hono" /></a>
   <a href="https://workers.cloudflare.com/"><img src="https://img.shields.io/badge/Cloudflare_Workers-^6.3.0-F38020?logo=cloudflare" alt="Cloudflare" /></a>
   <a href="https://zustand-demo.pmnd.rs/"><img src="https://img.shields.io/badge/Zustand-^5.0.12-yellow" alt="Zustand" /></a>
@@ -63,7 +63,7 @@ For complete documentation, visit our [official documentation site](https://aura
 ## 🛠️ Real Tech Stack
 
 ### Frontend (`auradash-dashboard` v1.0.0)
-- **Framework:** Next.js `^16.2.4`, React `^19.2.4`
+- **Framework:** Next.js `14.2.15`, React `^18.3.1`
 - **State Management:** Zustand `^5.0.12`, React Query `^5.100.8`
 - **UI Components:** Shadcn UI `^4.5.0`, Base UI `^1.4.1`, Tailwind CSS `^4`, Next Themes `^0.4.6`
 - **Validation:** Zod `^4.4.1`
