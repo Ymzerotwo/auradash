@@ -230,7 +230,7 @@
         "responses": {
           "200": { "description": "Message submitted successfully" },
           "400": { "description": "Validation error or service not found" },
-          "429": { "description": "Rate limit exceeded" }
+          "429": { "description": "Rate limit exceeded (RATE_LIMIT_EXCEEDED)" }
         }
       }
     },
@@ -265,7 +265,7 @@
     "/settings": {
       "get": {
         "summary": "Get global business identity & settings",
-        "responses": { "200": { "description": "Settings fetched successfully" } }
+        "responses": { "200": { "description": "Settings fetched successfully" }, "429": { "description": "Rate limit exceeded (RATE_LIMIT_EXCEEDED)" } }
       }
     }
   },

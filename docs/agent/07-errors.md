@@ -168,15 +168,15 @@ These errors occur before reaching business controllers and are enforced by the 
 
 ### ⚡ 4. Rate Limiting & Server Errors (429 / 500)
 
-#### `TOO_MANY_REQUESTS` (HTTP 429)
+#### `RATE_LIMIT_EXCEEDED` (HTTP 429)
 - **Definition**: The connecting IP address exceeded Cloudflare Workers rate limits (`PUBLIC_LIMITER` or `PUBLIC_SUBMISSION_LIMITER`).
 - **Cause**: Automated bot behavior or rapid repeated form submissions.
 - **Resolution**: Wait 60 seconds before retrying requests.
 ```json
 {
   "success": false,
-  "code": "TOO_MANY_REQUESTS",
-  "message": "Rate limit exceeded. Please wait before trying again."
+  "code": "RATE_LIMIT_EXCEEDED",
+  "message": "Too many requests, please try again later."
 }
 ```
 
@@ -207,5 +207,5 @@ These errors occur before reaching business controllers and are enforced by the 
 | `CATEGORY_NOT_FOUND` | 404 | Content | Category slug not found |
 | `SERVICE_NOT_FOUND` | 400 / 404 | Content | Service slug or ID not found/inactive |
 | `MISSING_FINANCIAL_CONTRACT` | 400 | Business | Service missing required pricing details |
-| `TOO_MANY_REQUESTS` | 429 | Protection | Rate limit quota exceeded |
+| `RATE_LIMIT_EXCEEDED` | 429 | Protection | Rate limit quota exceeded |
 | `INTERNAL_SERVER_ERROR` | 500 | System | Unexpected edge server exception |

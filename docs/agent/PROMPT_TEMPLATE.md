@@ -62,7 +62,7 @@ Strict Architectural Requirements:
 3. Implement smart dynamic SEO metadata generation on Detail pages (`/articles/[slug]` and `/services/[slug]`) using `seo_data` fields with proper fallbacks.
 4. Respect `is_indexable` flag (inject `noindex, nofollow` when `is_indexable === false`).
 5. Render `meta_data` dynamic custom fields dynamically.
-6. Handle `429 TOO_MANY_REQUESTS` rate limiting gracefully with user notification and button disabling.
+6. Handle `429 RATE_LIMIT_EXCEEDED` rate limiting gracefully with user notification and button disabling.
 7. Build responsive UI views for Home, Services Catalog, Article Blog, Threaded Comments, and Booking Modal.
 ```
 

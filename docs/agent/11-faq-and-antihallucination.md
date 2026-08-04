@@ -63,7 +63,7 @@
 ## ❓ Question 8: What should I do if the API returns a `429 Too Many Requests` status code?
 > **❌ DO NOT RETRY IMMEDIATELY IN A LOOP.**  
 > - Public submission endpoints enforce strict rate limits (`PUBLIC_SUBMISSION_LIMITER`).  
-> - Client apps must handle `429` gracefully by displaying a cooldown message (e.g., *"Please wait a moment before trying again"*) and using exponential backoff.
+> - Client apps must handle `429 RATE_LIMIT_EXCEEDED` gracefully by displaying a cooldown message (e.g., *"Please wait a moment before trying again"*) and using exponential backoff.
 
 ---
 
@@ -82,17 +82,17 @@
 ---
 
 ## ❓ Question 11: How does pagination work? Can I request `limit=9999` to fetch all articles at once?
-> **❌ NO. USE PAGINATION RESPONSIBLY.**  
-> - Request reasonable page sizes (`limit=10` or `20`, maximum server limit is 50).  
+> **❌ NO. USE PAGINATION RESPONSIBLY (HARD CAP: 100).**  
+> - Request reasonable page sizes (default `12` or `20`; backend enforces a strict hard cap `MAX_LIMIT = 100`).  
 > - Pass `page` and `limit` parameters (e.g., `GET /api/public/articles?page=1&limit=20`).  
-> - Read pagination metadata from `data.pagination` (`total`, `page`, `limit`, `total_pages`, `has_next_page`).
+> - Read exact pagination metadata from `data.pagination`: `{ total, page, limit, totalPages }`.
 
 ---
 
 ## ❓ Question 12: Are draft or unpublished articles returned by the Public API?
 > **❌ NO.**  
-> - Public article endpoints return **ONLY** published articles (`status = 'published'` and `published_at <= CURRENT_TIMESTAMP`).  
-> - Drafts, scheduled, or archived articles are filtered server-side and only accessible inside the Admin Dashboard.
+> - Public article endpoints query **ONLY** active, published articles (`is_active = 1 AND published_at IS NOT NULL AND published_at <= CURRENT_TIMESTAMP`).  
+> - Drafts, scheduled, or inactive articles are filtered server-side and only accessible inside the Admin Dashboard.
 
 ---
 
@@ -124,16 +124,17 @@
 
 ---
 
-## ❓ Question 17: How are unapproved article comments handled?
+## ❓ Question 17: How are unapproved article comments handled, and what is the endpoint path?
 > **✅ UNAPPROVED COMMENTS ARE HIDDEN FROM THE PUBLIC API.**  
 > - Submitted comments start with `status: 'pending'` or `'spam'`.  
-> - `GET /api/public/articles/:id/comments` returns **ONLY** comments with `status: 'approved'`.
+> - Endpoint path: `GET /api/public/articles/:slug/comments` (uses article `:slug`).  
+> - Returns **ONLY** comments with `status: 'approved'`.
 
 ---
 
 ## ❓ Question 18: Can public users upload media or files directly to Cloudflare R2 via the Public API?
 > **❌ NO.**  
-> - Media upload (`POST /api/upload`) is strictly restricted to authenticated Admin Dashboard sessions.  
+> - Media upload (`POST /api/upload`) is an internal admin endpoint strictly restricted to authenticated Admin Dashboard sessions.  
 > - Public users cannot upload files to R2 storage.
 
 ---
@@ -162,6 +163,6 @@
 | Concatenate image URL paths | ❌ No | Image URLs are already full absolute HTTPS URLs |
 | Retry 429 errors in a loop | ❌ No | Show cooldown UI and use exponential backoff |
 | Use Test Key in production | ❌ No | Production keys for live domains, Test keys for local dev |
-| Request `limit=9999` pagination | ❌ No | Use reasonable limits (6–20) with pagination metadata |
+| Request `limit=9999` pagination | ❌ No | Use reasonable limits (6–20) with `{ total, page, limit, totalPages }` |
 | Send cookies/CSRF to Public API | ❌ No | Public API is 100% stateless; use `x-api-key` only |
-| Upload media via Public API | ❌ No | Media uploads require Admin Dashboard session |
+| Upload media via Public API | ❌ No | Media uploads require Admin Dashboard session (`POST /api/upload`) |

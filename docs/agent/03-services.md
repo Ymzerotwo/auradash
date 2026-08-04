@@ -187,5 +187,5 @@ Returns a **paginated** list of services under a specific category.
 | `403` | `DOMAIN_MISMATCH` | Request `Origin` does not match key domain binding | Re-issue key bound to correct domain |
 | `404` | `SERVICE_NOT_FOUND` | Requested service slug does not exist or is inactive | Redirect user to 404 page |
 | `404` | `CATEGORY_NOT_FOUND` | Requested service category slug does not exist | Redirect user to 404 page |
-| `429` | `TOO_MANY_REQUESTS` | Exceeded rate limit (`PUBLIC_LIMITER`) | Wait 60s before retrying |
+| `429` | `RATE_LIMIT_EXCEEDED` | Exceeded rate limit (`PUBLIC_LIMITER`) | Wait 60s before retrying |
 | `500` | `INTERNAL_SERVER_ERROR` | Unexpected server execution error | Retry or report issue |

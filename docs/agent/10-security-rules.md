@@ -52,7 +52,7 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 
 - **Public read endpoints** (`GET /articles`, `GET /services`, `GET /settings`) are rate-limited at **25 requests per 60 seconds** per IP (`PUBLIC_LIMITER`).
 - **Submission endpoints** (`POST /inbox`, `POST /comments`) are rate-limited at **2 requests per 60 seconds** per IP (`PUBLIC_SUBMISSION_LIMITER`).
-- **ALWAYS handle `429 TOO_MANY_REQUESTS`** responses gracefully — display a user-friendly message (e.g. "Please wait before trying again") and implement exponential backoff or a cooldown timer.
+- **ALWAYS handle `429 RATE_LIMIT_EXCEEDED`** responses gracefully — display a user-friendly message (e.g. "Please wait before trying again") and implement exponential backoff or a cooldown timer.
 - **NEVER implement retry loops** that ignore 429 responses — this will result in extended IP blocking.
 - Submission endpoints apply a **random tarpit delay (500ms – 1.5s)** — do not treat slow POST responses as errors.
 

@@ -33,26 +33,30 @@ Origin: https://example.com
   "message": "Global settings retrieved",
   "data": {
     "settings": {
-      "site_name": "Aura Studio",
-      "site_tagline": "Creating Unforgettable Moments",
-      "site_description": "Professional photography and videography services.",
-      "logo_url": "https://cdn.example.com/logo.png",
-      "favicon_url": "https://cdn.example.com/favicon.ico",
-      "contact_email": "hello@example.com",
-      "contact_phone": "+15550000000",
-      "contact_address": "New York, NY",
-      "social_links": {
+      "siteName": "Aura Studio",
+      "logoUrl": "https://cdn.example.com/logo.png",
+      "contactInfo": {
+        "email": "hello@example.com",
+        "phone": "+15550000000",
+        "address": "New York, NY"
+      },
+      "socialMedia": {
         "instagram": "https://instagram.com/aurastudio",
         "facebook": "https://facebook.com/aurastudio",
         "twitter": "https://twitter.com/aurastudio",
         "youtube": "https://www.youtube.com/@Ym_zerotwo",
         "linkedin": "https://linkedin.com/company/aurastudio"
       },
-      "whatsapp_number": "+15550000000"
+      "locations": [],
+      "workingHours": {},
+      "currency": "USD",
+      "timezone": "UTC"
     }
   }
 }
 ```
+
+> ⚠️ **Note for AI Agents**: The `currency` and `timezone` fields are returned by the backend but are **NOT yet implemented or used** in any client-facing feature. AI Agents **MUST ignore these fields** and should not build any UI or logic around them until further notice.
 
 ---
 
@@ -60,17 +64,14 @@ Origin: https://example.com
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `site_name` | `string` | Website / Business name |
-| `site_tagline` | `string` | Short slogan or tagline |
-| `site_description` | `string` | Brief site description |
-| `logo_url` | `string (URL)` | Brand logo URL |
-| `favicon_url` | `string (URL)` | Favicon URL |
-| `contact_email` | `string` | Main contact email |
-| `contact_phone` | `string` | Main contact phone number |
-| `contact_address` | `string` | Physical business address |
-| `social_links` | `object` | Social media profile URLs |
-| `whatsapp_number` | `string` | WhatsApp contact number |
-| `locale` | `string` | Default locale string |
+| `siteName` | `string` | Website / Business name |
+| `logoUrl` | `string (URL)` \| `null` | Brand logo URL |
+| `contactInfo` | `object` | Contact information object (email, phone, address) |
+| `socialMedia` | `object` | Social media profile URLs |
+| `locations` | `array` | Business locations |
+| `workingHours` | `object` | Business working hours |
+| `currency` | `string` | ⚠️ **Not yet developed** — Default currency code (e.g. `"USD"`). Reserved for future use. |
+| `timezone` | `string` | ⚠️ **Not yet developed** — Default timezone (e.g. `"UTC"`). Reserved for future use. |
 
 ---
 

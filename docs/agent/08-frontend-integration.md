@@ -76,8 +76,8 @@ Decouple HTTP calls into feature-based service modules:
 - When a user or crawler accesses a Detail page (`/articles/:slug` or `/services/:slug`), the client fetches the resource payload.
 - The UI layer evaluates `seo_data` object with fallback logic:
   1. `Title`: `seo_data.meta_title` ➔ Fallback: Resource `title`/`name`.
-  2. `Description`: `seo_data.meta_description` ➔ Fallback: Resource `excerpt` (truncated 155 chars).
-  3. `Social Image`: `seo_data.og_image` ➔ Fallback: Resource `preview_image_url` / site logo.
+  2. `Description`: `seo_data.meta_description` ➔ Fallback: Article `excerpt` (truncated 155 chars) or Service description from `meta_data` (item with `type: "text-description"`).
+  3. `Social Image`: `seo_data.og_image` ➔ Fallback: Article `preview_image_url` / Service image from `meta_data` (item with `type: "photo"`) / site logo.
   4. `Robots`: If `seo_data.is_indexable === false` ➔ Inject `noindex, nofollow`.
 
 ### B. Public Service Booking Submission Flow

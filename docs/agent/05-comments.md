@@ -90,5 +90,5 @@ Origin: https://example.com
 | `400` | `VALIDATION_ERROR` | Missing or invalid fields (e.g. empty content, invalid email) | Show field error in form UI |
 | `401` | `API_KEY_MISSING` / `INVALID_API_KEY` | Missing or invalid `x-api-key` header | Check authentication header |
 | `404` | `ARTICLE_NOT_FOUND` | `article_id` does not reference an active, published article | Verify target article ID |
-| `429` | `TOO_MANY_REQUESTS` | Rate limit exceeded (`PUBLIC_SUBMISSION_LIMITER`) | Show "Please wait before commenting again" |
+| `429` | `RATE_LIMIT_EXCEEDED` | Rate limit exceeded (`PUBLIC_SUBMISSION_LIMITER`) | Show "Please wait before commenting again" |
 | `500` | `INTERNAL_SERVER_ERROR` | Unexpected backend server exception | Show generic retry message |

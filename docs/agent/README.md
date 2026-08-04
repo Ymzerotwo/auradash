@@ -134,7 +134,23 @@ interface ApiResponse<T = any> {
 
 ## Rate Limiting & Anti-Spam
 
-Submission endpoints (`POST /comments`, `POST /inbox`) are protected by a dedicated rate limiter (`PUBLIC_SUBMISSION_LIMITER`). Exceeding the rate limit returns `429 Too Many Requests`. Submissions also feature a random tarpit delay (500ms – 1.5s) to discourage automated bots.
+Submission endpoints (`POST /comments`, `POST /inbox`) are protected by a dedicated rate limiter (`PUBLIC_SUBMISSION_LIMITER`). Exceeding the rate limit returns `429 RATE_LIMIT_EXCEEDED`. Submissions also feature a random tarpit delay (500ms – 1.5s) to discourage automated bots.
+
+---
+
+## CORS (Cross-Origin Resource Sharing)
+
+Public API endpoints are configured with **open CORS** to allow requests from any origin:
+
+| Header | Value |
+|--------|-------|
+| `Access-Control-Allow-Origin` | `*` |
+| `Access-Control-Allow-Methods` | `GET, POST, HEAD, OPTIONS` |
+| `Access-Control-Allow-Headers` | `Content-Type, x-api-key` |
+| `Access-Control-Max-Age` | `86400` (24 hours) |
+| `Credentials` | `false` (cookies are NOT sent with public API requests) |
+
+Browsers automatically handle preflight `OPTIONS` requests. No special CORS configuration is needed in your client application.
 
 ---
 

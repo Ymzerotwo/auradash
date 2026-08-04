@@ -39,12 +39,12 @@ When generating pages for public web frontends, client applications map `seo_dat
 
 2. **Description Mapping**:
    - Primary: `seo_data.meta_description`
-   - Fallback: Article or Service `excerpt`
+   - Fallback: Article `excerpt` (truncated 155 chars) or Service description from `meta_data` (finding an item with `type: "text-description"`)
    - HTML Tag: `<meta name="description" content="{meta_description}" />` and `<meta property="og:description" content="{meta_description}" />`
 
 3. **Social Image Sharing (Open Graph / Twitter Card)**:
    - Primary: `seo_data.og_image`
-   - Fallback: `preview_image_url` or `cover_image_url`
+   - Fallback: Article `preview_image_url` or Service image from `meta_data` (finding an item with `type: "photo"`)
    - HTML Tag: `<meta property="og:image" content="{og_image}" />` and `<meta name="twitter:image" content="{og_image}" />`
 
 4. **Canonical URL (Duplicate Content Prevention)**:

@@ -18,12 +18,12 @@ The **Articles API** allows public visitors and client frontends to query publis
 
 Articles contain a flexible `meta_data` array configured by administrators for additional rich details (e.g. key takeaways, bullet point lists, embedded videos, downloadable files, custom CTA links). See [09-field-schemas.md](./09-field-schemas.md) for full field schemas and React rendering components.
 
-### 🔢 Display Priority & Custom Sorting (`sort_order`)
+### 🔢 Display Priority & Custom Sorting (`sort_order`) — Categories Only
 
-Every article includes an integer `sort_order` field (default `0`):
-- **`sort_order > 0` (Pinned Priority)**: Explicit position set by an administrator. Lower numbers indicate higher visual priority (`sort_order = 1` appears before `sort_order = 2`).
-- **`sort_order = 0` (Default Unpinned)**: Standard items with no custom priority, automatically falling back to publication date ordering (`published_at DESC`).
-- **Pre-Sorted Edge Output**: The Public API delivers articles pre-sorted by the backend (`sort_order > 0` first in ascending order, then unpinned items by date). Frontend clients can render the returned array directly without needing client-side sorting algorithms.
+Article **Categories** include an integer `sort_order` field (default `0`) that controls their display order. Articles themselves are sorted exclusively by publication date (`published_at DESC`).
+- **Category `sort_order > 0` (Pinned Priority)**: Explicit position set by an administrator. Lower numbers indicate higher visual priority (`sort_order = 1` appears before `sort_order = 2`).
+- **Category `sort_order = 0` (Default Unpinned)**: Standard categories with no custom priority, falling back to creation date ordering.
+- **Article Ordering**: Articles within any listing are always sorted by `published_at DESC` (newest first). There is no article-level `sort_order` in the Public API.
 
 ### 🤖 MANDATORY AI IMPLEMENTATION DIRECTIVE: Smart Dynamic SEO & Open Graph Integration
 
@@ -52,7 +52,7 @@ Returns a **paginated** list of published articles.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `page` | `integer` | `1` | Page number (1-indexed) |
-| `limit` | `integer` | `12` | Number of items per page |
+| `limit` | `integer` | `12` | Number of items per page (server caps hard limit at `100`) |
 | `article_category_id` | `string (UUID)` | — | Filter by specific category ID |
 
 ---
@@ -203,5 +203,5 @@ Returns a **paginated** list of articles published within a specific category, a
 | `403` | `DOMAIN_MISMATCH` | Request `Origin` does not match key domain binding | Re-issue key bound to correct domain |
 | `404` | `ARTICLE_NOT_FOUND` | Requested article slug does not exist or is unpublished | Redirect user to 404 page |
 | `404` | `CATEGORY_NOT_FOUND` | Requested category slug does not exist | Redirect user to 404 page |
-| `429` | `TOO_MANY_REQUESTS` | Exceeded rate limit (`PUBLIC_LIMITER`) | Wait 60s before retrying |
+| `429` | `RATE_LIMIT_EXCEEDED` | Exceeded rate limit (`PUBLIC_LIMITER`) | Wait 60s before retrying |
 | `500` | `INTERNAL_SERVER_ERROR` | Unexpected server execution error | Retry or report issue |
