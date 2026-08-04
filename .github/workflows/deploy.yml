@@ -22,11 +22,12 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm install
+        run: npm ci
 
       - name: Build OpenNext
         working-directory: ./frontend
         env:
+          NODE_ENV: 'production'
           NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || 'https://test-back-aura.ymzerotwo.com/api' }}
           NEXT_PRIVATE_MINIMAL_MODE: '1'
         run: |

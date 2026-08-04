@@ -8,7 +8,6 @@ node_modules/
 .dev.vars
 .dev.vars.local
 backend/wrangler.jsonc
-backend/package-lock.json
 # Next.js & Build outputs
 frontend/.next/
 frontend/out/
@@ -17,7 +16,7 @@ build/
 coverage/
 *.tsbuildinfo
 next-env.d.ts
-frontend/package-lock.json
+
 # Environment variables & secrets
 .env
 .env.*
