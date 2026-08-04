@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install dependencies
         working-directory: ./frontend
@@ -30,7 +30,9 @@ jobs:
 
       - name: Build OpenNext Worker
         working-directory: ./frontend
-        run: npx @opennextjs/cloudflare build
+        run: |
+          npx @opennextjs/cloudflare build
+          node scripts/cf-setup.js
 
       - name: Deploy to Cloudflare Pages
         working-directory: ./frontend
