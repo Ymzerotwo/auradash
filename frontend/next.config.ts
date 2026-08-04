@@ -49,7 +49,3 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-// Force Next.js dev server to reload and clear Turbopack cache for middleware
-if (process.env.NODE_ENV !== 'production') {
-  import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
-}
