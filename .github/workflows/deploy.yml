@@ -31,7 +31,7 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || 'https://test-back-aura.ymzerotwo.com/api' }}
           NEXT_PRIVATE_MINIMAL_MODE: '1'
         run: |
-          npx opennextjs-cloudflare build
+          npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion
           node scripts/cf-setup.js
 
       - name: Deploy to Cloudflare Pages

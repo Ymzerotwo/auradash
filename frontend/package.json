@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "opennextjs-cloudflare build && node scripts/cf-setup.js && wrangler pages deploy .open-next --project-name auradash",
-    "deploy:cloudflare": "opennextjs-cloudflare build && node scripts/cf-setup.js && wrangler pages deploy .open-next --project-name auradash",
+    "deploy": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && node scripts/cf-setup.js && wrangler pages deploy .open-next --project-name auradash",
+    "deploy:cloudflare": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && node scripts/cf-setup.js && wrangler pages deploy .open-next --project-name auradash",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
