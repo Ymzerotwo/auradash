@@ -23,7 +23,7 @@
   "paths": {
     "/articles": {
       "get": {
-        "summary": "Get paginated articles",
+        "summary": "Get paginated standalone articles",
         "parameters": [
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
           { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 12 } },
@@ -37,7 +37,7 @@
     },
     "/articles/all": {
       "get": {
-        "summary": "Get all articles including category-linked",
+        "summary": "Get all published articles including category-linked",
         "parameters": [
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
           { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 12 } }
@@ -47,8 +47,14 @@
     },
     "/articles/count": {
       "get": {
-        "summary": "Get total count of published articles",
-        "responses": { "200": { "description": "Article count retrieved" } }
+        "summary": "Get total count of standalone published articles",
+        "responses": { "200": { "description": "Standalone articles count retrieved" } }
+      }
+    },
+    "/articles/count/all": {
+      "get": {
+        "summary": "Get total count of all published articles",
+        "responses": { "200": { "description": "Total articles count retrieved" } }
       }
     },
     "/articles/{slug}": {
@@ -84,6 +90,12 @@
         "responses": { "200": { "description": "Article categories retrieved" } }
       }
     },
+    "/article-categories/count": {
+      "get": {
+        "summary": "Get count of active article categories",
+        "responses": { "200": { "description": "Categories count retrieved" } }
+      }
+    },
     "/article-categories/{slug}": {
       "get": {
         "summary": "Get article category detail by slug",
@@ -102,6 +114,15 @@
           { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 12 } }
         ],
         "responses": { "200": { "description": "Category articles retrieved" } }
+      }
+    },
+    "/article-categories/{slug}/articles/count": {
+      "get": {
+        "summary": "Get article count under specific category",
+        "parameters": [
+          { "name": "slug", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Category article count retrieved" } }
       }
     },
     "/services": {

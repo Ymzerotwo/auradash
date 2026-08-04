@@ -161,7 +161,7 @@ function AvatarDropdown({ isMobile }: AvatarDropdownProps) {
         onClick={() => setOpen((prev) => !prev)}
         disabled={!isHydrated}
         className={cn(
-          "w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white cursor-pointer border-2 border-transparent transition-all duration-200 shrink-0 hover:border-primary hover:scale-105 active:scale-95",
+          "w-9 h-9 rounded-full overflow-hidden flex items-center justify-center text-xs font-bold text-white cursor-pointer border-2 border-transparent transition-all duration-150 shrink-0 hover:border-primary hover:scale-105 active:scale-95",
           !isHydrated ? "bg-surface-overlay animate-pulse cursor-default" : "bg-gradient-to-br from-primary-400 to-accent-400",
           open && "border-primary ring-2 ring-primary/20"
         )}

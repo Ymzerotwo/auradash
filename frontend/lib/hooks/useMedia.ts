@@ -301,7 +301,7 @@ export function useMediaPickerState({
 
   const { data: paginatedData, isLoading } = useMediaList({
     page: 1,
-    limit: 50,
+    limit: 20,
     search: debouncedSearch || undefined,
     mime_type: activeMimeFilter,
     folder: folder || undefined,

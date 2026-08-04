@@ -48,7 +48,7 @@ Origin: https://example.com
         "youtube": "https://www.youtube.com/@Ym_zerotwo",
         "linkedin": "https://linkedin.com/company/aurastudio"
       },
-      "whatsapp_number": "+15550000000",
+      "whatsapp_number": "+15550000000"
     }
   }
 }

@@ -367,7 +367,7 @@ export function Sidebar({ collapsed, onCollapsedChange, suppressTransition }: Si
 
   return (
     <aside
-      className="h-screen flex flex-col bg-surface-raised border-e border-border-default overflow-hidden relative [html[data-theme=light]_&]:bg-white"
+      className="h-full flex flex-col bg-surface-raised border-e border-border-default overflow-hidden relative [html[data-theme=light]_&]:bg-white"
       style={{
         width: collapsed
           ? "var(--sidebar-width-collapsed)"

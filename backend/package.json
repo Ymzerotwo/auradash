@@ -1,18 +1,17 @@
 {
   "name": "auradash-backend",
+  "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "db:init": "npx tsx src/db/init_db.ts",
     "deploy": "wrangler deploy --minify",
+    "db:init": "npx tsx src/db/init_db.ts",
+    "db:remote": "npx tsx src/db/init_db.ts --remote",
+    "db:reset": "npx tsx src/db/init_db.ts --reset-remote",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:controllers": "vitest run tests/controllers",
-    "test:services": "vitest run tests/services",
-    "test:middleware": "vitest run tests/middleware",
-    "test:validators": "vitest run tests/validators",
-    "test:utils": "vitest run tests/utils",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {

@@ -2,9 +2,8 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { logger } from '../utils/logger';
+import readline from 'readline';
 
-// Resolve directory path for ESM in TS
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -22,46 +21,139 @@ const sqlFiles = [
   'web-settings.sql'
 ];
 
-const REQ_ID = 'INIT_DB';
-
-logger.info(REQ_ID, 'Starting AuraDash D1 local database initialization...');
-logger.info(REQ_ID, `Found ${sqlFiles.length} schema files to execute.`);
-
-let successCount = 0;
-let errorCount = 0;
-
-sqlFiles.forEach((file) => {
-  const filePath = path.join(dbDir, file);
-  
-  if (fs.existsSync(filePath)) {
-    logger.info(REQ_ID, `Executing schema file: ${file}...`);
-    try {
-      execSync(`npx wrangler d1 execute auradash --local --file="${filePath}"`, { stdio: 'pipe' });
-      logger.info(REQ_ID, `Successfully applied ${file}`);
-      successCount++;
-    } catch (error: any) {
-      logger.error(REQ_ID, `Failed to execute ${file}.`, error);
-      
-      if (error.stdout) {
-        logger.error(REQ_ID, `Wrangler Stdout: ${error.stdout.toString()}`);
-      }
-      if (error.stderr) {
-        logger.error(REQ_ID, `Wrangler Stderr: ${error.stderr.toString()}`);
-      }
-      
-      errorCount++;
-      logger.error(REQ_ID, 'Aborting initialization due to critical schema error.');
-      process.exit(1);
-    }
-  } else {
-    logger.warn(REQ_ID, `Schema file not found: ${filePath}. Skipping...`);
-    errorCount++;
+function runCommand(cmd: string, description: string) {
+  console.log(`\n⏳ ${description}...`);
+  try {
+    execSync(cmd, { stdio: 'inherit' });
+    console.log(`✅ Completed: ${description}`);
+    return true;
+  } catch (error: any) {
+    console.error(`❌ Failed: ${description}`);
+    return false;
   }
-});
-
-logger.info(REQ_ID, '----------------------------------------');
-if (errorCount === 0) {
-  logger.info(REQ_ID, `AuraDash D1 local database successfully initialized! 🎉 (${successCount}/${sqlFiles.length} files)`);
-} else {
-  logger.warn(REQ_ID, `Initialization finished with issues. Success: ${successCount}, Missing/Failed: ${errorCount}`);
 }
+
+function dropTables(isRemote: boolean) {
+  const target = isRemote ? '--remote' : '--local';
+  const modeName = isRemote ? 'Cloudflare D1 (REMOTE)' : 'Local D1';
+  const dropFilePath = path.join(dbDir, 'drop_all.sql');
+
+  if (!fs.existsSync(dropFilePath)) {
+    console.error(`❌ drop_all.sql not found at ${dropFilePath}`);
+    return false;
+  }
+
+  return runCommand(
+    `npx wrangler d1 execute auradash ${target} --file="${dropFilePath}" --y`,
+    `Dropping all tables on ${modeName}`
+  );
+}
+
+function applySchemas(isRemote: boolean) {
+  const target = isRemote ? '--remote' : '--local';
+  const modeName = isRemote ? 'Cloudflare D1 (REMOTE)' : 'Local D1';
+  console.log(`\n🚀 Starting schema application on ${modeName}...`);
+
+  let successCount = 0;
+  let errorCount = 0;
+
+  for (const file of sqlFiles) {
+    const filePath = path.join(dbDir, file);
+    if (fs.existsSync(filePath)) {
+      const ok = runCommand(
+        `npx wrangler d1 execute auradash ${target} --file="${filePath}" --y`,
+        `Applying ${file} [${modeName}]`
+      );
+      if (ok) successCount++;
+      else errorCount++;
+    } else {
+      console.warn(`⚠️ Schema file missing: ${file}`);
+      errorCount++;
+    }
+  }
+
+  console.log('\n----------------------------------------');
+  console.log(`📊 Result [${modeName}]: ${successCount} successful, ${errorCount} failed.`);
+}
+
+async function showMenu() {
+  const args = process.argv.slice(2);
+  if (args.includes('--local')) {
+    applySchemas(false);
+    return;
+  }
+  if (args.includes('--remote')) {
+    applySchemas(true);
+    return;
+  }
+  if (args.includes('--drop-remote')) {
+    dropTables(true);
+    return;
+  }
+  if (args.includes('--reset-remote')) {
+    dropTables(true);
+    applySchemas(true);
+    return;
+  }
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  const question = (query: string): Promise<string> => {
+    return new Promise((resolve) => rl.question(query, resolve));
+  };
+
+  console.log('\n========================================');
+  console.log('   🗄️  AuraDash Database Manager (D1)  ');
+  console.log('========================================');
+  console.log('1) 🟢 Local: Apply All Schemas');
+  console.log('2) ☁️ Remote (Cloudflare D1): Apply All Schemas');
+  console.log('3) 🗑️ Local: Drop All Tables');
+  console.log('4) 🗑️ Remote (Cloudflare D1): Drop All Tables');
+  console.log('5) 💥 Full Remote Reset (Drop + Re-apply Schemas)');
+  console.log('6) 💥 Full Local Reset (Drop + Re-apply Schemas)');
+  console.log('0) ❌ Exit');
+  console.log('========================================');
+
+  const answer = (await question('Select Option [0-6]: ')).trim();
+  rl.close();
+
+  switch (answer) {
+    case '1':
+      applySchemas(false);
+      break;
+    case '2':
+      applySchemas(true);
+      break;
+    case '3':
+      dropTables(false);
+      break;
+    case '4':
+      dropTables(true);
+      break;
+    case '5':
+      console.log('\n⚠️ WARNING: This will drop ALL tables in REMOTE Cloudflare D1!');
+      if (dropTables(true)) {
+        applySchemas(true);
+      }
+      break;
+    case '6':
+      console.log('\n⚠️ WARNING: This will drop ALL tables in LOCAL D1!');
+      if (dropTables(false)) {
+        applySchemas(false);
+      }
+      break;
+    case '0':
+      console.log('Bye! 👋');
+      break;
+    default:
+      console.log('❌ Invalid option.');
+      break;
+  }
+}
+
+showMenu().catch((err) => {
+  console.error('Fatal error:', err);
+});

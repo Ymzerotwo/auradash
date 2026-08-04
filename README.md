@@ -117,7 +117,7 @@ For just **$5/month flat**, AuraDash unlocks powerful edge features that typical
 - ⚡ **10 Million Edge Requests/Month**: Massive request quota included with zero cold starts and global low-latency routing across 300+ edge cities.
 - 🔒 **Native Edge Rate Limiting**: Hardware-level protection across all API endpoints (`AUTH_LIMITER`, `PUBLIC_LIMITER`, `DASHBOARD_LIMITER`).
 - 🗄️ **Zero Egress Fee R2 Media Storage**: Stream and store media assets with **$0 data transfer fees**, completely eliminating the bandwidth bills associated with AWS S3.
-- 🚀 **Expanded CPU Time (30ms–50ms)**: Enables PBKDF2 WebCrypto password hashing (600,000 iterations) and strict Zod validation without timeouts.
+- 🚀 **Expanded CPU Time (30ms–50ms)**: Enables PBKDF2 WebCrypto password hashing (100,000 iterations - max allowed) and strict Zod validation without timeouts.
 
 ### 📊 Cost Comparison
 
@@ -136,7 +136,7 @@ For just **$5/month flat**, AuraDash unlocks powerful edge features that typical
 
 AuraDash takes security seriously, combining modern patterns to protect user data and administrative endpoints.
 
-- **Password Hashing:** PBKDF2-SHA256 (600,000 iterations) using Web Crypto API.
+- **Password Hashing:** PBKDF2-SHA256 (100,000 iterations) using Web Crypto API.
 - **Session Management:** KV-backed sessions (`session:<uuid>`) tracked via the `session_id` cookie.
 - **CSRF Protection:** Double Submit Cookie pattern utilizing `csrf_token` and `x-csrf-token` securely validated via `timingSafeEqual()`.
 - **API Keys:** HMAC-SHA256 signed. Production keys (`auradash_pk`) are domain-bound; Test keys (`auradash_ts`) expire in 24 hours.
@@ -207,7 +207,7 @@ A **Stateful, Session-Backed** pipeline protecting administrative actions with R
 ┌──────────────────────────────────────────────────────────────────┐
 │                     Hono Controller & Service                    │
 │                     • Zod Request Body Validation                │
-│                     • PBKDF2 Password Hashing (600,000 iter)     │
+│                     • PBKDF2 Password Hashing (100,000 iter)     │
 │                     • Business Logic Execution                   │
 └─────────────────────────────────┬────────────────────────────────┘
                                   │

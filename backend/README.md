@@ -140,7 +140,7 @@ The application features a strict, multi-layered security model applied globally
 - **`cache.middleware.ts`**: Programmatic edge caching via `caches.default`. Features entity-scoped meta-hashing (`_v`), sorted URL params, and 60s micro-caching.
 
 ### Real Crypto Utilities (`src/utils/crypto.ts`)
-- **Password Hashing**: PBKDF2, SHA-256, 600,000 iterations via Web Crypto API.
+- **Password Hashing**: PBKDF2, SHA-256, 100,000 iterations via Web Crypto API (Optimized for Cloudflare Workers limits).
 - **API Keys**: HMAC-SHA256 signed keys with `timingSafeEqual()` validation.
 
 ---
@@ -284,7 +284,7 @@ AuraDash Backend relies on **Cloudflare Workers Paid Plan ($5/month)** to delive
 - 🔒 **Native Edge Rate Limiting**: Hardware-accelerated rate limiters across all API routes (`AUTH`, `PUBLIC`, `DASHBOARD`, `FILES`, `HEALTH`).
 - ⚡ **10 Million Edge Requests/Month**: Zero cold-start execution window across 300+ global edge locations.
 - 🗄️ **Zero Egress Fee R2 Bucket**: Stream unlimited uploaded media assets with **$0 bandwidth egress costs**.
-- 🚀 **30ms–50ms CPU Execution Limit**: Supports high-security PBKDF2 WebCrypto password hashing (600,000 iterations) without CPU timeout errors.
+- 🚀 **30ms–50ms CPU Execution Limit**: Supports high-security PBKDF2 WebCrypto password hashing (100,000 iterations - max allowed) without CPU timeout errors.
 
 ---
 

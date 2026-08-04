@@ -83,7 +83,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
     : "none";
 
   return (
-    <div className="flex h-screen overflow-hidden bg-surface-base relative">
+    <div className="flex h-[100dvh] overflow-hidden bg-surface-base relative">
       <StatePolling />
       {mobileOpen && (
         <div
@@ -95,7 +95,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
 
       <div
         className={cn(
-          "fixed top-0 start-0 h-screen z-40 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] !transform",
+          "fixed top-0 start-0 h-[100dvh] z-40 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] !transform",
           "-translate-x-full rtl:translate-x-full lg:translate-x-0 lg:rtl:translate-x-0",
           mobileOpen && "!translate-x-0"
         )}
@@ -109,7 +109,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
 
       <div
         className={cn(
-          "flex-1 flex flex-col min-w-0 h-screen overflow-hidden",
+          "flex-1 flex flex-col min-w-0 h-[100dvh] overflow-hidden",
           effectiveCollapsed ? "lg:ms-[var(--sidebar-width-collapsed)]" : "lg:ms-[var(--sidebar-width)]"
         )}
         style={{
@@ -118,7 +118,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
       >
         <Topbar onMobileMenuToggle={toggleMobile} pageTitle={pageTitle} />
 
-        <main className="flex-1 p-6 overflow-y-auto" dir={dir} style={{ direction: dir }}>
+        <main className="flex-1 p-4 sm:p-6 overflow-y-auto" dir={dir} style={{ direction: dir }}>
           <PermissionGuard>
             {children}
           </PermissionGuard>

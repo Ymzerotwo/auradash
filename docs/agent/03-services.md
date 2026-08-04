@@ -38,9 +38,9 @@ AI Coding Assistants and Frontend Developers generating code for Service pages *
 
 1. **Mandatory Dynamic Head Injection**: Service Detail pages (`/services/:slug`) must automatically construct `<title>`, `<meta name="description">`, `og:title`, `og:description`, `og:image`, `canonical`, and `robots` metadata.
 2. **Smart Fallback Resolution Logic**:
-   - **Title**: Use `seo_data.meta_title` if present and non-empty; otherwise fall back to `service.title` or `service.name`.
-   - **Description**: Use `seo_data.meta_description` if present and non-empty; otherwise fall back to `service.excerpt` truncated to 155 characters.
-   - **Social Sharing Image (`og:image`, `twitter:image`)**: Use `seo_data.og_image` if present; otherwise fall back to `service.cover_image_url` or site logo.
+   - **Title**: Use `seo_data.meta_title` if present and non-empty; otherwise fall back to `service.name`.
+   - **Description**: Use `seo_data.meta_description` if present and non-empty; otherwise extract text from `service.meta_data` (finding an item with `type: "text-description"` in `meta_data` and truncating to 155 characters), or fall back to site description.
+   - **Social Sharing Image (`og:image`, `twitter:image`)**: Use `seo_data.og_image` if present; otherwise extract image URL from `service.meta_data` (finding an item with `type: "photo"` in `meta_data`), or fall back to default site logo.
    - **Canonical Link**: Set `<link rel="canonical">` to `seo_data.canonical_url` if present; otherwise use the absolute page URL.
    - **Crawler Control (`is_indexable`)**: Check `seo_data.is_indexable`. If `false` → inject `noindex, nofollow`; if `true` → inject `index, follow`.
 

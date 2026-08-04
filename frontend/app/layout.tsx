@@ -89,7 +89,7 @@ export default async function RootLayout({
         <meta name="Applebot" content="noindex, nofollow" />
         <meta name="ByteSpider" content="noindex, nofollow" />
       </head>
-      <body className="h-screen overflow-hidden bg-surface-base antialiased">
+      <body className="h-[100dvh] overflow-hidden bg-surface-base antialiased">
         <QueryProvider>
           <LanguageProvider initialLocale={locale} initialDictionary={dictionary}>
             <ThemeProvider>

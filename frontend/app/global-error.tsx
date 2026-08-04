@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import arCommon from '@/lang/ar/common.json';
+import enCommon from '@/lang/en/common.json';
 
 export default function GlobalError({
   error,
@@ -12,12 +13,34 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const t = arCommon;
+  const [lang, setLang] = useState<'ar' | 'en'>('ar');
+
+  useEffect(() => {
+    try {
+      const cookieLang = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('NEXT_LOCALE='))
+        ?.split('=')[1];
+      if (cookieLang === 'en' || cookieLang === 'ar') {
+        setLang(cookieLang);
+      } else {
+        const docLang = document.documentElement.lang;
+        if (docLang === 'en' || docLang === 'ar') {
+          setLang(docLang);
+        }
+      }
+    } catch (e) {
+      // Ignore
+    }
+  }, []);
+
+  const t = lang === 'en' ? enCommon : arCommon;
+  const dir = lang === 'en' ? 'ltr' : 'rtl';
 
   return (
-    <html lang="ar" dir="rtl" className="scrollbar-none">
-      <body className="h-screen overflow-hidden bg-surface-base antialiased text-foreground">
-        <div className="flex flex-col items-center justify-center min-h-screen bg-surface-base p-6 text-center">
+    <html lang={lang} dir={dir} className="scrollbar-none">
+      <body className="h-[100dvh] overflow-hidden bg-surface-base antialiased text-foreground">
+        <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-surface-base p-6 text-center">
           <div className="flex flex-col items-center max-w-[480px]">
             <div className="flex items-center justify-center w-20 h-20 rounded-full bg-[rgba(239,68,68,0.1)] text-destructive mb-6 shadow-[0_0_40px_rgba(239,68,68,0.15)]">
               <AlertTriangle size={40} strokeWidth={1.5} />
@@ -34,7 +57,7 @@ export default function GlobalError({
             </p>
 
             {error?.message && (
-              <div className="w-full mb-6 p-3 rounded-lg bg-surface-subtle border border-border text-xs font-mono text-destructive break-words text-right dir-ltr max-h-32 overflow-y-auto">
+              <div className="w-full mb-6 p-3 rounded-lg bg-surface-subtle border border-border text-xs font-mono text-destructive break-words text-start dir-ltr max-h-32 overflow-y-auto">
                 {error.message}
               </div>
             )}

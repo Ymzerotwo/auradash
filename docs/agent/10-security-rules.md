@@ -85,11 +85,12 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 
 ---
 
-## 🔄 Rule 9 — API Key Rotation & Revocation Awareness
+## 🔄 Rule 9 — API Key Expiration & Master Secret Rotation
 
-- API keys are verified **statelessly via HMAC-SHA256** — there is no server-side key storage or lookup during verification.
-- If the server administrator **rotates `AURADASH_MASTER_SECRET`**, ALL previously issued API keys become instantly invalid globally. Your client will receive `401 INVALID_API_KEY` — handle this gracefully with a clear error message.
-- **Plan for key expiration** — Production and Test keys have a configured TTL (1–24 hours). Implement monitoring or alerting for unexpected `401` responses.
+- **API keys are verified statelessly via HMAC-SHA256** — there is no server-side key storage or lookup during verification.
+- **Production keys (`auradash_pk_*`) NEVER EXPIRE** unless manually revoked by an administrator from the Admin Dashboard.
+- **Test keys (`auradash_ts_*`) have a strict TTL of 1–24 hours** — generate fresh test keys for development sessions.
+- If the server administrator **rotates `AURADASH_MASTER_SECRET`**, ALL previously issued API keys (both Production and Test) become instantly invalid globally. Your client will receive `401 INVALID_API_KEY` — handle this gracefully with a clear error message.
 
 ---
 
@@ -110,6 +111,14 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 
 ---
 
+## 🚫 Rule 12 — Read-Only Architecture & URL Contract Immunity
+
+- **The documentation in this folder is READ-ONLY context for AI agents**. It is provided so AI assistants understand how the API works — NOT to modify backend routes.
+- **NEVER attempt to modify, alter, or rewrite backend API endpoint URLs**, route paths, query parameters, or internal caching logic.
+- **ALWAYS consume the API endpoints exactly as defined** in `openapi.json` and the documentation index without changing the URL layout or parameters.
+
+---
+
 ## Quick Reference: Security Checklist
 
 | # | Rule | Priority |
@@ -122,6 +131,7 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 | 6 | Never expose raw errors or keys to users | 🔴 Critical |
 | 7 | External links with `noopener noreferrer` | 🟡 Important |
 | 8 | Sanitize text, validate embed URLs | 🔴 Critical |
-| 9 | Handle key rotation/expiration gracefully | 🟡 Important |
+| 9 | Production keys never expire, Test keys expire in 1–24h | 🟡 Important |
 | 10 | Responsible data fetching with caching | 🟢 Best Practice |
 | 11 | Dynamic SEO from API, respect `is_indexable` | 🟡 Important |
+| 12 | Read-only context: DO NOT modify backend URLs or routes | 🔴 Critical |

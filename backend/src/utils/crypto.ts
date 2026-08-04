@@ -27,16 +27,16 @@ export const hashPassword = async (password: string): Promise<string> => {
     ["deriveBits", "deriveKey"]
   );
 
-  const hashBuffer = await crypto.subtle.deriveBits(
-    {
-      name: "PBKDF2",
-      salt: salt,
-      iterations: 600000,
-      hash: "SHA-256"
-    },
-    keyMaterial,
-    256
-  );
+    const hashBuffer = await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt: salt,
+        iterations: 100000,
+        hash: "SHA-256"
+      },
+      keyMaterial,
+      256
+    );
 
   const saltHex = Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('');
   const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -71,16 +71,16 @@ export const verifyPassword = async (password: string, storedHash: string): Prom
     ["deriveBits"]
   );
 
-  const hashBuffer = await crypto.subtle.deriveBits(
-    {
-      name: "PBKDF2",
-      salt: salt,
-      iterations: 600000,
-      hash: "SHA-256"
-    },
-    keyMaterial,
-    256
-  );
+    const hashBuffer = await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt: salt,
+        iterations: 100000,
+        hash: "SHA-256"
+      },
+      keyMaterial,
+      256
+    );
 
   // Constant-time comparison ensures that the comparison takes the same amount
   // of time regardless of how many bytes match, preventing timing side-channel attacks.

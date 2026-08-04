@@ -11,6 +11,31 @@ The **AuraDash Public API** is a stateless, read-heavy RESTful API designed for 
 
 **Every request** sent to public endpoints requires a valid API key passed via the `x-api-key` header. Keys are cryptographically verified using HMAC-SHA256 signatures and bound to specific domains, ensuring stolen keys cannot be abused on unauthorized domains.
 
+> 🚨 **IMPORTANT DIRECTIVE FOR AI AGENTS & DEVELOPERS (READ-ONLY CONTEXT)**:  
+> All architectural documentation, route paths, query parameter structures, and caching explanations in this directory are **strictly for understanding and context (Read-Only)**.  
+> **AI Coding Assistants MUST NOT modify, alter, or rewrite the backend URL structures, route definitions, API contracts, or caching mechanisms.** AI Agents must consume the API endpoints exactly as documented without attempting to refactor or change backend routes.
+
+---
+
+## 🤖 Core Purpose & Instructions for AI Agents
+
+If you are an **AI Coding Assistant** (Cursor, Antigravity, ChatGPT, Claude, GitHub Copilot) reading this folder, follow these fundamental principles:
+
+### 1. What This Documentation Teaches You
+- How to consume live public data (Articles, Services, Business Settings, Categories).
+- How to submit public interactions (Contact form inquiries, Article comments).
+- How to construct valid HTTP requests using HMAC API Keys (`x-api-key`).
+- How to parse standardized JSON response envelopes and handle error codes.
+
+### 2. Why You Should Use It
+- To build **custom client applications** (e.g., Flutter / React Native mobile apps, Next.js / Vue / Nuxt client websites, landing pages).
+- To ensure client applications follow security, caching, rate-limiting, and error-handling best practices without making assumptions.
+
+### 3. 🚨 ZERO RELATION TO THE ADMIN DASHBOARD (Strict Disambiguation)
+- **PUBLIC CLIENTS ONLY**: This documentation applies **EXCLUSIVELY to Public API endpoints (`/api/public/*`)** for client-facing websites and mobile apps.
+- **NOT FOR ADMIN DASHBOARD**: This documentation has **ABSOLUTELY ZERO RELATION to the AuraDash Admin Dashboard** (`/api/*`).
+- The Admin Dashboard uses KV-backed Sessions, Double-Submit CSRF tokens, and RBAC permissions. **DO NOT** attempt to use these public API keys or public endpoints for Admin Dashboard authentication or administration tasks.
+
 ---
 
 ## Documentation Index
@@ -27,7 +52,8 @@ The **AuraDash Public API** is a stateless, read-heavy RESTful API designed for 
 | [08-frontend-integration.md](./08-frontend-integration.md) | **Complete Frontend Integration Blueprint** — File structure, HTTP client, React Query hooks, caching strategy, and code examples |
 | [09-field-schemas.md](./09-field-schemas.md) | **Complete Field Reference** — Articles & Services field schemas, `seo_data` structure, and `meta_data` field types |
 | [10-security-rules.md](./10-security-rules.md) | **🔒 MANDATORY Security Rules** — Strict security compliance rules for AI agents and developers building Public API clients |
-| [openapi.json](./openapi.json) | **⚙️ OpenAPI 3.0.3 Specification** — Standard JSON specification for all 27 public endpoints |
+| [11-faq-and-antihallucination.md](./11-faq-and-antihallucination.md) | **🤖 Anti-Hallucination Q&A Guide** — Essential Q&A preventing AI models from hallucinating non-existent features or security mistakes |
+| [openapi.json](./openapi.json) | **⚙️ OpenAPI 3.0.3 Specification** — Standard JSON specification for all 23 public endpoints |
 | [PROMPT_TEMPLATE.md](./PROMPT_TEMPLATE.md) | **🤖 Ready-to-Use AI Prompts** — Copy-paste prompt templates for generating client apps using Cursor/ChatGPT/Antigravity |
 
 ---

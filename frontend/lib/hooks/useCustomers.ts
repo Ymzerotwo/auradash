@@ -151,7 +151,7 @@ export function useCustomersPage() {
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "spam">("all");
   
   const { data: customerData, error: customerError, isLoading: isCustomerLoading } = useCustomerList({ 
-    limit: 50,
+    limit: 20,
     search: searchQuery || undefined,
     status: statusFilter
   });

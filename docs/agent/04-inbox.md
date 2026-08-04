@@ -134,6 +134,7 @@ Origin: https://yourdomain.com
 |--------|-----------|--------------------|--------------------------|
 | `400` | `VALIDATION_ERROR` | Missing required fields, invalid email format, or text length violation | Display field-specific error messages under form inputs |
 | `400` | `SERVICE_NOT_FOUND` | `service_id` is invalid, non-existent, or belongs to an inactive service | Prompt visitor to select an active service from the dropdown |
+| `400` | `MISSING_FINANCIAL_CONTRACT` | Service inquiry submission lacks required pricing or service contract parameters | Prompt user to choose an active service package with complete contract terms |
 | `401` | `API_KEY_MISSING` | Missing `x-api-key` header | Attach valid API key to client HTTP client |
 | `401` | `INVALID_API_KEY` | HMAC signature invalid or key expired | Re-issue API key from Admin Dashboard |
 | `429` | `TOO_MANY_REQUESTS` | IP address exceeded submission rate limit (2 req/60s) | Disable submit button for 60 seconds and notify user |

@@ -43,7 +43,9 @@ AI Coding Assistants and Frontend Developers generating code for Article pages *
 
 ### `GET /articles`
 
-Returns a **paginated** list of published articles. Optionally filterable by category.
+Returns a **paginated** list of published articles.
+- **Without `article_category_id` parameter**: Returns ONLY **standalone articles** (articles that do not belong to any category, i.e., `category_id IS NULL`).
+- **With `article_category_id=<uuid>` parameter**: Returns articles belonging specifically to that category ID.
 
 **Query Parameters**
 
@@ -51,61 +53,13 @@ Returns a **paginated** list of published articles. Optionally filterable by cat
 |-----------|------|---------|-------------|
 | `page` | `integer` | `1` | Page number (1-indexed) |
 | `limit` | `integer` | `12` | Number of items per page |
-| `article_category_id` | `string (UUID)` | — | Filter by category ID |
-
-**Request Example**
-
-```http
-GET /api/public/articles?page=1&limit=6&article_category_id=abc-123
-x-api-key: <YOUR_KEY>
-Origin: https://example.com
-```
-
-**Success Response — `200 ARTICLES_FETCHED`**
-
-```json
-{
-  "success": true,
-  "code": "ARTICLES_FETCHED",
-  "message": "Articles retrieved successfully",
-  "data": {
-    "articles": [
-      {
-        "id": "uuid",
-        "title": "My First Article",
-        "slug": "my-first-article",
-        "excerpt": "A short summary...",
-        "cover_image_url": "https://cdn.example.com/image.jpg",
-        "published_at": "2025-01-01T10:00:00.000Z",
-        "article_category_id": "uuid-or-null",
-        "meta_data": [],
-        "seo_data": {}
-      }
-    ],
-    "pagination": {
-      "total": 42,
-      "page": 1,
-      "limit": 6,
-      "totalPages": 7
-    }
-  }
-}
-```
-
-### 📄 Pagination Metadata Architecture
-
-AuraDash uses **Standard Offset-Based Pagination** (`page` & `limit`), returning `{ total, page, limit, totalPages }`.
-- **Page Jump Navigation**: Frontend clients can render numeric page buttons `[1] [2] ... [7]` directly using `totalPages`.
-- **Infinite Scrolling**: Data-fetching libraries (e.g., React Query) consume page numbers using:
-  `getNextPageParam: (lastPage) => lastPage.pagination.page < lastPage.pagination.totalPages ? lastPage.pagination.page + 1 : undefined`
-
----
+| `article_category_id` | `string (UUID)` | — | Filter by specific category ID |
 
 ---
 
 ### `GET /articles/all`
 
-Returns a **paginated** list of **all** published articles, including those linked to categories.
+Returns a **paginated** list of **ALL published articles**, including both category-linked articles AND standalone articles (`category_id IS NULL` or `category_id IS NOT NULL`). Returns `category_name` and `category_slug` inside each article object.
 
 **Query Parameters**: `page` (default `1`), `limit` (default `12`)
 
@@ -113,7 +67,13 @@ Returns a **paginated** list of **all** published articles, including those link
 
 ### `GET /articles/count`
 
-Returns the **total count** of standalone active (published) articles.
+Returns the total count of **standalone active (published) articles** (`category_id IS NULL`).
+
+---
+
+### `GET /articles/count/all`
+
+Returns the total count of **ALL active (published) articles** across the board (both standalone and category-linked).
 
 ---
 
@@ -150,7 +110,7 @@ Returns **full details** for a single published article by its slug.
 
 ### `GET /articles/:slug/comments`
 
-Returns **approved comments** for a specific article, paginated.
+Returns **approved comments** for a specific article, paginated in a flat array sorted chronologically (`created_at DESC`).
 
 **Success Response — `200 ARTICLE_COMMENTS_FETCHED`**
 
@@ -181,9 +141,9 @@ Returns **approved comments** for a specific article, paginated.
 }
 ```
 
-> 💡 **UI Tip for AI Agents & Developers**:  
-> • If `parent_id` is set, render the comment indented underneath the parent comment (`id === parent_id`).  
-> • Admin/staff replies currently share the same comment structure. The administrator's `user_name` (e.g. "Aura Studio Team") can be used to visually distinguish official replies if desired.
+> 💡 **UI Tip for Threaded Comments & Pagination Across Pages**:  
+> • If `parent_id` matches an `id` present on the current page, render the reply indented under its parent comment.  
+> • If a reply's parent comment (`parent_id`) exists on a different page (due to pagination offset), the client UI should render the reply with a reference tag (e.g. *"In reply to previous comment"*), or fetch the parent thread on demand.
 
 ---
 

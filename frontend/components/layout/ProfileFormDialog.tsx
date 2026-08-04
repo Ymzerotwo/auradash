@@ -28,10 +28,10 @@ export function ProfileFormDialog({ open, onOpenChange }: ProfileFormDialogProps
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="w-[calc(100%-2rem)] sm:w-full sm:!max-w-[540px] p-0 overflow-hidden !rounded-2xl bg-surface-card"
+        className="w-[calc(100%-2rem)] sm:w-full sm:!max-w-[540px] p-0 overflow-hidden !rounded-2xl bg-surface-card max-h-[90dvh] flex flex-col"
         showCloseButton={false}
       >
-        <div className="relative px-4 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5">
+        <div className="relative px-4 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5 shrink-0">
           <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" />
           
           <DialogClose
@@ -56,7 +56,7 @@ export function ProfileFormDialog({ open, onOpenChange }: ProfileFormDialogProps
 
         <div className="h-px bg-border-default" />
 
-        <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-4 sm:py-5 max-h-[60vh] overflow-y-auto custom-scrollbar flex flex-col gap-6">
+        <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-4 sm:py-5 flex-1 min-h-0 overflow-y-auto custom-scrollbar flex flex-col gap-6">
           <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1 h-4 bg-primary rounded-full" />
@@ -214,7 +214,7 @@ export function ProfileFormDialog({ open, onOpenChange }: ProfileFormDialogProps
           </div>
         </form>
 
-        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-t border-border-default flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 bg-surface-subtle/20">
+        <div className="shrink-0 px-4 sm:px-6 py-3.5 sm:py-4 border-t border-border-default flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 bg-surface-subtle/20">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}

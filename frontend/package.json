@@ -1,16 +1,14 @@
 {
-  "name": "auradash-dashboard",
+  "name": "auradash-frontend",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "next build --webpack",
     "dev": "next dev",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "deploy:cloudflare": "npm run build && opennextjs-cloudflare build && node scripts/cf-setup.js && wrangler pages deploy .open-next --project-name auradash",
-    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "deploy": "opennextjs-cloudflare build && node scripts/cf-setup.js && wrangler pages deploy .open-next --project-name auradash",
+    "deploy:cloudflare": "opennextjs-cloudflare build && node scripts/cf-setup.js && wrangler pages deploy .open-next --project-name auradash",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
