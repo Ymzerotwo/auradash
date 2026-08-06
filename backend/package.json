@@ -23,17 +23,20 @@
     "zod": "^4.4.1"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.18.8",
+    "@cloudflare/vitest-pool-workers": "^0.20.2",
     "@cloudflare/workers-types": "^5.20260728.1",
     "@vitest/coverage-istanbul": "^4.1.8",
     "@vitest/coverage-v8": "^4.1.8",
     "typescript": "^6.0.3",
     "vitest": "^4.1.8",
-    "wrangler": "^4.114.0"
+    "wrangler": "^4.35.0"
   },
   "allowScripts": {
     "esbuild": true,
     "sharp": true,
     "workerd": true
+  },
+  "overrides": {
+    "undici": "^7.28.1"
   }
 }
