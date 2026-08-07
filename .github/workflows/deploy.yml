@@ -1,9 +1,18 @@
+# =====================================================================================
+# [DISABLED AUTOMATIC DEPLOYMENT]
+# Automatic deployment via GitHub Actions has been disabled because we switched to
+# direct Cloudflare Pages CI integration (from the Cloudflare Dashboard).
+# This file is kept for future reference or temporary testing purposes.
+# =====================================================================================
+
 name: Deploy to Cloudflare Pages
 
 on:
-  push:
-    branches:
-      - main
+  # Disabled to prevent double deployments
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch: # Allows manual trigger from GitHub UI if needed
 
 jobs:
   deploy:
