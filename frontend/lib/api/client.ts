@@ -101,7 +101,9 @@ export const apiClient = {
    */
   clearLocalSession() {
     if (typeof document !== 'undefined') {
-      document.cookie = "session_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "session_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
+      document.cookie = "session_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax";
+      cachedCsrfToken = null;
     }
     if (typeof window !== 'undefined') {
       try {
