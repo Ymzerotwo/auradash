@@ -1,4 +1,15 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api';
+const getApiBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    console.error('[CONFIG ERROR] NEXT_PUBLIC_API_URL environment variable is not configured.');
+    return '';
+  }
+  return 'http://localhost:8787/api';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 export type { ApiResponse, ProcessedResponse } from './responseHandler';
 export { processApiResponse, resolveSlugTranslation, resolveValidationDetails } from './responseHandler';

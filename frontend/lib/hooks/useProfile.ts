@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ProfileService, type ProfileUpdateInput } from '../services/profile.service';
 import { useAuthStore } from '../stores/auth.store';
 import { toast } from 'sonner';
-import { ApiError } from '../api/client';
+import { ApiError, API_BASE_URL } from '../api/client';
 import { getErrorMessage, getSuccessMessage } from '../utils/error';
 import { useTranslation } from '../i18n/LanguageContext';
 import { updateProfileSchema } from '../validations/profile.schema';
@@ -20,7 +20,7 @@ export function useUpdateProfile() {
       // without toggling hydrated=false to avoid UI flash
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api'}/profile`,
+          `${API_BASE_URL}/profile`,
           { credentials: 'include' }
         );
         const json = await res.json();
