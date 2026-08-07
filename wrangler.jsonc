@@ -30,7 +30,8 @@
 		{
 			"binding": "DB",
 			"database_name": "auradash",
-			"database_id": "YOUR_DATABASE_ID_HERE"
+			"database_id": "YOUR_DATABASE_ID_HERE",
+			"migrations_dir": "backend/migrations"
 		}
 	],
 	"send_email": [

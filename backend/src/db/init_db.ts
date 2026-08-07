@@ -8,18 +8,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const dbDir = __dirname;
-const sqlFiles = [
-  'auth.sql',
-  'services.sql',
-  'article.sql',
-  'booking.sql',
-  'Customers.sql',
-  'Inbox.sql',
-  'Notifications.sql',
-  'Article_Comments.sql',
-  'apikey.sql',
-  'web-settings.sql'
-];
 
 function runCommand(cmd: string, description: string) {
   console.log(`\n⏳ ${description}...`);
@@ -52,28 +40,15 @@ function dropTables(isRemote: boolean) {
 function applySchemas(isRemote: boolean) {
   const target = isRemote ? '--remote' : '--local';
   const modeName = isRemote ? 'Cloudflare D1 (REMOTE)' : 'Local D1';
-  console.log(`\n🚀 Starting schema application on ${modeName}...`);
+  console.log(`\n🚀 Starting migrations on ${modeName}...`);
 
-  let successCount = 0;
-  let errorCount = 0;
-
-  for (const file of sqlFiles) {
-    const filePath = path.join(dbDir, file);
-    if (fs.existsSync(filePath)) {
-      const ok = runCommand(
-        `npx wrangler d1 execute auradash ${target} --file="${filePath}" --y`,
-        `Applying ${file} [${modeName}]`
-      );
-      if (ok) successCount++;
-      else errorCount++;
-    } else {
-      console.warn(`⚠️ Schema file missing: ${file}`);
-      errorCount++;
-    }
-  }
-
+  runCommand(
+    `npx wrangler d1 migrations apply auradash ${target} --y`,
+    `Applying migrations [${modeName}]`
+  );
+  
   console.log('\n----------------------------------------');
-  console.log(`📊 Result [${modeName}]: ${successCount} successful, ${errorCount} failed.`);
+  console.log(`📊 Result [${modeName}]: Migrations process finished.`);
 }
 
 async function showMenu() {
