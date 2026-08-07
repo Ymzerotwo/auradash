@@ -305,6 +305,7 @@ function HoursRow({ dayKey, dayLabel, schedule, onChange }: {
         <span className={cn("text-sm font-medium", schedule.closed ? "text-text-subtle line-through" : "text-foreground")}>{dayLabel}</span>
         <input
           type="time"
+          dir="ltr"
           value={schedule.open || ""}
           onChange={(e) => onChange(dayKey, "open", e.target.value)}
           disabled={schedule.closed}
@@ -312,6 +313,7 @@ function HoursRow({ dayKey, dayLabel, schedule, onChange }: {
         />
         <input
           type="time"
+          dir="ltr"
           value={schedule.close || ""}
           onChange={(e) => onChange(dayKey, "close", e.target.value)}
           disabled={schedule.closed}
@@ -330,42 +332,46 @@ function HoursRow({ dayKey, dayLabel, schedule, onChange }: {
 
       {/* ── Mobile Card (below md) ── */}
       <div className={cn(
-        "flex md:hidden flex-col gap-2 p-3 rounded-lg transition-colors duration-150",
+        "grid md:hidden grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0 p-3 rounded-lg transition-colors duration-150",
         schedule.closed ? "bg-danger/5" : "hover:bg-surface-subtle"
       )}>
-        <div className="flex items-center justify-between gap-2 min-w-[310px]">
-          <span className={cn("text-sm font-medium w-20 shrink-0", schedule.closed ? "text-text-subtle line-through" : "text-foreground")}>{dayLabel}</span>
-          
-          {!schedule.closed ? (
-            <div className="flex flex-1 items-center justify-center gap-1.5 px-1 sm:px-2">
-              <input
-                type="time"
-                value={schedule.open || ""}
-                onChange={(e) => onChange(dayKey, "open", e.target.value)}
-                className="flex-1 w-full max-w-[110px] h-8 rounded-md border border-border-default bg-surface-subtle text-foreground text-xs px-1 sm:px-2 text-center outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
-              />
-              <span className="text-[10px] text-text-muted shrink-0">→</span>
-              <input
-                type="time"
-                value={schedule.close || ""}
-                onChange={(e) => onChange(dayKey, "close", e.target.value)}
-                className="flex-1 w-full max-w-[110px] h-8 rounded-md border border-border-default bg-surface-subtle text-foreground text-xs px-1 sm:px-2 text-center outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
-              />
-            </div>
-          ) : (
-            <div className="flex-1 flex justify-center">
-              <span className="text-xs text-text-muted italic">{t.common.status.closed}</span>
-            </div>
-          )}
+        {/* Col 1: Day name */}
+        <span className={cn(
+          "text-sm font-medium",
+          schedule.closed ? "text-text-subtle line-through" : "text-foreground"
+        )}>
+          {dayLabel}
+        </span>
 
-          <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0">
-            <Switch
-              checked={schedule.closed}
-              onCheckedChange={(val: boolean) => onChange(dayKey, "closed", val)}
-              className="scale-90"
+        {/* Col 2: Time inputs or "Closed" label */}
+        {!schedule.closed ? (
+          <div dir="ltr" className="flex items-center gap-1.5 justify-center">
+            <input
+              type="time"
+              value={schedule.open || ""}
+              onChange={(e) => onChange(dayKey, "open", e.target.value)}
+              className="h-8 w-[105px] rounded-md border border-border-default bg-surface-subtle text-foreground text-xs px-1.5 text-center outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
             />
-          </label>
-        </div>
+            <span className="text-xs font-medium text-text-muted">-</span>
+            <input
+              type="time"
+              value={schedule.close || ""}
+              onChange={(e) => onChange(dayKey, "close", e.target.value)}
+              className="h-8 w-[105px] rounded-md border border-border-default bg-surface-subtle text-foreground text-xs px-1.5 text-center outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+            />
+          </div>
+        ) : (
+          <span className="text-xs text-text-muted italic text-center">
+            {t.common.status.closed}
+          </span>
+        )}
+
+        {/* Col 3: Switch */}
+        <Switch
+          checked={schedule.closed}
+          onCheckedChange={(val: boolean) => onChange(dayKey, "closed", val)}
+          className="scale-90"
+        />
       </div>
     </>
   );
@@ -546,16 +552,14 @@ function WorkingHoursSkeleton() {
             </div>
           ))}
           {Array.from({ length: 7 }).map((_, idx) => (
-            <div key={idx} className="flex md:hidden flex-col gap-2 p-3 border-b border-border-subtle last:border-0">
-              <div className="flex items-center justify-between">
-                <Skeleton className="h-4 w-20 rounded" />
-                <Skeleton className="h-5 w-14 rounded-full" />
+            <div key={idx} className="grid md:hidden grid-cols-[auto_1fr_auto] items-center gap-x-3 p-3">
+              <Skeleton className="h-4 w-16 rounded" />
+              <div className="flex items-center gap-1.5 justify-center">
+                <Skeleton className="h-8 w-[105px] rounded-md" />
+                <Skeleton className="h-3 w-2 rounded" />
+                <Skeleton className="h-8 w-[105px] rounded-md" />
               </div>
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-9 flex-1 rounded-md" />
-                <Skeleton className="h-3.5 w-4 rounded" />
-                <Skeleton className="h-9 flex-1 rounded-md" />
-              </div>
+              <Skeleton className="h-5 w-9 rounded-full" />
             </div>
           ))}
         </div>

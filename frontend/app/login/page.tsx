@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 import { useTheme } from '@/app/components/ThemeProvider';
-import { Lock, Loader2, AlertCircle, CheckCircle2, ArrowRight, Moon, Sun, Languages, User } from 'lucide-react';
+import { Lock, Loader2, AlertCircle, CheckCircle2, ArrowRight, Moon, Sun, Languages, User, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useLoginForm } from '@/lib/hooks/useAuth';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,7 @@ import logoImg from '@/public/icon.png';
 export default function LoginPage() {
   const { t, dir, locale, setLocale } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const {
     username,
@@ -100,12 +101,23 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <label className="text-[13px] font-semibold text-text-subtle">{t.login.password_label}</label>
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 icon={Lock}
                 placeholder={t.login.password_placeholder}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 error={fieldErrors.password}
+                endAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none cursor-pointer flex items-center justify-center p-1"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                }
               />
             </div>
 
