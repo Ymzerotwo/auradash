@@ -161,10 +161,10 @@ export const EmailService = {
     // Zero API tokens or account IDs required! Works natively out of the box.
     if (env?.EMAILER && typeof env.EMAILER.send === 'function' && recipientEmail.includes('@')) {
       try {
-        // Official Cloudflare Workers structured email send
+        // Official Cloudflare Workers structured email send (exact string format from dashboard)
         await env.EMAILER.send({
-          to: [{ email: recipientEmail }],
-          from: { email: fromAddress, name: businessName },
+          to: recipientEmail,
+          from: fromAddress,
           subject: subjectStr,
           text: textContent,
           html: emailHtml
