@@ -112,7 +112,8 @@ export const InboxService = {
 
     // Send actual automated confirmation email asynchronously to avoid blocking the response
     if (data.email) {
-      const emailPromise = EmailService.sendAutoReply(apiKey, data.email, data.full_name)
+      const envRef = (db as any).env || {};
+      const emailPromise = EmailService.sendAutoReply(apiKey, data.email, data.full_name, envRef)
         .catch(e => logger.error('system', 'Email sending failed:', e));
         
       if (ctx && ctx.waitUntil) {

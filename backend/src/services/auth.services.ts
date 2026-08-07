@@ -138,8 +138,8 @@ export const AuthService = {
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
     const resetRef = 'AD-' + Math.floor(100000 + Math.random() * 900000);
     const accountId = env.CF_ACCOUNT_ID;
-    const fromAddress = env.EMAIL_FROM_ADDRESS || 'noreply@auradash.ymzerotwo.com';
-    const frontendUrl = env.APP_FRONTEND_URL || 'https://auradash.ymzerotwo.com';
+    const fromAddress = env.EMAIL_FROM_ADDRESS;
+    const frontendUrl = env.APP_FRONTEND_URL;
 
     // Invalidate existing codes first to prevent multiple active codes for the user
     await db.prepare('DELETE FROM VerificationCodes WHERE user_id = ?').bind(user.id as string).run();
@@ -148,45 +148,81 @@ export const AuthService = {
       .run();
 
     const emailHtml = `
-      <div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background-color: #09090b;">
-        <div style="background-color: #121214; border: 1px solid #27272a; border-radius: 16px; padding: 40px; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);">
-          
-          <div style="margin-bottom: 30px; text-align: center;">
-            <h1 style="color: #fafafa; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Aura<span style="color: #6366f1;">Dash</span></h1>
-          </div>
-          
-          <h2 style="color: #fafafa; font-size: 20px; font-weight: 600; margin-top: 0; margin-bottom: 8px;">
-            Password Reset Request
-          </h2>
-          <div style="font-size: 12px; color: #71717a; margin-bottom: 20px; font-family: monospace;">Ref: ${resetRef}</div>
-          
-          <p style="color: #a1a1aa; font-size: 15px; line-height: 1.6; margin-bottom: 24px; text-align: left; direction: ltr;">
-            Hello <strong style="color: #fafafa;">${user.full_name}</strong>,<br><br>
-            We received a request to reset the password for your AuraDash account. Please use the verification code below to complete the process.
-          </p>
-          
-          <div style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 24px;">
-            <span style="display: block; color: #a1a1aa; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Your Verification Code</span>
-            <div style="color: #6366f1; font-size: 36px; font-weight: 800; letter-spacing: 8px; font-family: monospace;">
-              ${code}
-            </div>
-          </div>
-          
-          <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin-bottom: 30px; text-align: left; direction: ltr;">
-            This code is valid for <strong>15 minutes</strong>. If you did not request a password reset, please ignore this email or contact support if you have concerns.
-          </p>
-          
-          <hr style="border: none; border-top: 1px solid #27272a; margin-bottom: 20px;">
-          
-          <div style="text-align: center;">
-            <p style="color: #71717a; font-size: 12px; line-height: 1.5; margin: 0;">
-              &copy; ${new Date().getFullYear()} AuraDash. All rights reserved.<br>
-              <a href="${frontendUrl}" style="color: #6366f1; text-decoration: none;">${frontendUrl.replace(/^https?:\/\//, '')}</a>
-            </p>
-          </div>
-          
-        </div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Your Password</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #09090b; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 560px; background-color: #121215; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+          <tr>
+            <td style="height: 4px; background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);"></td>
+          </tr>
+          <tr>
+            <td style="padding: 32px 32px 20px 32px; text-align: center;">
+              <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tr>
+                  <td style="vertical-align: middle;">
+                    <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 10px; text-align: center; line-height: 36px; color: #ffffff; font-weight: 800; font-size: 18px; display: inline-block;">A</div>
+                  </td>
+                  <td style="vertical-align: middle; padding-left: 10px;">
+                    <span style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">Aura<span style="color: #6366f1;">Dash</span></span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0 32px 32px 32px;">
+              <h2 style="margin: 0 0 6px 0; font-size: 20px; font-weight: 700; color: #f4f4f5; text-align: center;">Password Reset Request</h2>
+              <p style="margin: 0 0 24px 0; font-size: 12px; color: #71717a; text-align: center; font-family: monospace;">Ref: ${resetRef}</p>
+              
+              <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #a1a1aa;">
+                Hello <strong style="color: #f4f4f5;">${user.full_name || 'User'}</strong>,<br>
+                We received a request to reset your password for your AuraDash account. Use the verification code below to complete the reset process:
+              </p>
+
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px;">
+                <tr>
+                  <td style="background-color: #18181b; border: 1px solid #3f3f46; border-radius: 12px; padding: 24px; text-align: center;">
+                    <span style="display: block; font-size: 11px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;">Your Verification Code</span>
+                    <div style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 34px; font-weight: 800; color: #818cf8; letter-spacing: 10px; margin: 0;">
+                      ${code}
+                    </div>
+                    <span style="display: block; font-size: 12px; color: #71717a; margin-top: 10px;">Valid for <strong>15 minutes</strong></span>
+                  </td>
+                </tr>
+              </table>
+
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px;">
+                <tr>
+                  <td style="background-color: rgba(239, 68, 68, 0.08); border-left: 3px solid #ef4444; border-radius: 4px; padding: 12px 16px;">
+                    <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #fca5a5;">
+                      <strong>Security Note:</strong> If you did not request a password reset, please ignore this email or secure your account if you have concerns.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <hr style="border: none; border-top: 1px solid #27272a; margin: 24px 0;">
+
+              <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #71717a; text-align: center;">
+                &copy; ${new Date().getFullYear()} AuraDash. All rights reserved.<br>
+                <a href="${frontendUrl}" style="color: #6366f1; text-decoration: none; font-weight: 500;">${frontendUrl.replace(/^https?:\/\//, '')}</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
     `;
 
     try {

@@ -312,8 +312,8 @@ export default {
 
     const extendedEnv = {
       ...env,
-      EMAIL_FROM_ADDRESS: env.EMAIL_FROM_ADDRESS || 'noreply@auradash.ymzerotwo.com',
-      APP_FRONTEND_URL: env.APP_FRONTEND_URL || 'https://auradash.ymzerotwo.com',
+      EMAIL_FROM_ADDRESS: env.EMAIL_FROM_ADDRESS,
+      APP_FRONTEND_URL: env.APP_FRONTEND_URL,
       ALLOWED_ORIGINS: env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:3001',
     };
 
