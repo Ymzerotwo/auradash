@@ -5,8 +5,5 @@
 	"compatibility_flags": [
 		"nodejs_compat",
 		"global_fetch_strictly_public"
-	],
-	"vars": {
-		"NEXT_PRIVATE_MINIMAL_MODE": "1"
-	}
+	]
 }
