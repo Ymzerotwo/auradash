@@ -1,6 +1,6 @@
 # AuraDash Public API — Developer & AI Agent Context
 
-> **Version:** 1.0 · **Base URL:** `https://<your-worker>.workers.dev/api/public`  
+> **Version:** 1.0 · **Base URL:** `https://api.yourdomain.com/api/public`  
 > **Authentication:** HMAC-SHA256 Stateless API Key (`x-api-key`)
 
 ---
@@ -53,6 +53,7 @@ If you are an **AI Coding Assistant** (Cursor, Antigravity, ChatGPT, Claude, Git
 | [09-field-schemas.md](./09-field-schemas.md) | **Complete Field Reference** — Articles & Services field schemas, `seo_data` structure, and `meta_data` field types |
 | [10-security-rules.md](./10-security-rules.md) | **🔒 MANDATORY Security Rules** — Strict security compliance rules for AI agents and developers building Public API clients |
 | [11-faq-and-antihallucination.md](./11-faq-and-antihallucination.md) | **🤖 Anti-Hallucination Q&A Guide** — Essential Q&A preventing AI models from hallucinating non-existent features or security mistakes |
+| [12-data-onboarding-and-demo.md](./12-data-onboarding-and-demo.md) | **🚀 Data Onboarding & Demo Guide** — Guidelines for AI agents to visualize demo content and guide users to populate data via the Dashboard |
 | [openapi.json](./openapi.json) | **⚙️ OpenAPI 3.0.3 Specification** — Standard JSON specification for all 23 public endpoints |
 | [PROMPT_TEMPLATE.md](./PROMPT_TEMPLATE.md) | **🤖 Ready-to-Use AI Prompts** — Copy-paste prompt templates for generating client apps using Cursor/ChatGPT/Antigravity |
 
@@ -78,7 +79,7 @@ Log into the AuraDash Admin Dashboard → **Settings → API Keys** → Create a
 
 ```http
 GET /api/public/articles HTTP/1.1
-Host: <your-worker>.workers.dev
+Host: api.yourdomain.com
 x-api-key: <YOUR_API_KEY>
 Origin: https://example.com
 ```
@@ -154,12 +155,21 @@ Browsers automatically handle preflight `OPTIONS` requests. No special CORS conf
 
 ---
 
-## Base URL Convention
+## Base URL Convention & Custom Domains
 
 | Environment | Base URL |
 |-------------|----------|
-| Production | `https://<worker>.workers.dev/api/public` |
+| Production | `https://api.yourdomain.com/api/public` |
 | Local Development | `http://localhost:8787/api/public` |
+
+### ⚠️ Why Custom Domains are Mandatory for Production (Cookie Policies)
+
+AuraDash **must** be deployed on a Custom Domain (e.g., `api.yourdomain.com`) in production rather than relying on the default Cloudflare Workers subdomain (`*.workers.dev`).
+
+**The Reason:** Cloudflare `*.workers.dev` domains are listed on the [Public Suffix List (eTLD)](https://publicsuffix.org/). Modern web browsers enforce strict security policies on these domains, completely blocking cross-site `SameSite=None; Secure` cookies. 
+If you attempt to use a `.workers.dev` domain in production, features that rely on secure cookies (such as Admin Dashboard authentication sessions and CSRF tokens) will silently fail and be rejected by the browser. 
+
+Always bind your Cloudflare Worker to a Custom Domain before taking the project live.
 
 ---
 

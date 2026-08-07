@@ -63,7 +63,8 @@
 ## ❓ Question 8: What should I do if the API returns a `429 Too Many Requests` status code?
 > **❌ DO NOT RETRY IMMEDIATELY IN A LOOP.**  
 > - Public submission endpoints enforce strict rate limits (`PUBLIC_SUBMISSION_LIMITER`).  
-> - Client apps must handle `429 RATE_LIMIT_EXCEEDED` gracefully by displaying a cooldown message (e.g., *"Please wait a moment before trying again"*) and using exponential backoff.
+> - The API returns a `Retry-After: 60` HTTP header specifying the exact seconds to wait.  
+> - Client apps must handle `429 RATE_LIMIT_EXCEEDED` gracefully by parsing `Retry-After`, displaying a cooldown countdown message (e.g., *"Please wait 60 seconds before trying again"*), and disabling the submit button until the timer expires.
 
 ---
 
@@ -153,6 +154,14 @@
 
 ---
 
+## ❓ Question 21: Can I pass text search or query filtering parameters (e.g. `?search=`, `?q=`, `?filter=`) to listing endpoints?
+> **❌ NO. FULL-TEXT SEARCH PARAMETERS ARE NOT SUPPORTED ON THE BACKEND.**  
+> - The Public API listing endpoints (`GET /articles`, `GET /services`) do **NOT** support free-text search query parameters like `?search=`, `?q=`, `?query=`, or `?filter=`.  
+> - The ONLY supported query parameters are `page`, `limit`, and category filters (`article_category_id` or category slug endpoints).  
+> - AI Coding Assistants **MUST NOT** hallucinate search query parameters in API fetch requests. If a client UI requires text search, fetch the items via the standard API endpoints and perform **client-side text filtering** over the returned dataset.
+
+---
+
 ## Quick Anti-Hallucination Checklist for AI
 
 | Action | Allowed? | Correct Approach |
@@ -161,7 +170,8 @@
 | Put API Key in URL query | ❌ No | Send key in `x-api-key` header |
 | Admin operations via Public API | ❌ No | Admin operations require Dashboard Sessions |
 | Concatenate image URL paths | ❌ No | Image URLs are already full absolute HTTPS URLs |
-| Retry 429 errors in a loop | ❌ No | Show cooldown UI and use exponential backoff |
+| Retry 429 errors in a loop | ❌ No | Read `Retry-After: 60` header, show cooldown UI |
+| Pass `?search=` or `?q=` params | ❌ No | No backend text search; filter datasets client-side |
 | Use Test Key in production | ❌ No | Production keys for live domains, Test keys for local dev |
 | Request `limit=9999` pagination | ❌ No | Use reasonable limits (6–20) with `{ total, page, limit, totalPages }` |
 | Send cookies/CSRF to Public API | ❌ No | Public API is 100% stateless; use `x-api-key` only |

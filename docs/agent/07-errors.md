@@ -169,9 +169,11 @@ These errors occur before reaching business controllers and are enforced by the 
 ### ⚡ 4. Rate Limiting & Server Errors (429 / 500)
 
 #### `RATE_LIMIT_EXCEEDED` (HTTP 429)
-- **Definition**: The connecting IP address exceeded Cloudflare Workers rate limits (`PUBLIC_LIMITER` or `PUBLIC_SUBMISSION_LIMITER`).
+- **Definition**: The connecting IP address exceeded Cloudflare Workers rate limits (`PUBLIC_LIMITER` for GET requests or `PUBLIC_SUBMISSION_LIMITER` for POST submissions).
 - **Cause**: Automated bot behavior or rapid repeated form submissions.
-- **Resolution**: Wait 60 seconds before retrying requests.
+- **HTTP Headers Returned**:
+  - `Retry-After: 60` (Specifies exact integer seconds the client must wait before retrying).
+- **Client Resolution**: Parse `response.headers.get('Retry-After')` to disable submit buttons and display an exact cooldown countdown timer in the UI.
 ```json
 {
   "success": false,

@@ -14,6 +14,10 @@ The **Articles API** allows public visitors and client frontends to query publis
 - **Default Sorting (Default Ordering)**: Articles are sorted by default in descending order by publication date (`published_at DESC`), ensuring that the newest content appears first. To fetch the "3 Latest Articles" for a homepage hero section, pass `limit=3` (`GET /api/public/articles?limit=3`).
 - **Content Language**: Public API responses return database content (`title`, `excerpt`, `content`) directly as authored by the administrator in its original language (Arabic or English) without any server-side translation layer per request. Client applications display the returned text directly and use local dictionaries (`lang/*.json`) for UI chrome (buttons, layout direction `dir="rtl"`).
 
+### 🔍 Search & Filtering Limitations
+
+The Public API does **NOT** support free-text search query parameters (e.g. `?search=`, `?q=`, `?filter=`). Supported query parameters are strictly restricted to pagination (`page`, `limit`) and category filtering (`article_category_id`). Client applications requiring full-text search must fetch the dataset via standard endpoints and perform client-side text filtering.
+
 ### 🧩 Dynamic Custom Fields (`meta_data`)
 
 Articles contain a flexible `meta_data` array configured by administrators for additional rich details (e.g. key takeaways, bullet point lists, embedded videos, downloadable files, custom CTA links). See [09-field-schemas.md](./09-field-schemas.md) for full field schemas and React rendering components.

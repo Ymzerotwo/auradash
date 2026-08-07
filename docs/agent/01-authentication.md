@@ -98,7 +98,7 @@ Use Test keys for **Local Development**, **Mobile Simulators**, **Postman**, **C
 
 ```http
 GET /api/public/articles HTTP/1.1
-Host: <your-worker>.workers.dev
+Host: api.yourdomain.com
 x-api-key: <YOUR_API_KEY>
 Origin: https://example.com
 ```
@@ -107,7 +107,7 @@ Origin: https://example.com
 
 ```http
 GET /api/public/articles HTTP/1.1
-Host: <your-worker>.workers.dev
+Host: api.yourdomain.com
 Authorization: Bearer <YOUR_API_KEY>
 Origin: https://example.com
 ```

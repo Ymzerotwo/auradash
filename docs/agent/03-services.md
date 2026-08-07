@@ -25,6 +25,10 @@ The Services API provides two distinct consumption patterns:
 
 Services return a dynamic `meta_data` array configured by administrators for service specifications (e.g., service duration, package inclusions/bullet lists, sample photo galleries, YouTube demo videos, downloadable PDFs, custom WhatsApp links). See [09-field-schemas.md](./09-field-schemas.md) for full schemas and a production React rendering component.
 
+### 🔍 Search & Filtering Limitations
+
+The Public API does **NOT** support free-text search query parameters (e.g. `?search=`, `?q=`, `?filter=`). Supported query parameters are strictly restricted to pagination (`page`, `limit`). Client applications requiring search or custom filtering must fetch the catalog and filter items client-side.
+
 ### 🔢 Display Priority & Custom Sorting (`sort_order`)
 
 Every service contains a `sort_order` integer field (default `0`):

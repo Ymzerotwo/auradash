@@ -47,7 +47,7 @@
 Any client application connecting to AuraDash should structure its network and data layers into **3 decoupled tiers**:
 
 ### 🔹 Tier 1: Configuration Layer (Environment Constants)
-- **Base URL**: Set to the Cloudflare Worker URL + path prefix: `https://<worker>.workers.dev/api/public` (or local dev: `http://localhost:8787/api/public`).
+- **Base URL**: Set to your custom API domain + path prefix: `https://api.yourdomain.com/api/public` (or local dev: `http://localhost:8787/api/public`).
 - **API Key**: Securely loaded from environment configuration. 
   - *Production Keys*: Domain-bound for live applications.
   - *Test Keys*: Unbound keys for local development, mobile simulators, or S2S testing (expire ≤ 24h).
