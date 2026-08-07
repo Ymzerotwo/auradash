@@ -226,30 +226,40 @@ export const AuthService = {
 </body>
 </html>
     `;
-
     const textContent = `Hello ${user.full_name},\n\nYou requested to reset your password. Your 6-digit code is: ${code}\n\nThis code is valid for 15 minutes.\n\nReference: ${resetRef}`;
+    const subjectStr = `AuraDash - Password Reset Code [Ref: ${resetRef}]`;
 
     // 1. Primary: Native Cloudflare Workers Send Email Binding (EMAILER)
+    // Zero API tokens or account IDs required! Works natively out of the box.
     if (env?.EMAILER && typeof env.EMAILER.send === 'function' && recipientEmail.includes('@')) {
       try {
-        const rawMime = buildMimeMessage({
-          from: fromAddress,
-          to: recipientEmail,
-          subject: `AuraDash - Password Reset Code [Ref: ${resetRef}]`,
-          html: emailHtml,
-          text: textContent
+        // Official Cloudflare Workers structured email send
+        await env.EMAILER.send({
+          to: [{ email: recipientEmail }],
+          from: { email: fromAddress, name: 'AuraDash Security' },
+          subject: subjectStr,
+          text: textContent,
+          html: emailHtml
         });
-
-        const EmailMsgClass = (globalThis as any).EmailMessage || class {
-          from: string; to: string; raw: string;
-          constructor(f: string, t: string, r: string) { this.from = f; this.to = t; this.raw = r; }
-        };
-
-        const msg = new EmailMsgClass(fromAddress, recipientEmail, rawMime);
-        await env.EMAILER.send(msg);
         logger.info('system', `Password reset email dispatched natively via Workers EMAILER binding to ${recipientEmail}`);
-      } catch (e: any) {
-        logger.warn('system', `Native EMAILER dispatch failed for password reset, trying REST API fallback: ${e.message || e}`);
+      } catch (structuredErr: any) {
+        // Fallback to EmailMessage if raw MIME is required by runtime
+        try {
+          const rawMime = buildMimeMessage({
+            from: fromAddress,
+            to: recipientEmail,
+            subject: subjectStr,
+            html: emailHtml,
+            text: textContent
+          });
+          const EmailMsg = (globalThis as any).EmailMessage;
+          if (EmailMsg) {
+            await env.EMAILER.send(new EmailMsg(fromAddress, recipientEmail, rawMime));
+            logger.info('system', `Password reset email dispatched natively via EmailMessage to ${recipientEmail}`);
+          }
+        } catch (mimeErr) {
+          logger.warn('system', `Native EMAILER dispatch failed for password reset: ${structuredErr?.message || structuredErr}`);
+        }
       }
     } else if (env?.CLOUDFLARE_API_TOKEN && accountId && recipientEmail.includes('@')) {
       // 2. Secondary Fallback: Cloudflare REST API Client
@@ -259,7 +269,7 @@ export const AuthService = {
           account_id: accountId,
           from: fromAddress,
           to: recipientEmail,
-          subject: `AuraDash - Password Reset Code [Ref: ${resetRef}]`,
+          subject: subjectStr,
           html: emailHtml,
           text: textContent
         });
