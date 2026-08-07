@@ -4,6 +4,7 @@ export type Bindings = {
   DB: D1Database;
   STORAGE: R2Bucket;
   K1: KVNamespace;
+  EMAILER?: any;
   R2_PUBLIC_URL: string;
   CLOUDFLARE_API_TOKEN: string;
   PUBLIC_LIMITER: any;

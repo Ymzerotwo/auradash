@@ -9,28 +9,70 @@
 import { logger } from '../utils/logger';
 import Cloudflare from 'cloudflare';
 
+let cachedBusinessSettings: { businessName: string; logoUrl: string | null; fetchedAt: number } | null = null;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes memory cache
+
+const buildMimeMessage = ({ from, to, subject, html, text }: { from: string; to: string; subject: string; html: string; text: string }): string => {
+  const boundary = '----=_Part_' + Math.random().toString(36).substring(2);
+  return [
+    `From: ${from}`,
+    `To: ${to}`,
+    `Subject: ${subject}`,
+    'MIME-Version: 1.0',
+    `Content-Type: multipart/alternative; boundary="${boundary}"`,
+    '',
+    `--${boundary}`,
+    'Content-Type: text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding: 7bit',
+    '',
+    text,
+    '',
+    `--${boundary}`,
+    'Content-Type: text/html; charset=UTF-8',
+    'Content-Transfer-Encoding: 7bit',
+    '',
+    html,
+    '',
+    `--${boundary}--`
+  ].join('\r\n');
+};
+
 export const EmailService = {
   /**
-   * Sends an automated reply using Cloudflare Email Routing API.
-   * Matches the existing method used in Auth Services.
+   * Sends an automated reply using native Cloudflare Workers EMAILER binding or Cloudflare Email Routing API.
    * 
-   * @param db - The D1 Database instance.
+   * @param apiToken - Optional API Token for REST fallback.
+   * @param userEmail - Recipient email.
+   * @param userName - Recipient name.
+   * @param env - Workers Environment bindings (contains env.EMAILER, etc).
+   * @param db - D1 Database instance.
    */
-  sendAutoReply: async (apiToken: string | undefined, userEmail: string, userName: string, env?: any) => {
-    if (!apiToken) {
-      logger.warn('system', '[EMAIL SERVICE] CLOUDFLARE_API_TOKEN is not configured. Skipping email dispatch.');
-      return false;
-    }
-
-    const accountId = env?.CF_ACCOUNT_ID;
-    const fromAddress = env?.EMAIL_FROM_ADDRESS;
-    const ticketRef = 'AD-' + Math.floor(100000 + Math.random() * 900000);
-    const frontendUrl = env?.APP_FRONTEND_URL;
+  sendAutoReply: async (apiToken: string | undefined, userEmail: string, userName: string, env?: any, db?: any) => {
+    const fromAddress = env?.EMAIL_FROM_ADDRESS || 'noreply@yourdomain.com';
+    const ticketRef = 'REF-' + Math.floor(100000 + Math.random() * 900000);
+    const frontendUrl = env?.APP_FRONTEND_URL || '';
     const displayUrl = frontendUrl.replace(/^https?:\/\//, '');
 
-    if (!accountId || !fromAddress) {
-      logger.warn('system', '[EMAIL SERVICE] CF_ACCOUNT_ID or EMAIL_FROM_ADDRESS is not configured. Skipping email dispatch.');
-      return false;
+    let businessName = 'Customer Support';
+    let logoUrl: string | null = null;
+
+    if (db) {
+      const now = Date.now();
+      if (cachedBusinessSettings && (now - cachedBusinessSettings.fetchedAt < CACHE_TTL_MS)) {
+        businessName = cachedBusinessSettings.businessName;
+        logoUrl = cachedBusinessSettings.logoUrl;
+      } else {
+        try {
+          const settings = await db.prepare('SELECT business_name, logo_url FROM Business_Settings LIMIT 1').first();
+          if (settings) {
+            if (settings.business_name && settings.business_name.trim()) businessName = settings.business_name.trim();
+            if (settings.logo_url && settings.logo_url.trim()) logoUrl = settings.logo_url.trim();
+          }
+          cachedBusinessSettings = { businessName, logoUrl, fetchedAt: now };
+        } catch (e) {
+          logger.warn('system', '[EMAIL SERVICE] Could not fetch Business_Settings for email template, using defaults.');
+        }
+      }
     }
 
     const emailHtml = `
@@ -51,16 +93,11 @@ export const EmailService = {
           </tr>
           <tr>
             <td style="padding: 32px 32px 20px 32px; text-align: center;">
-              <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center">
-                <tr>
-                  <td style="vertical-align: middle;">
-                    <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 10px; text-align: center; line-height: 36px; color: #ffffff; font-weight: 800; font-size: 18px; display: inline-block;">A</div>
-                  </td>
-                  <td style="vertical-align: middle; padding-left: 10px;">
-                    <span style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">Aura<span style="color: #6366f1;">Dash</span></span>
-                  </td>
-                </tr>
-              </table>
+              ${logoUrl ? `
+                <img src="${logoUrl}" alt="${businessName}" style="max-height: 48px; max-width: 220px; display: inline-block; object-fit: contain;">
+              ` : `
+                <span style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">${businessName}</span>
+              `}
             </td>
           </tr>
           <tr>
@@ -73,7 +110,7 @@ export const EmailService = {
               
               <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #a1a1aa;">
                 Hello <strong style="color: #f4f4f5;">${userName || 'there'}</strong>,<br><br>
-                Thank you for reaching out to us. This is an automated message to confirm that we have successfully received your inquiry.
+                Thank you for reaching out to <strong style="color: #f4f4f5;">${businessName}</strong>. This is an automated message to confirm that we have successfully received your inquiry.
               </p>
 
               <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px;">
@@ -100,8 +137,7 @@ export const EmailService = {
               <hr style="border: none; border-top: 1px solid #27272a; margin: 24px 0;">
 
               <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #71717a; text-align: center;">
-                &copy; ${new Date().getFullYear()} AuraDash. All rights reserved.<br>
-                <a href="${frontendUrl}" style="color: #6366f1; text-decoration: none; font-weight: 500;">${displayUrl}</a>
+                &copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.${displayUrl ? `<br><a href="${frontendUrl}" style="color: #6366f1; text-decoration: none; font-weight: 500;">${displayUrl}</a>` : ''}
               </p>
             </td>
           </tr>
@@ -113,21 +149,56 @@ export const EmailService = {
 </html>
     `;
 
+    const textContent = `Hello ${userName || 'there'},\n\nThank you for reaching out to ${businessName}. This is an automated message to confirm that we have successfully received your inquiry.\n\nOur team will review your request and get back to you as soon as possible.\n\nReference: ${ticketRef}`;
+
+    // 1. Primary: Native Cloudflare Workers Send Email Binding (EMAILER in wrangler.jsonc)
+    // No API tokens or account IDs needed! Works out of the box when deployed.
+    if (env?.EMAILER && typeof env.EMAILER.send === 'function') {
+      try {
+        const rawMime = buildMimeMessage({
+          from: fromAddress,
+          to: userEmail,
+          subject: `${businessName} - We have received your request [${ticketRef}]`,
+          html: emailHtml,
+          text: textContent
+        });
+
+        const EmailMsgClass = (globalThis as any).EmailMessage || class {
+          from: string; to: string; raw: string;
+          constructor(f: string, t: string, r: string) { this.from = f; this.to = t; this.raw = r; }
+        };
+
+        const msg = new EmailMsgClass(fromAddress, userEmail, rawMime);
+        await env.EMAILER.send(msg);
+        logger.info('system', `[EMAIL SERVICE] Email dispatched natively via Workers EMAILER binding to ${userEmail}`);
+        return true;
+      } catch (e) {
+        logger.warn('system', '[EMAIL SERVICE] Native EMAILER dispatch failed, trying REST API fallback...', e);
+      }
+    }
+
+    // 2. Secondary Fallback: Cloudflare REST API Client (if tokens are configured)
+    const accountId = env?.CF_ACCOUNT_ID;
+    if (!apiToken || !accountId) {
+      logger.warn('system', '[EMAIL SERVICE] Neither native EMAILER binding nor REST API tokens are available. Skipping email dispatch.');
+      return false;
+    }
+
     try {
       const client = new Cloudflare({ apiToken });
       const response = await client.emailSending.send({
         account_id: accountId,
         from: fromAddress,
         to: userEmail,
-        subject: `AuraDash - We have received your request [${ticketRef}]`,
+        subject: `${businessName} - We have received your request [${ticketRef}]`,
         html: emailHtml,
-        text: `Hello ${userName || 'there'},\n\nThank you for reaching out to us. This is an automated message to confirm that we have successfully received your inquiry.\n\nOur team will review your request and get back to you as soon as possible.\n\nReference: ${ticketRef}`
+        text: textContent
       });
       
-      logger.info('system', `[EMAIL SERVICE] Email delivered status: ${response.delivered}`);
+      logger.info('system', `[EMAIL SERVICE] Email delivered via REST API status: ${response.delivered}`);
       return true;
     } catch (e) {
-      logger.error('system', '[EMAIL SERVICE] Failed to send email via Cloudflare Email Routing API:', e);
+      logger.error('system', '[EMAIL SERVICE] Failed to send email via Cloudflare REST API:', e);
       return false;
     }
   }

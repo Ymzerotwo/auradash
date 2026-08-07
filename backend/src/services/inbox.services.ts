@@ -110,16 +110,14 @@ export const InboxService = {
       metadata ? JSON.stringify(metadata) : null
     ).run();
 
-    // Send actual automated confirmation email asynchronously to avoid blocking the response
+    // Send automated confirmation email 100% asynchronously (fire-and-forget)
     if (data.email) {
       const envRef = (db as any).env || {};
-      const emailPromise = EmailService.sendAutoReply(apiKey, data.email, data.full_name, envRef)
-        .catch(e => logger.error('system', 'Email sending failed:', e));
+      const emailPromise = EmailService.sendAutoReply(apiKey, data.email, data.full_name, envRef, db)
+        .catch(e => logger.error('system', '[EMAIL SERVICE] Background email dispatch failed:', e));
         
-      if (ctx && ctx.waitUntil) {
+      if (ctx && typeof ctx.waitUntil === 'function') {
         ctx.waitUntil(emailPromise);
-      } else {
-        await emailPromise;
       }
     }
 
