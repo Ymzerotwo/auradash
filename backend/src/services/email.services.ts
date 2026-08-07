@@ -48,7 +48,8 @@ export const EmailService = {
    * @param db - D1 Database instance.
    */
   sendAutoReply: async (apiToken: string | undefined, userEmail: string, userName: string, env?: any, db?: any) => {
-    const fromAddress = env?.EMAIL_FROM_ADDRESS || 'noreply@yourdomain.com';
+    const fromAddress = (env?.EMAIL_FROM_ADDRESS || 'noreply@yourdomain.com').trim();
+    const recipientEmail = (userEmail || '').trim().toLowerCase();
     const ticketRef = 'REF-' + Math.floor(100000 + Math.random() * 900000);
     const frontendUrl = env?.APP_FRONTEND_URL || '';
     const displayUrl = frontendUrl.replace(/^https?:\/\//, '');
@@ -153,11 +154,11 @@ export const EmailService = {
 
     // 1. Primary: Native Cloudflare Workers Send Email Binding (EMAILER in wrangler.jsonc)
     // No API tokens or account IDs needed! Works out of the box when deployed.
-    if (env?.EMAILER && typeof env.EMAILER.send === 'function') {
+    if (env?.EMAILER && typeof env.EMAILER.send === 'function' && recipientEmail.includes('@')) {
       try {
         const rawMime = buildMimeMessage({
           from: fromAddress,
-          to: userEmail,
+          to: recipientEmail,
           subject: `${businessName} - We have received your request [${ticketRef}]`,
           html: emailHtml,
           text: textContent
@@ -168,9 +169,9 @@ export const EmailService = {
           constructor(f: string, t: string, r: string) { this.from = f; this.to = t; this.raw = r; }
         };
 
-        const msg = new EmailMsgClass(fromAddress, userEmail, rawMime);
+        const msg = new EmailMsgClass(fromAddress, recipientEmail, rawMime);
         await env.EMAILER.send(msg);
-        logger.info('system', `[EMAIL SERVICE] Email dispatched natively via Workers EMAILER binding to ${userEmail}`);
+        logger.info('system', `[EMAIL SERVICE] Email dispatched natively via Workers EMAILER binding to ${recipientEmail}`);
         return true;
       } catch (e) {
         logger.warn('system', '[EMAIL SERVICE] Native EMAILER dispatch failed, trying REST API fallback...', e);
@@ -179,7 +180,7 @@ export const EmailService = {
 
     // 2. Secondary Fallback: Cloudflare REST API Client (if tokens are configured)
     const accountId = env?.CF_ACCOUNT_ID;
-    if (!apiToken || !accountId) {
+    if (!apiToken || !accountId || !recipientEmail.includes('@')) {
       logger.warn('system', '[EMAIL SERVICE] Neither native EMAILER binding nor REST API tokens are available. Skipping email dispatch.');
       return false;
     }
@@ -189,7 +190,7 @@ export const EmailService = {
       const response = await client.emailSending.send({
         account_id: accountId,
         from: fromAddress,
-        to: userEmail,
+        to: recipientEmail,
         subject: `${businessName} - We have received your request [${ticketRef}]`,
         html: emailHtml,
         text: textContent

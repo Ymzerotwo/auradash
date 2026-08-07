@@ -138,9 +138,10 @@ export const AuthService = {
     const codeId = crypto.randomUUID();
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
     const resetRef = 'AD-' + Math.floor(100000 + Math.random() * 900000);
-    const accountId = env.CF_ACCOUNT_ID;
-    const fromAddress = env.EMAIL_FROM_ADDRESS;
-    const frontendUrl = env.APP_FRONTEND_URL;
+    const accountId = env?.CF_ACCOUNT_ID;
+    const fromAddress = (env?.EMAIL_FROM_ADDRESS || 'noreply@yourdomain.com').trim();
+    const frontendUrl = env?.APP_FRONTEND_URL || '';
+    const recipientEmail = normalizedEmail.trim();
 
     // Invalidate existing codes first to prevent multiple active codes for the user
     await db.prepare('DELETE FROM VerificationCodes WHERE user_id = ?').bind(user.id as string).run();
@@ -229,11 +230,11 @@ export const AuthService = {
     const textContent = `Hello ${user.full_name},\n\nYou requested to reset your password. Your 6-digit code is: ${code}\n\nThis code is valid for 15 minutes.\n\nReference: ${resetRef}`;
 
     // 1. Primary: Native Cloudflare Workers Send Email Binding (EMAILER)
-    if (env?.EMAILER && typeof env.EMAILER.send === 'function') {
+    if (env?.EMAILER && typeof env.EMAILER.send === 'function' && recipientEmail.includes('@')) {
       try {
         const rawMime = buildMimeMessage({
           from: fromAddress,
-          to: email,
+          to: recipientEmail,
           subject: `AuraDash - Password Reset Code [Ref: ${resetRef}]`,
           html: emailHtml,
           text: textContent
@@ -244,25 +245,25 @@ export const AuthService = {
           constructor(f: string, t: string, r: string) { this.from = f; this.to = t; this.raw = r; }
         };
 
-        const msg = new EmailMsgClass(fromAddress, email, rawMime);
+        const msg = new EmailMsgClass(fromAddress, recipientEmail, rawMime);
         await env.EMAILER.send(msg);
-        logger.info('system', `Password reset email dispatched natively via Workers EMAILER binding to ${email}`);
+        logger.info('system', `Password reset email dispatched natively via Workers EMAILER binding to ${recipientEmail}`);
       } catch (e: any) {
         logger.warn('system', `Native EMAILER dispatch failed for password reset, trying REST API fallback: ${e.message || e}`);
       }
-    } else if (env?.CLOUDFLARE_API_TOKEN && accountId) {
+    } else if (env?.CLOUDFLARE_API_TOKEN && accountId && recipientEmail.includes('@')) {
       // 2. Secondary Fallback: Cloudflare REST API Client
       try {
         const client = new Cloudflare({ apiToken: env.CLOUDFLARE_API_TOKEN });
         await client.emailSending.send({
           account_id: accountId,
           from: fromAddress,
-          to: email,
+          to: recipientEmail,
           subject: `AuraDash - Password Reset Code [Ref: ${resetRef}]`,
           html: emailHtml,
           text: textContent
         });
-        logger.info('system', `Password reset email successfully sent via REST API to ${email}`);
+        logger.info('system', `Password reset email successfully sent via REST API to ${recipientEmail}`);
       } catch (e: any) {
         logger.error('system', `Failed to send email via Cloudflare REST API: ${e.message || e}`);
       }
