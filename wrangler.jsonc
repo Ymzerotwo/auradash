@@ -6,10 +6,6 @@
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
-	"build": {
-		"command": "npm install",
-		"cwd": "backend"
-	},
 	"vars": {
 		"CLOUDFLARE_API_TOKEN": "your_cloudflare_api_token_here",
 		"CF_ACCOUNT_ID": "your_cloudflare_account_id_here",
