@@ -176,6 +176,7 @@ function AvatarDropdown({ isMobile }: AvatarDropdownProps) {
             height={36} 
             className="w-full h-full object-cover rounded-full"
             unoptimized
+            priority
           />
         ) : (
           <span>{initials}</span>
