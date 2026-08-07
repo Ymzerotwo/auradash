@@ -77,13 +77,23 @@ app.use('/files/*', cors({
   credentials: false,
 }))
 
+// Helper to normalize origin URLs (handles trailing slashes, protocol cases)
+const normalizeOriginUrl = (urlStr: string): string => {
+  try {
+    return new URL(urlStr).origin.toLowerCase()
+  } catch {
+    return urlStr.trim().toLowerCase().replace(/\/+$/, '')
+  }
+}
+
 // Restrict CORS for Dashboard API based on ALLOWED_ORIGINS.
 const dashboardCors = async (c: Context<any>, next: Next) => {
   const corsMiddleware = cors({
     origin: (origin) => {
       const allowedOriginsStr = (c.env && c.env.ALLOWED_ORIGINS) ? c.env.ALLOWED_ORIGINS : 'http://localhost:3000,http://localhost:3001'
-      const allowedOrigins = allowedOriginsStr.split(',').map((o: string) => o.trim())
-      if (!origin || allowedOrigins.includes(origin)) {
+      const allowedOrigins = allowedOriginsStr.split(',').map((o: string) => normalizeOriginUrl(o)).filter(Boolean)
+      const reqOrigin = origin ? normalizeOriginUrl(origin) : null
+      if (!origin || (reqOrigin && allowedOrigins.includes(reqOrigin))) {
         return origin || allowedOrigins[0]
       }
       return null
@@ -131,9 +141,9 @@ const strictOriginValidation = async (c: Context, next: Next) => {
   }
 
   try {
-    const sourceOrigin = new URL(source).origin
+    const sourceOrigin = normalizeOriginUrl(source)
     const allowedOriginsStr = c.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:3001'
-    const allowedOrigins = allowedOriginsStr.split(',').map((o: string) => o.trim()).filter(Boolean)
+    const allowedOrigins = allowedOriginsStr.split(',').map((o: string) => normalizeOriginUrl(o)).filter(Boolean)
 
     if (!allowedOrigins.includes(sourceOrigin)) {
       logger.warn(reqId, `Block request to '${path}': Origin '${sourceOrigin}' is not allowed`)
