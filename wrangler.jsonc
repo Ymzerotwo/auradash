@@ -26,14 +26,12 @@
 		{
 			"binding": "DB",
 			"database_name": "auradash",
-			"database_id": "YOUR_DATABASE_ID_HERE",
 			"migrations_dir": "backend/migrations"
 		}
 	],
 	"send_email": [
 		{
-			"name": "EMAILER",
-			"remote": true
+			"name": "EMAILER"
 		}
 	],
 	"triggers": {
@@ -43,10 +41,7 @@
 	},
 	"kv_namespaces": [
 		{
-			"binding": "K1",
-			"id": "YOUR_KV_NAMESPACE_ID_HERE",
-			"preview_id": "YOUR_KV_NAMESPACE_ID_HERE",
-			"remote": true
+			"binding": "K1"
 		}
 	],
 	"ratelimits": [
