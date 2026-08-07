@@ -10,6 +10,7 @@ import { D1Database, KVNamespace } from '@cloudflare/workers-types';
 import { hashPassword, verifyPassword } from '../utils/crypto';
 import Cloudflare from 'cloudflare';
 import { logger } from '../utils/logger';
+import { buildMimeMessage } from './email.services';
 
 // Authentication Service
 // Houses the core business logic for user authentication, session state management,
@@ -225,8 +226,33 @@ export const AuthService = {
 </html>
     `;
 
-    try {
-      if (env.CLOUDFLARE_API_TOKEN && accountId) {
+    const textContent = `Hello ${user.full_name},\n\nYou requested to reset your password. Your 6-digit code is: ${code}\n\nThis code is valid for 15 minutes.\n\nReference: ${resetRef}`;
+
+    // 1. Primary: Native Cloudflare Workers Send Email Binding (EMAILER)
+    if (env?.EMAILER && typeof env.EMAILER.send === 'function') {
+      try {
+        const rawMime = buildMimeMessage({
+          from: fromAddress,
+          to: email,
+          subject: `AuraDash - Password Reset Code [Ref: ${resetRef}]`,
+          html: emailHtml,
+          text: textContent
+        });
+
+        const EmailMsgClass = (globalThis as any).EmailMessage || class {
+          from: string; to: string; raw: string;
+          constructor(f: string, t: string, r: string) { this.from = f; this.to = t; this.raw = r; }
+        };
+
+        const msg = new EmailMsgClass(fromAddress, email, rawMime);
+        await env.EMAILER.send(msg);
+        logger.info('system', `Password reset email dispatched natively via Workers EMAILER binding to ${email}`);
+      } catch (e: any) {
+        logger.warn('system', `Native EMAILER dispatch failed for password reset, trying REST API fallback: ${e.message || e}`);
+      }
+    } else if (env?.CLOUDFLARE_API_TOKEN && accountId) {
+      // 2. Secondary Fallback: Cloudflare REST API Client
+      try {
         const client = new Cloudflare({ apiToken: env.CLOUDFLARE_API_TOKEN });
         await client.emailSending.send({
           account_id: accountId,
@@ -234,17 +260,15 @@ export const AuthService = {
           to: email,
           subject: `AuraDash - Password Reset Code [Ref: ${resetRef}]`,
           html: emailHtml,
-          text: `Hello ${user.full_name},\n\nYou requested to reset your password. Your 6-digit code is: ${code}\n\nThis code is valid for 15 minutes.\n\nReference: ${resetRef}`
+          text: textContent
         });
-        logger.info('system', `Password reset email successfully sent to ${email}`);
-      } else {
-        logger.warn('system', `Cloudflare API token or Account ID is missing. Password reset email was not sent.`);
+        logger.info('system', `Password reset email successfully sent via REST API to ${email}`);
+      } catch (e: any) {
+        logger.error('system', `Failed to send email via Cloudflare REST API: ${e.message || e}`);
       }
-    } catch (e: any) {
-      logger.error('system', `Failed to send email via Cloudflare Email Routing API: ${e.message || e}`);
+    } else {
+      logger.warn('system', `Neither native EMAILER binding nor Cloudflare API tokens are available. Password reset email skipped.`);
     }
-
-    // REMOVED [OTP DEBUG] plaintext logging to prevent sensitive data exposure in production logs
 
     return { success: true };
   },

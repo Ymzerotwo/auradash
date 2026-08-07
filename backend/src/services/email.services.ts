@@ -12,7 +12,7 @@ import Cloudflare from 'cloudflare';
 let cachedBusinessSettings: { businessName: string; logoUrl: string | null; fetchedAt: number } | null = null;
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes memory cache
 
-const buildMimeMessage = ({ from, to, subject, html, text }: { from: string; to: string; subject: string; html: string; text: string }): string => {
+export const buildMimeMessage = ({ from, to, subject, html, text }: { from: string; to: string; subject: string; html: string; text: string }): string => {
   const boundary = '----=_Part_' + Math.random().toString(36).substring(2);
   return [
     `From: ${from}`,
