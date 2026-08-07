@@ -3,8 +3,8 @@
 </p>
 <h1 align="center">AuraDash Frontend</h1>
 
-![Next.js](https://img.shields.io/badge/Next.js-14.2.15-black?style=for-the-badge&logo=next.js)
-![React](https://img.shields.io/badge/React-18.3.1-blue?style=for-the-badge&logo=react)
+![Next.js](https://img.shields.io/badge/Next.js-15.5.23-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19.0.0-blue?style=for-the-badge&logo=react)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)
 
@@ -12,7 +12,7 @@
 
 [![Watch Installation Guide on YouTube](https://img.shields.io/badge/YouTube-Watch_Video_Guide-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@Ym_zerotwo)
 
-AuraDash Frontend is a modern, responsive, and highly customizable admin dashboard application. Built with Next.js 14 App Router, React 18, and Tailwind CSS v4, it provides a robust foundation for managing resources, handling complex forms, and presenting data beautifully.
+AuraDash Frontend is a modern, responsive, and highly customizable admin dashboard application. Built with Next.js 15 App Router, React 19, and Tailwind CSS v4, it provides a robust foundation for managing resources, handling complex forms, and presenting data beautifully.
 
 **Documentation**: [auradash.ymzerotwo.com](https://auradash.ymzerotwo.com)
 **Version**: `0.1.0` (Private)
@@ -39,8 +39,8 @@ AuraDash Frontend is a modern, responsive, and highly customizable admin dashboa
 
 ## 🚀 Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/) `14.2.15` (App Router)
-- **UI Library**: [React](https://react.dev/) `^18.3.1`
+- **Framework**: [Next.js](https://nextjs.org/) `15.5.23` (App Router)
+- **UI Library**: [React](https://react.dev/) `19.0.0`
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) `^4` & [Tailwind Merge](https://github.com/dcastil/tailwind-merge) `^3.5.0`
 - **Components**: [Shadcn UI](https://ui.shadcn.com/) `^4.5.0` (`base-nova` style) & [@base-ui/react](https://base-ui.com/) `^1.4.1`
 - **State Management**: [Zustand](https://zustand-demo.pmnd.rs/) `^5.0.12`

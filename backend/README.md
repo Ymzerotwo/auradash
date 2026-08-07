@@ -38,7 +38,7 @@ The powerful, secure, and globally distributed backend API for **AuraDash**. Bui
 ## 🚀 Tech Stack
 
 - **Framework**: [Hono](https://hono.dev/) (`^4.12.15`)
-- **Runtime**: Cloudflare Workers (`cloudflare: ^6.3.0`, `wrangler: ^4.114.0`)
+- **Runtime**: Cloudflare Workers (`cloudflare: ^6.3.0`, `wrangler: ^4.35.0`)
 - **Language**: TypeScript (`^6.0.3`)
 - **Validation**: Zod (`^4.4.1`) & `@hono/zod-validator` (`^0.7.6`)
 - **Sanitization**: `sanitize-html` (`^2.17.4`)
