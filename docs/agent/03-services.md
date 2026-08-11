@@ -21,9 +21,46 @@ The Services API provides two distinct consumption patterns:
 > **Submitting a booking request** is executed via `POST /api/public/inbox` using `inquiry_type: "service"` and passing the selected `service_id` (see [04-inbox.md](./04-inbox.md)).  
 > When submitted, the request is safely held in the Admin Inbox. In the Admin Dashboard, the business manager reviews the submission and converts it into a verified Customer CRM profile & Pending Booking record via an Atomic D1 Transaction.
 
-### 🧩 Dynamic Custom Fields (`meta_data`)
+### 🧩 Dynamic Custom Fields (`meta_data`) — Modular Service Block Builder
 
-Services return a dynamic `meta_data` array configured by administrators for service specifications (e.g., service duration, package inclusions/bullet lists, sample photo galleries, YouTube demo videos, downloadable PDFs, custom WhatsApp links). See [09-field-schemas.md](./09-field-schemas.md) for full schemas and a production React rendering component.
+Services in AuraDash utilize the `meta_data` array as a **Dynamic Modular Block Builder**. This allows the administrator to freely structure and compose the service page in **ANY custom order** without touching frontend code:
+- **`text-info`**: Highlight badges for **Duration** (e.g., `45 Minutes`), **Starting Investment** (e.g., `From $1,200`), or session location.
+- **`text-description`**: Multi-line narrative paragraphs covering comprehensive service descriptions, clinical techniques, and patient expectations.
+- **`list`**: Package inclusions, warranty points, what's included in the treatment, or preparation checklists.
+- **`photo`**: High-resolution clinical portfolio images, before/after case results, or medical equipment diagrams.
+- **`video-youtube`**: Embedded YouTube walkthrough videos, treatment previews, or doctor commentary.
+- **`video`**: Native HTML5 MP4/WebM video players for self-hosted clips.
+- **`link`**: Prominent Call-to-Action buttons (e.g., *"Schedule Free 3D Consultation"*, *"Download Pricing Sheet (PDF)"*).
+- **`icon`**: Feature icons resolved from the Lucide icon library (e.g., `Sparkles`, `ShieldCheck`, `Clock`).
+- **`date_time`**: Next available treatment dates or special event timestamps.
+
+---
+
+### 🚨 CRITICAL ARCHITECTURAL ENFORCEMENT: The Mandatory Financial Contract (`Name` & `Price`)
+
+> 🚨 **STRICT BACKEND ENFORCEMENT (`MISSING_FINANCIAL_CONTRACT`)**:  
+> For any service to accept booking inquiries via `POST /api/public/inbox` (`inquiry_type: "service"` or passing `service_id`), the backend strictly verifies that the service's `meta_data` array contains a valid **Financial Contract**:
+> 
+> 1. **`Name` Field (Mandatory)**: A custom field whose label or ID is case-insensitively `"Name"` (e.g. `type: "text-info"` with `"text": "Invisalign Clear Aligners"`).
+> 2. **`Price` Field (Mandatory)**: A custom field whose label or ID is case-insensitively `"Price"` containing a parseable numeric value (e.g. `type: "text-info"` with `"text": "3500"`).
+> 3. **`Discount` Field (Optional)**: A custom field whose label or ID is case-insensitively `"Discount"` containing a parseable numeric discount (e.g. `"500"`).
+> 
+> 🛑 **If `Name` or `Price` is missing, empty, or not a valid number in `meta_data`**:  
+> The backend will instantly reject any booking inquiry with HTTP 400:  
+> `MISSING_FINANCIAL_CONTRACT: Missing required service fields (Name, Price). Please review: auradash.ymzerotwo.com/docs`
+> 
+> 💡 **JSON Contract Example in Service `meta_data`**:
+> ```json
+> [
+>   { "id": "srv-name", "label": "Name", "type": "text-info", "data": { "text": "Invisalign Clear Aligners" } },
+>   { "id": "srv-price", "label": "Price", "type": "text-info", "data": { "text": "3500" } },
+>   { "id": "srv-discount", "label": "Discount", "type": "text-info", "data": { "text": "500" } }
+> ]
+> ```
+
+---
+
+See [09-field-schemas.md](./09-field-schemas.md) for full field schemas and a production React polymorphic rendering component.
 
 ### 🔍 Search & Filtering Limitations
 
@@ -182,7 +219,16 @@ Returns a **paginated** list of services under a specific category.
 
 ---
 
+### 🤖 MANDATORY AI IMPLEMENTATION DIRECTIVE: UI/UX Error Handling & Empty States
+
+AI Coding Assistants generating the frontend MUST handle empty data and API errors gracefully and professionally:
+- **Empty States**: If there are no services published yet or an error occurs fetching them, display an elegant empty state message. The empty state message **MUST be written natively in the exact language that the client website is built with**.
+- **Error States**: Do not display raw technical errors or stack traces to the user. Always show a professional, localized generic error message.
+
+---
+
 ## Module Error Reference (Services API)
+
 
 | Status | Code | Cause | Resolution / Handling |
 |--------|------|-------|-----------------------|

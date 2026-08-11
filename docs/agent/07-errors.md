@@ -154,13 +154,18 @@ These errors occur before reaching business controllers and are enforced by the 
 ```
 
 #### `MISSING_FINANCIAL_CONTRACT` (HTTP 400)
-- **Definition**: A booking submission (`POST /api/public/inbox` with `inquiry_type: "service"`) requested a service that lacks configured pricing or terms.
-- **Resolution**: Ensure the service has valid pricing configured in the Admin Dashboard.
+- **Definition**: A booking submission (`POST /api/public/inbox` with `inquiry_type: "service"` or `service_id`) referenced a service whose `meta_data` array lacks the mandatory **Financial Contract** (`Name` and `Price` fields).
+- **Backend Root Cause**: The backend strictly parses `service.meta_data` to ensure accurate booking conversion and billing records. If a custom field with label/ID `"Name"` is missing, or a custom field with label/ID `"Price"` is missing/non-numeric, the submission is rejected.
+- **Exact Error Message**: `"MISSING_FINANCIAL_CONTRACT: Missing required service fields (Name, Price). Please review: auradash.ymzerotwo.com/docs"`
+- **Resolution**: Edit the service in the Admin Dashboard (`/services`) or database seed and ensure its `meta_data` contains:
+  1. A field with label `"Name"` (e.g. `type: "text-info"`, value: `"Invisalign Clear Aligners"`).
+  2. A field with label `"Price"` containing a parseable numeric value (e.g. `type: "text-info"`, value: `"3500"`).
 ```json
 {
   "success": false,
   "code": "MISSING_FINANCIAL_CONTRACT",
-  "message": "Service missing required pricing contract"
+  "message": "MISSING_FINANCIAL_CONTRACT: Missing required service fields (Name, Price). Please review: auradash.ymzerotwo.com/docs",
+  "data": null
 }
 ```
 
@@ -211,3 +216,16 @@ These errors occur before reaching business controllers and are enforced by the 
 | `MISSING_FINANCIAL_CONTRACT` | 400 | Business | Service missing required pricing details |
 | `RATE_LIMIT_EXCEEDED` | 429 | Protection | Rate limit quota exceeded |
 | `INTERNAL_SERVER_ERROR` | 500 | System | Unexpected edge server exception |
+
+---
+
+## 🚨 Edge Runtime & Cloudflare Troubleshooting: CORS Header Rejection
+
+### `X [ERROR] Error: internal error; reference = ...` (CORS Preflight Failure)
+
+- **Symptom**: Cloudflare / Wrangler logs output `X [ERROR] Error: internal error; reference = ...` on `/api/public/*` requests.
+- **Root Cause**: The client frontend attached custom, unapproved HTTP request headers (such as `Cache-Control: no-cache, no-store`, `Pragma: no-cache`, `Expires: 0`) to browser `fetch()` calls. This triggered a browser CORS Preflight (`OPTIONS`) request containing `Access-Control-Request-Headers: Cache-Control, Pragma, Expires`, which the backend rejected.
+- **Fix (Client-Side Resolution — NEVER Modify Backend Source Code)**:
+  1. **Clean Request Headers**: In your client HTTP fetch helper, remove all custom cache headers. Outgoing request headers must strictly contain **ONLY `x-api-key` and `Content-Type`**.
+  2. **Disable Caching via Framework Runtime Options**: Enforce zero-cache using framework-native runtime flags (e.g. Next.js `fetch(url, { cache: 'no-store', next: { revalidate: 0 } })`, `export const dynamic = 'force-dynamic'`; React Query `staleTime: 0`) **WITHOUT modifying HTTP request headers**.
+

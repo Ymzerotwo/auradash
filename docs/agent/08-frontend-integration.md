@@ -2,6 +2,12 @@
 
 > **CORE PRINCIPLE**: This document defines the **universal architectural principles and data flow patterns** for connecting ANY client application (**Flutter**, **React / Next.js**, **Vue / Nuxt**, **iOS Swift**, **Android Kotlin**, **Svelte**, or **PHP**) to the AuraDash Public API. It is 100% language-agnostic and framework-agnostic.
 
+> 🚨 **MANDATORY DIRECTIVE: CONNECT REAL API FIRST, DESIGN/STYLE SECOND (NO LAZINESS / NO MOCK-ONLY UI)**:
+> When building or refactoring client applications, **YOU MUST WIRE UP AND ACTIVATE REAL API CALLS FIRST** before perfecting UI layouts or CSS styles.
+> - **Never rely on static fallback data while building**: Do NOT build components that only read from local objects/mocks.
+> - **The Real API is Mandatory**: Every component (Header, Footer, Services, Blog, Contact, Booking) MUST actively initiate real HTTP requests (`GET /settings`, `GET /services`, `GET /articles`, `POST /inbox`, `POST /comments`) via the network client on initial mount/render.
+> - **Role of Fallbacks**: Hardcoded fallbacks (`FALLBACK_PUBLIC_SETTINGS`, static mocks) are **strictly an emergency safety net (Resilience Layer)** to prevent UI crashes if the server is offline or the network drops. They are NEVER a substitute for making the live API connection. Connecting to the live backend first eliminates schema mismatches, ensures real-time CMS synchronization, and avoids costly hydration/wiring bugs later.
+
 ---
 
 ## 1. High-Level Architectural Flow
@@ -134,8 +140,49 @@ When an API request fails, AI models and client applications must evaluate error
 ## 5. Summary Checklist for AI Frontend Generators
 
 When instructing an AI Agent to build a frontend client for AuraDash in ANY framework:
-1. ✅ **Pass `x-api-key`** in default network headers.
-2. ✅ **Parse standard envelope** (`success`, `code`, `data`, `errors`).
-3. ✅ **Derive SEO metadata dynamically** using `seo_data` fallbacks.
-4. ✅ **Render `meta_data` dynamic fields** using component mappers.
-5. ✅ **Submit forms to `/inbox` and `/comments`** with proper `inquiry_type` enums.
+1. 🚨 **CONNECT REAL API FIRST**: Always initialize and connect HTTP services (`GET /settings`, `GET /services`, `GET /articles`, `POST /inbox`, etc.) to live components BEFORE spending time on UI/CSS polish. Fallbacks are strictly an offline safety net.
+2. 🚫 **STRICT ZERO-CACHE POLICY**: Ensure all API requests and page routes have caching completely disabled (`cache: "no-store"`, `revalidate: 0`, `dynamic = "force-dynamic"`, `Cache-Control: no-cache, no-store, must-revalidate`) for real-time CMS sync.
+3. ✅ **Pass `x-api-key`** in default network headers.
+4. ✅ **Parse standard envelope** (`success`, `code`, `data`, `errors`).
+5. ✅ **Derive SEO metadata dynamically** using `seo_data` fallbacks.
+6. ✅ **Render `meta_data` dynamic fields** using component mappers.
+7. ✅ **Submit forms to `/inbox` and `/comments`** with proper `inquiry_type` enums.
+
+---
+
+## 6. Strict Zero-Cache Directive & Real-Time Sync Policy (No Caching by Default)
+
+> 🚨 **UNIVERSAL ARCHITECTURAL PRINCIPLE: ZERO LOCAL / SERVER CACHING BY DEFAULT**  
+> AuraDash operates as a real-time Headless CMS. When an administrator adds a new service, updates pricing, edits business hours, or publishes an article in the Admin Dashboard, the changes **MUST appear live on the client application immediately upon page refresh or view reload**.  
+> **Rule**: All client applications—regardless of language or framework (**Flutter**, **React / Next.js**, **Vue / Nuxt**, **iOS Swift**, **Android Kotlin**, **Svelte**, etc.)—**MUST explicitly disable all caching on API requests and data layers by default**.
+
+### 🚫 Strict Clean Request Headers Directive (No Custom Cache Header Pollution)
+- **Minimal Standard Request Headers**: Outgoing HTTP request headers MUST contain **ONLY**:
+  ```json
+  {
+    "Content-Type": "application/json",
+    "x-api-key": "<API_KEY>"
+  }
+  ```
+  *(or `Authorization: Bearer <API_KEY>`)*.
+- **DO NOT Attach Custom Cache Headers in Network Requests**: AI models and developers **MUST NOT** send custom cache-control headers (`Cache-Control: no-cache, no-store`, `Pragma: no-cache`, `Expires: 0`) in client `fetch()` request headers.
+- **Why**: Sending unapproved custom headers in browser cross-origin requests causes the browser to issue a CORS Preflight (`OPTIONS`) request listing those headers in `Access-Control-Request-Headers`. If the backend does not permit them, Cloudflare / Wrangler Workerd throws internal errors (`X [ERROR] Error: internal error; reference = ...`) or rejects the preflight check.
+- **The Correct Universal Way to Disable Caching**: Disable caching strictly at the **framework/client runtime level** (e.g. Next.js internal options: `fetch(url, { cache: 'no-store', next: { revalidate: 0 } })`, `export const dynamic = 'force-dynamic'`; React Query: `staleTime: 0`) **WITHOUT polluting or adding extra HTTP request headers**.
+
+### 🌐 Universal Implementation Guidelines
+1. **Network Layer**: Keep request headers clean (`x-api-key` + `Content-Type` only).
+2. **Framework-Specific Awareness**: If using a framework that enables caching or static pre-rendering by default (such as Next.js App Router), configure internal framework options (`cache: 'no-store'`, `revalidate: 0`, `dynamic = 'force-dynamic'`) to force dynamic data fetching.
+3. **State Management**: If using state management or query libraries (e.g., React Query, Pinia, Riverpod, Bloc), configure query lifecycles to fetch fresh data on view mount rather than serving stale cache (`staleTime: 0`).
+
+---
+
+### ⚠️ Mandatory Advisory Protocol If User Requests Caching
+
+If the user specifically asks to enable caching (e.g., *"Can we cache services or articles?"*):
+
+1. **Step 1 (Mandatory Advisory)**: The AI Assistant **MUST FIRST advise the user against caching**:
+   > *"It is strongly recommended NOT to cache public API endpoints so that updates made in the AuraDash Admin Dashboard (such as adding services, editing prices, updating contact numbers, or publishing articles) appear live in real-time immediately. Enabling caching will cause visitors to see stale data until the cache expires."*
+2. **Step 2 (Execute If User Insists)**: If and only if the user confirms or explicitly insists on enabling caching (e.g. for high-traffic optimization or static pre-generation), then and only then proceed to configure the specific cache behavior requested by the user.
+
+
+

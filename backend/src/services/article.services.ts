@@ -41,8 +41,12 @@ export const ArticleService = {
     }
 
     if (categoryId) {
-      filterClauses.push('Articles.category_id = ?');
-      params.push(categoryId);
+      if (categoryId === 'null') {
+        filterClauses.push('Articles.category_id IS NULL');
+      } else {
+        filterClauses.push('Articles.category_id = ?');
+        params.push(categoryId);
+      }
     }
 
     if (status === 'active') {

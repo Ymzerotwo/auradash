@@ -162,10 +162,61 @@
 
 ---
 
+## ❓ Question 22: Should I design/style the UI with static mock/fallback data first and connect the backend API later?
+> **❌ ABSOLUTELY NOT. CONNECT REAL API ENDPOINTS FIRST.**  
+> - **Mandatory Priority**: Initialize your HTTP client and wire up live endpoints (`GET /settings`, `GET /services`, `GET /articles`, `POST /inbox`, `POST /comments`) to components **from Day 1**.  
+> - **Fallback Data Role**: Hardcoded constants (`FALLBACK_PUBLIC_SETTINGS`, static lists) are strictly an **emergency offline safety net (Resilience Layer)** to prevent blank screens if the server goes down. They are NEVER a substitute for executing real live HTTP requests.  
+> - **Why**: Wiring the live API first guarantees complete schema synchronization, ensures live data flows from the Admin Dashboard, and prevents costly hydration and state bugs.
+
+---
+
+## ❓ Question 23: Should I inspect, read, or search the backend source code (`auradash/backend`, database migrations, D1 SQLite schemas)?
+> **❌ ABSOLUTELY NOT. USE ONLY THE OFFICIAL DOCUMENTATION IN `./docs/agent/`.**  
+> - **Sole Source of Truth**: The documentation in `./docs/agent/` and `openapi.json` is 100% complete and authoritative.  
+> - **No Backend Peeking**: AI Coding Assistants **MUST NOT** read backend route handlers, D1 SQLite schemas, or server scripts.  
+> - **Why**: AuraDash is a headless CMS. Inspecting backend code wastes tokens, causes models to hallucinate internal server structures, and creates architectural confusion. Treat the backend as a decoupled, black-box REST API.  
+> - **Data Management**: Content (Services, Articles, Categories, Settings) is managed exclusively via the **Admin Dashboard UI** and consumed via the Public API.
+
+---
+
+## ❓ Question 24: Should I enable data caching in client applications by default?
+> **❌ NO. STRICT ZERO-CACHE BY DEFAULT.**  
+> - **Real-Time Headless CMS Requirement**: Changes made in the Admin Dashboard (editing services, changing prices, updating hours, publishing articles) MUST appear on the client application immediately upon refreshing or reloading the view.  
+> - **Universal Rule**: Explicitly configure your HTTP client and framework data layer to disable all local/server caching by default. If using a framework that enables caching automatically (e.g., Next.js App Router), explicitly disable caching for all API requests and routes.  
+> - **If User Requests Caching**:  
+>   1. *Advise First*: The AI assistant **MUST FIRST advise the user against caching**, explaining that live updates from the dashboard will be delayed.  
+>   2. *Execute Only If User Insists*: If the user confirms or insists on caching, only then implement the specific cache duration or strategy requested.
+
+---
+
+## ❓ Question 25: Should I add custom cache headers (`Cache-Control`, `Pragma`, `Expires`) to outgoing client fetch requests?
+> **❌ ABSOLUTELY NOT. KEEP REQUEST HEADERS STRICTLY CLEAN.**  
+> - **Header Pollution Warning**: Never attach `Cache-Control`, `Pragma`, or `Expires` headers to client `fetch()` requests.  
+> - **Why**: Sending unapproved custom headers triggers browser CORS Preflight (`OPTIONS`) rejections and causes Cloudflare/Wrangler internal errors (`Error: internal error; reference = ...`).  
+> - **Correct Approach**: Outgoing request headers must contain **ONLY `x-api-key` and `Content-Type`**. Enforce zero-cache using framework-native runtime flags (e.g. Next.js `cache: 'no-store'`, `next: { revalidate: 0 }`) without altering HTTP request headers. Never modify backend CORS code.
+
+---
+
+## ❓ Question 26: What causes `MISSING_FINANCIAL_CONTRACT` when submitting booking inquiries or linking articles to services?
+> **🚨 CRITICAL ARCHITECTURAL ENFORCEMENT: Financial Contract in Service `meta_data`.**  
+> - **The Strict Rule**: Whenever a booking inquiry is submitted (`POST /api/public/inbox` with `inquiry_type: "service"` or `service_id`), or when an article's CTA button links to a booking form, the referenced Service MUST have both a `"Name"` custom field and a numeric `"Price"` custom field in its `meta_data` array.  
+> - **The Error**: If either field is missing, empty, or non-numeric, the backend immediately throws:  
+>   `400 MISSING_FINANCIAL_CONTRACT: Missing required service fields (Name, Price). Please review: auradash.ymzerotwo.com/docs`  
+> - **How to Fix**: Ensure the service in the Admin Dashboard (`/services`) or database seed has custom fields:
+>   1. Label/ID: `"Name"` (e.g. `type: "text-info"`, value: `"Dental Implants Full Set"`)
+>   2. Label/ID: `"Price"` (e.g. `type: "text-info"`, value: `"2800"`)
+>   3. (Optional) Label/ID: `"Discount"` (e.g. `type: "text-info"`, value: `"300"`)
+
+---
+
 ## Quick Anti-Hallucination Checklist for AI
 
 | Action | Allowed? | Correct Approach |
 |--------|----------|------------------|
+| Inspect or read backend source code | ❌ No | Rely strictly on `./docs/agent/` and `openapi.json` as the sole source of truth |
+| Rely on static mocks instead of live API | ❌ No | Connect real live HTTP endpoints first; fallbacks are only for offline resilience |
+| Enable caching by default | ❌ No | Disable all caching across all platforms for real-time CMS sync |
+| Send custom cache headers in requests | ❌ No | Send ONLY `x-api-key` and `Content-Type`; handle zero-cache via framework options |
 | Modify backend API routes | ❌ No | Consume routes strictly as documented |
 | Put API Key in URL query | ❌ No | Send key in `x-api-key` header |
 | Admin operations via Public API | ❌ No | Admin operations require Dashboard Sessions |
@@ -176,3 +227,5 @@
 | Request `limit=9999` pagination | ❌ No | Use reasonable limits (6–20) with `{ total, page, limit, totalPages }` |
 | Send cookies/CSRF to Public API | ❌ No | Public API is 100% stateless; use `x-api-key` only |
 | Upload media via Public API | ❌ No | Media uploads require Admin Dashboard session (`POST /api/upload`) |
+
+

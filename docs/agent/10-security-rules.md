@@ -94,12 +94,12 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 
 ---
 
-## 📊 Rule 10 — Data Fetching Best Practices
+## 📊 Rule 10 — Zero-Cache Directive & Responsible Data Fetching
 
-- **Cache GET responses** appropriately. Articles and Services data changes infrequently — implement client-side caching (e.g. `staleTime: 5 minutes`) to reduce API calls.
+- **Zero Local/Server Caching by Default**: All client applications must disable data caching by default (`cache: 'no-store'`, `revalidate = 0`) to ensure instant real-time synchronization with the Admin Dashboard.
 - **NEVER poll submission endpoints** (`POST /inbox`, `POST /comments`) — these are one-shot actions, not polling targets.
 - **Use pagination parameters** (`page`, `limit`) responsibly. Do not request `limit=9999` to fetch all records — use reasonable page sizes (6–20 items) and implement pagination or infinite scroll.
-- **Fetch settings (`GET /settings`) once** on application load and cache globally — this data rarely changes.
+- **Fetch settings (`GET /settings`) on mount** to populate site branding and contact information dynamically.
 
 ---
 
@@ -119,6 +119,24 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 
 ---
 
+## 🚫 Rule 13 — Strict Ban on Inspecting Backend Source Code
+
+- **NEVER read, inspect, or search backend source code** (`auradash/backend`, database migrations, D1 SQLite schemas, Worker scripts).
+- **The documentation in `./docs/agent/` and `openapi.json` is 100% complete and authoritative**.
+- Client applications must treat AuraDash strictly as a headless black-box REST API.
+- All content (Articles, Services, Settings, Categories) is created and managed exclusively through the **AuraDash Admin Dashboard UI** and consumed via the Public API.
+
+---
+
+## 🚫 Rule 14 — Strict Clean Request Headers Directive (No Custom Header Pollution / CORS Protection)
+
+- **Minimal Request Headers**: Client network requests MUST send ONLY standard essential headers: `x-api-key` (or `Authorization: Bearer <key>`) and `Content-Type: application/json` (for POST).
+- **NEVER Attach Custom Cache Headers**: Do NOT send `Cache-Control`, `Pragma`, or `Expires` in client request headers.
+- **Why**: Sending unapproved custom headers in browser cross-origin requests causes CORS preflight (`OPTIONS`) failures and Cloudflare internal worker errors (`Error: internal error; reference = ...`).
+- **Fix in Frontend Only**: Manage zero-cache via framework-internal options (`cache: 'no-store'`, `revalidate = 0`), and NEVER attempt to edit backend CORS files.
+
+---
+
 ## Quick Reference: Security Checklist
 
 | # | Rule | Priority |
@@ -132,6 +150,9 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 | 7 | External links with `noopener noreferrer` | 🟡 Important |
 | 8 | Sanitize text, validate embed URLs | 🔴 Critical |
 | 9 | Production keys never expire, Test keys expire in 1–24h | 🟡 Important |
-| 10 | Responsible data fetching with caching | 🟢 Best Practice |
+| 10 | Zero-cache by default for real-time CMS sync | 🟢 Best Practice |
 | 11 | Dynamic SEO from API, respect `is_indexable` | 🟡 Important |
 | 12 | Read-only context: DO NOT modify backend URLs or routes | 🔴 Critical |
+| 13 | Strict ban on inspecting backend source code (`auradash/backend`) | 🔴 Critical |
+| 14 | Clean request headers only (No `Cache-Control`/`Pragma` header pollution) | 🔴 Critical |
+

@@ -142,6 +142,7 @@ export function useArticlesPageState() {
     page: currentPage,
     limit: itemsPerPage,
     search: searchQuery,
+    category_id: "null",
     status: statusFilter !== "all" ? statusFilter : undefined,
   });
 

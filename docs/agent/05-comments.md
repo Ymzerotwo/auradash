@@ -83,6 +83,14 @@ Origin: https://example.com
 
 ---
 
+### 🤖 MANDATORY AI IMPLEMENTATION DIRECTIVE: Professional Error Handling
+
+When implementing the comments submission UI, AI Coding Assistants MUST handle submission errors gracefully:
+- **Generic Fallback Message**: If a submission fails unexpectedly (e.g. 500 error, network timeout), **DO NOT** display raw technical stack traces. Display a clean, generic error message.
+- **Localization**: All error and feedback messages **MUST be written natively in the language that the client website is built with**. They must be professional, clear, and reassuring.
+
+---
+
 ### Error Responses & Module Error Reference
 
 | HTTP Status | Code | Cause / Reason | Resolution / Handling |

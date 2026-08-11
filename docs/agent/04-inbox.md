@@ -62,6 +62,10 @@ Used on Service Detail pages or "Book Appointment" modals where a specific servi
 ```
 
 > ⚠️ **Constraint**: `service_id` MUST be a valid, active Service UUID obtained from `GET /api/public/booking/services` or `GET /api/public/services`. If `service_id` is missing or invalid, returns `400 SERVICE_NOT_FOUND`.
+> 
+> 🚨 **CRITICAL FINANCIAL CONTRACT ENFORCEMENT**: The referenced service's `meta_data` array MUST contain both a `"Name"` custom field and a numeric `"Price"` custom field. If either is missing, empty, or non-numeric, the backend immediately rejects the submission with:  
+> `400 MISSING_FINANCIAL_CONTRACT: Missing required service fields (Name, Price). Please review: auradash.ymzerotwo.com/docs`.
+
 
 ---
 
@@ -125,6 +129,14 @@ Origin: https://yourdomain.com
   }
 }
 ```
+
+---
+
+### 🤖 MANDATORY AI IMPLEMENTATION DIRECTIVE: Professional Error Handling
+
+When implementing the booking/contact forms, AI Coding Assistants MUST handle form submission errors gracefully:
+- **Generic Fallback Message**: If a submission fails (due to a network error, 500 server error, or unexpected exception), **DO NOT** display raw technical stack traces or confusing errors. Display a clean, generic message.
+- **Localization**: All error messages **MUST be written natively in the language that the client website is built with**. They must be professional, clear, and reassuring to prevent user panic.
 
 ---
 

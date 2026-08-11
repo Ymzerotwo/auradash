@@ -36,6 +36,33 @@ If you are an **AI Coding Assistant** (Cursor, Antigravity, ChatGPT, Claude, Git
 - **NOT FOR ADMIN DASHBOARD**: This documentation has **ABSOLUTELY ZERO RELATION to the AuraDash Admin Dashboard** (`/api/*`).
 - The Admin Dashboard uses KV-backed Sessions, Double-Submit CSRF tokens, and RBAC permissions. **DO NOT** attempt to use these public API keys or public endpoints for Admin Dashboard authentication or administration tasks.
 
+### 4. 🚨 CONNECT REAL API FIRST (NO MOCK-ONLY LAZINESS)
+- **Live Endpoints First, Styling Second**: When building any client application, **wire up the live HTTP requests (`GET /settings`, `GET /services`, `GET /articles`, `POST /inbox`, `POST /comments`) from Day 1**.
+- **Never build mock-only UIs**: Static fallbacks (`FALLBACK_PUBLIC_SETTINGS`, offline mocks) are strictly an emergency safety net (Resilience Layer) in case the server is down or unreachable. They are NEVER a substitute for executing real network calls. Connecting the real API first ensures complete CMS synchronization and eliminates schema mismatches.
+
+### 5. 📖 MANDATORY: READ ALL DOCUMENTATION FILES & OBEY ALL RULES (NO SHORTCUTS)
+- **Exhaustive Reading Requirement**: AI Coding Assistants **MUST thoroughly read and process EVERY SINGLE FILE** in this `./docs/agent/` folder (from `01-authentication.md` to `12-data-onboarding-and-demo.md` plus `PROMPT_TEMPLATE.md` and `openapi.json`) before generating client code.
+- **Strict Rule Compliance**: You **MUST strictly adhere to every single rule, data schema, error handling directive, and security constraint** documented in these files.
+- **Zero Laziness / Zero Assumptions**: Do NOT skip reading any file, do NOT use placeholders, do NOT guess or hallucinate backend fields/endpoints, and do NOT take shortcuts. Every line of code generated must faithfully align with the documented architectural standards.
+
+### 6. 🚫 STRICT PROHIBITION: NEVER READ OR INSPECT BACKEND SOURCE CODE
+- **Sole Source of Truth**: The documentation in this `./docs/agent/` folder and `openapi.json` is the **ONLY authoritative reference** for all API contracts, data schemas, response envelopes, error codes, and field definitions.
+- **Do NOT Inspect `auradash/backend`**: AI Coding Assistants **MUST NOT read, search, or inspect backend code, server routes, Cloudflare Workers scripts, D1 SQLite database migrations, or seed files**.
+- **Why**: Reading backend source code wastes context/tokens, leads to architectural confusion, and causes models to hallucinate internal server structures instead of treating the backend as a decoupled, headless REST API.
+- **Data Management**: All content (Articles, Services, Settings, Categories) is managed via the **AuraDash Admin Dashboard UI** and consumed via the Public API. Client applications must never attempt to seed databases directly.
+
+### 7. 💡 ALL EXAMPLES ARE FOR UNDERSTANDING & TEACHING (NOT FOR CLONING OR HARDCODING)
+- **Pedagogical Blueprint Notice**: Every single sample service, article blueprint, JSON payload, custom field label, and price tier in this documentation is **purely an educational illustration** to explain data formats and dynamic rendering patterns.
+- **No Direct Cloning / Hardcoding**: AI Coding Assistants **MUST NOT clone, hardcode, or blindly copy-paste these sample values** as static data into client source code.
+- **Purpose**: AI models must use these examples **exclusively to teach and explain the concepts to the user**, and then guide the user to input their own genuine, customized business data via their Admin Dashboard.
+
+### 8. 🚫 STRICT ZERO-CACHE DIRECTIVE & REAL-TIME SYNC (NO CACHING BY DEFAULT)
+- **Zero Local/Server Caching by Default**: All client applications across ANY platform or framework MUST disable all caching on API requests and data layers by default.
+- **Why**: AuraDash is a real-time headless CMS. Changes made in the Admin Dashboard (editing services, updating clinic hours, publishing articles) MUST be reflected on the live frontend immediately upon page refresh or view reload.
+- **If User Asks to Enable Caching**:
+  1. *Advise First*: The AI assistant **MUST FIRST advise the user against caching** (explaining that live dashboard updates won't be seen immediately).
+  2. *Execute Only If User Insists*: If the user confirms or explicitly requests caching, only then implement the specific cache behavior requested.
+
 ---
 
 ## Documentation Index

@@ -1,6 +1,8 @@
 # 09 · Field Reference (seo_data & meta_data)
 
-> Concise specification for `seo_data` and `meta_data` field objects shared across Articles and Services.
+> **Concise specification for `seo_data` and `meta_data` field objects shared across Articles and Services.**
+>
+> 💡 **EDUCATIONAL BLUEPRINT NOTICE**: All JSON snippets, field labels, and sample payloads in this reference are **strictly pedagogical examples to explain data formats**. They are not fixed templates for cloning or hardcoding. Client frontends must parse dynamic API data dynamically.
 
 ---
 
@@ -56,11 +58,125 @@ When generating pages for public web frontends, client applications map `seo_dat
 
 ---
 
-## `meta_data` — Dynamic Custom Fields
+## 🏛️ Complete Entity Anatomy: Articles vs. Services
 
-An **array** of dynamic custom fields configured by administrators for articles and services.
+Every content entity in AuraDash is composed of three synchronized layers: **Native Database Columns**, **Dynamic Modular Blocks (`meta_data`)**, and **Search/Social Metadata (`seo_data`)**.
 
-Each element follows the schema:
+### 📰 1. Complete Article Object Anatomy
+
+```json
+{
+  "id": "3b92f718-49f8-4e8c-a114-1e0fcf884cb1",
+  "title": "Invisalign vs Traditional Braces: Clinical Comparison",
+  "slug": "invisalign-vs-traditional-braces",
+  "excerpt": "A comprehensive clinical comparison covering duration, comfort, and aesthetics.",
+  "preview_image_url": "https://cdn.example.com/articles/invisalign-cover.jpg",
+  "reading_time_minutes": 5,
+  "published_at": "2026-08-01T10:00:00.000Z",
+  "category_name": "Orthodontics",
+  "category_slug": "orthodontics",
+  "meta_data": [
+    {
+      "id": "block-1",
+      "label": "Medical Reviewer",
+      "type": "text-info",
+      "data": { "text": "Dr. Elena Rostova, DMD (Specialist Orthodontist)" }
+    },
+    {
+      "id": "block-2",
+      "label": "Overview",
+      "type": "text-description",
+      "data": { "text": "Choosing between clear aligners and metal brackets..." }
+    },
+    {
+      "id": "block-3",
+      "label": "Key Advantages",
+      "type": "list",
+      "data": { "items": ["Removable for eating", "Virtually invisible"] }
+    },
+    {
+      "id": "block-4",
+      "label": "Book Free 3D Scan",
+      "type": "link",
+      "data": { "url": "/contact?service=invisalign", "label": "Book Scan" }
+    }
+  ],
+  "seo_data": {
+    "meta_title": "Invisalign vs Traditional Braces | Dental Care Guide",
+    "meta_description": "Compare clear aligners with braces for speed and comfort.",
+    "og_image": "https://cdn.example.com/articles/invisalign-cover.jpg",
+    "canonical_url": "https://example.com/articles/invisalign-vs-traditional-braces",
+    "is_indexable": true
+  }
+}
+```
+
+### 🛠️ 2. Complete Service Object Anatomy & Financial Contract
+
+```json
+{
+  "id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+  "name": "Invisalign & Clear Aligners",
+  "slug": "invisalign-clear-aligners",
+  "sort_order": 1,
+  "service_category_id": null,
+  "is_active": 1,
+  "meta_data": [
+    {
+      "id": "srv-name",
+      "label": "Name",
+      "type": "text-info",
+      "data": { "text": "Invisalign Full Treatment" }
+    },
+    {
+      "id": "srv-price",
+      "label": "Price",
+      "type": "text-info",
+      "data": { "text": "3500" }
+    },
+    {
+      "id": "srv-discount",
+      "label": "Discount",
+      "type": "text-info",
+      "data": { "text": "500" }
+    },
+    {
+      "id": "srv-desc",
+      "label": "Overview",
+      "type": "text-description",
+      "data": { "text": "Custom 3D designed clear aligners to gently straighten your smile." }
+    },
+    {
+      "id": "srv-includes",
+      "label": "What's Included",
+      "type": "list",
+      "data": { "items": ["3D ClinCheck Scan", "Full Aligner Set", "Post-Treatment Retainers"] }
+    }
+  ],
+  "seo_data": {
+    "meta_title": "Invisalign & Clear Aligners | Sana Dental",
+    "meta_description": "Transform your smile with invisible clear aligners from certified orthodontists.",
+    "og_image": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=1200",
+    "canonical_url": "https://sanadental.com/services/invisalign-clear-aligners",
+    "is_indexable": true
+  }
+}
+```
+
+> 🚨 **MANDATORY FINANCIAL CONTRACT IN SERVICE `meta_data`**:  
+> To accept bookings (`POST /api/public/inbox` with `service_id`), the backend strictly requires:
+> 1. Field with label/ID `"Name"` (value e.g. `"Invisalign Full Treatment"`).
+> 2. Field with label/ID `"Price"` (numeric value e.g. `"3500"`).
+> 
+> If missing or non-numeric, the API throws `400 MISSING_FINANCIAL_CONTRACT: Missing required service fields (Name, Price). Please review: auradash.ymzerotwo.com/docs`.
+
+---
+
+## `meta_data` — Dynamic Modular Block & Custom Field Builder
+
+The `meta_data` array is a **Unified Modular Block Builder** shared equally across both **Services and Articles**. It empowers administrators and authors to freely envision, assemble, and structure the layout and content flow of any service or article in **ANY custom order** (e.g. text paragraph ➔ photo diagram ➔ bullet list ➔ YouTube video embed ➔ download link ➔ info badges) without writing a single line of frontend code.
+
+Each element follows the polymorphic schema:
 
 ```json
 {

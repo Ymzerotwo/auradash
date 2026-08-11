@@ -32,7 +32,7 @@ function dropTables(isRemote: boolean) {
   }
 
   return runCommand(
-    `npx wrangler d1 execute auradash ${target} --file="${dropFilePath}" --y`,
+    `npx wrangler d1 execute auradash ${target} --file="${dropFilePath}"`,
     `Dropping all tables on ${modeName}`
   );
 }
@@ -43,7 +43,7 @@ function applySchemas(isRemote: boolean) {
   console.log(`\n🚀 Starting migrations on ${modeName}...`);
 
   runCommand(
-    `npx wrangler d1 migrations apply auradash ${target} --y`,
+    `npx wrangler d1 migrations apply auradash ${target}`,
     `Applying migrations [${modeName}]`
   );
   

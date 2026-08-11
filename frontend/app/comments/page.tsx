@@ -266,7 +266,7 @@ export default function CommentsPage() {
                         <TableRow 
                           key={comment.id} 
                           id={`comment-${comment.id}`}
-                          className={`group transition-colors hover:bg-transparent ${highlightedId === comment.id ? "!bg-accent/5 hover:!bg-accent/5" : ""}`}
+                          className="group transition-colors hover:bg-transparent"
                         >
                           <TableCell className="max-w-[200px]">
                             <div className="flex items-center gap-3 min-w-0">
@@ -373,7 +373,7 @@ export default function CommentsPage() {
               {/* ── Cards View (Desktop & Mobile) ── */}
               <div className={`grid gap-4 ${viewMode === "cards" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1 md:hidden"}`}>
                 {filteredComments.map((comment) => (
-                    <div key={comment.id} id={`comment-${comment.id}`} className={`bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3 shadow-sm ${highlightedId === comment.id ? "ring-2 ring-primary" : ""}`}>
+                    <div key={comment.id} id={`comment-${comment.id}`} className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3 shadow-sm">
                       
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3 min-w-0">

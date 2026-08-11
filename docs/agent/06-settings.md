@@ -58,6 +58,10 @@ Origin: https://example.com
 
 > ⚠️ **Note for AI Agents**: The `currency` and `timezone` fields are returned by the backend but are **NOT yet implemented or used** in any client-facing feature. AI Agents **MUST ignore these fields** and should not build any UI or logic around them until further notice.
 
+> 📡 **MANDATORY LIVE API CALL ON STARTUP**: AI Agents and client applications **MUST actively call `GET /api/public/settings` on initial load/mount** (in Header, Footer, Contact page, etc.) to fetch dynamic business branding, contact info, working hours, and social media links directly from the live CMS.
+>
+> 🛡️ **CRITICAL FALLBACK REQUIREMENT (SAFETY NET ONLY)**: Because business settings are critical for rendering the UI without blank spaces, **you MUST prompt the user** to provide hardcoded fallback values (e.g., in a local configuration constant or `.env`) before generating the client code. Your generated UI must use these fallbacks **strictly if the `GET /settings` network request fails or the backend is unreachable**. Hardcoding static values without making the live API request is strictly prohibited. Any fallback UI text MUST be written natively in the language that the client website is built with.
+
 ---
 
 ## Field Reference
