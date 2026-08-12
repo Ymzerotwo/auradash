@@ -38,7 +38,7 @@ export const InboxController = {
         return sendResponse(c, 400, 'VALIDATION_ERROR', 'Invalid data provided', validation.error.format());
       }
 
-      const result = await InboxService.submitInboxMessage(db, k1, c.env.CLOUDFLARE_API_TOKEN, validation.data, c.executionCtx);
+      const result = await InboxService.submitInboxMessage(db, k1, c.env.CLOUDFLARE_API_TOKEN, validation.data, c.executionCtx, c.env);
       
       // Tarpit. Artificial delay between 500ms and 1.5s to slow down
       // automated spam bots and prevent timing attacks or immediate feedback.

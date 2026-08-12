@@ -27,10 +27,10 @@ export const InboxService = {
    * 
    * @param db - The D1 Database instance.
    */
-  submitInboxMessage: async (db: D1Database, k1: KVNamespace, apiKey: string | undefined, data: any, ctx?: any) => {
+  submitInboxMessage: async (db: D1Database, k1: KVNamespace, apiKey: string | undefined, data: any, ctx?: any, env?: any) => {
     // 1. Shadow Ban Check (O(1) KV Lookup)
     // Instantly intercepts and fakes success for blocked spammers without hitting the D1 SQL database.
-    const k1Ref = k1 || (db as any).env?.K1 || (db as any).K1;
+    const k1Ref = k1 || env?.K1 || (db as any).env?.K1 || (db as any).K1;
     if (k1Ref) {
       const [isBlockedPhone, isBlockedEmail] = await Promise.all([
         data.phone ? k1Ref.get(`spam:phone:${data.phone}`) : Promise.resolve(null),
@@ -112,7 +112,7 @@ export const InboxService = {
 
     // Send automated confirmation email 100% asynchronously (fire-and-forget)
     if (data.email) {
-      const envRef = (db as any).env || {};
+      const envRef = env || (db as any).env || {};
       const emailPromise = EmailService.sendAutoReply(apiKey, data.email, data.full_name, envRef, db)
         .catch(e => logger.error('system', '[EMAIL SERVICE] Background email dispatch failed:', e));
         
@@ -123,7 +123,7 @@ export const InboxService = {
 
     // Dispatch Notification to room:inbox
     try {
-      const k1Ref = k1 || (db as any).env?.K1 || (db as any).K1; // robust KV fallback
+      const k1Ref = k1 || env?.K1 || (db as any).env?.K1 || (db as any).K1; // robust KV fallback
       if (k1Ref) {
         await NotificationService.publishEvent(
           db,
