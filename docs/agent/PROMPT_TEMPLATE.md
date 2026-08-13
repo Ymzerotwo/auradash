@@ -12,11 +12,17 @@ Before running any prompt, ensure your environment variables are configured for 
 
 ### 🟡 Local Development & Testing (`localhost` / Emulators)
 - **API Base URL**: `http://localhost:8787/api/public` (Android Emulator: `http://10.0.2.2:8787/api/public`)
-- **Key Type**: **Test Key** (`auradash_ts_*`) — Generated from *Admin Dashboard → Settings → API Keys → New API Key (Type: Test)*. Bypasses domain validation, expires in ≤ 24h. Ideal for local dev, emulators, and CI.
+- **Key Type**: **Test Key** (`auradash_ts.*`) — Generated from *Admin Dashboard → Settings → API Keys → New API Key (Type: Test)*. Format: `auradash_ts.<base64Payload>.<base64Signature>`. Bypasses domain validation, expires in ≤ 24h. Ideal for local dev, emulators, and CI.
 
 ### 🔵 Live Production Environment
 - **API Base URL**: `https://api.yourdomain.com/api/public`
-- **Key Type**: **Production Key** (`auradash_pk_*`) — Generated from *Admin Dashboard → Settings → API Keys → New API Key (Type: Production)*. Bound to your registered domain (e.g. `example.com`).
+- **Key Type**: **Production Key** (`auradash_pk.*`) — Generated from *Admin Dashboard → Settings → API Keys → New API Key (Type: Production)*. Format: `auradash_pk.<base64Payload>.<base64Signature>`. Bound to your registered domain (e.g. `example.com`).
+
+> [!CAUTION]
+> ### 🚨 STRICT RULE: NEVER MODIFY OR REFORMAT API KEY STRINGS
+> - **DO NOT REPLACE DOTS (`.`) WITH UNDERSCORES (`_`)**
+> - The backend verification engine strictly splits by dot `apiKey.split('.')` into exactly 3 parts (`prefix.payload.signature`).
+> - Always copy and paste the raw, complete key string directly into your environment file (`.env.local` / `.env.production`).
 
 ---
 
@@ -59,14 +65,15 @@ MANDATORY STEP 2 — Clean Request Headers & Zero-Cache:
 - Client fetch requests must send ONLY `x-api-key` and `Content-Type: application/json`.
 - NEVER send custom cache headers (`Cache-Control`, `Pragma`) in request headers (causes browser CORS preflight rejections).
 - Enforce real-time CMS zero-cache via Next.js native options: `fetch(url, { cache: 'no-store', next: { revalidate: 0 } })` and React Query `staleTime: 0`.
+- IMPORTANT: API keys have 3 dot-separated parts (auradash_pk.xxx.yyy or auradash_ts.xxx.yyy). NEVER replace dots with underscores.
 
 Environment Setup:
 - `.env.local` (Local Dev):
   NEXT_PUBLIC_AURADASH_BASE_URL=http://localhost:8787/api/public
-  NEXT_PUBLIC_AURADASH_API_KEY=<YOUR_TEST_API_KEY_auradash_ts_xxx>
+  NEXT_PUBLIC_AURADASH_API_KEY=<YOUR_TEST_API_KEY_auradash_ts.xxx.yyy>
 - `.env.production` (Production):
   NEXT_PUBLIC_AURADASH_BASE_URL=https://api.yourdomain.com/api/public
-  NEXT_PUBLIC_AURADASH_API_KEY=<YOUR_PRODUCTION_API_KEY_auradash_pk_xxx>
+  NEXT_PUBLIC_AURADASH_API_KEY=<YOUR_PRODUCTION_API_KEY_auradash_pk.xxx.yyy>
 
 Architectural Requirements:
 1. Universal API Client: Create a type-safe API client in `lib/api.ts` wrapping fetch with `x-api-key` header and standard error envelope extraction.
@@ -104,10 +111,11 @@ MANDATORY STEP 2 — Clean Request Headers & TanStack Query Zero-Cache:
 - Send clean headers: `x-api-key: import.meta.env.VITE_AURADASH_API_KEY` and `Content-Type: application/json`.
 - Do NOT inject custom `Cache-Control` or `Pragma` headers in Axios/Fetch.
 - Configure QueryClient with `{ defaultOptions: { queries: { staleTime: 0, gcTime: 0, refetchOnWindowFocus: true } } }` for real-time CMS sync.
+- IMPORTANT: API keys have 3 dot-separated parts (auradash_pk.xxx.yyy or auradash_ts.xxx.yyy). NEVER replace dots with underscores.
 
 Environment Variables (`.env`):
 - `VITE_AURADASH_BASE_URL=http://localhost:8787/api/public`
-- `VITE_AURADASH_API_KEY=<YOUR_TEST_API_KEY_auradash_ts_xxx>`
+- `VITE_AURADASH_API_KEY=<YOUR_TEST_API_KEY_auradash_ts.xxx.yyy>`
 
 Core Features to Implement:
 1. API Service Layer: Create modular services (`settings.service.ts`, `services.service.ts`, `articles.service.ts`, `inbox.service.ts`).
@@ -137,6 +145,7 @@ MANDATORY STEP 2 — Clean Headers & Zero-Cache in Nuxt:
 - Configure Nuxt runtimeConfig for `auradashBaseUrl` and `auradashApiKey`.
 - Send ONLY `x-api-key` in default request headers. No `Cache-Control` header injection.
 - Enforce real-time data sync with `useFetch(url, { cache: 'no-cache', initialCache: false })`.
+- IMPORTANT: API keys have 3 dot-separated parts (auradash_pk.xxx.yyy or auradash_ts.xxx.yyy). NEVER replace dots with underscores.
 
 Configuration (`nuxt.config.ts`):
 ```typescript
@@ -175,6 +184,7 @@ Read `./docs/agent/` and `./docs/agent/openapi.json` to master data models, JSON
 
 MANDATORY STEP 2 — Clean Request Headers & Base URL Handling:
 - Send `x-api-key: <KEY>` and `Content-Type: application/json` in Dio BaseOptions.
+- IMPORTANT: API keys have 3 dot-separated parts (auradash_pk.xxx.yyy or auradash_ts.xxx.yyy). NEVER replace dots with underscores.
 - Local Android Emulator Base URL: `http://10.0.2.2:8787/api/public`
 - iOS Simulator Base URL: `http://localhost:8787/api/public`
 - Production Base URL: `https://api.yourdomain.com/api/public`
@@ -212,6 +222,7 @@ Read all specifications in `./docs/agent/` and `./docs/agent/openapi.json`.
 MANDATORY STEP 2 — Clean Request Headers & URLSession Config:
 - Add `x-api-key` and `Content-Type: application/json` to `URLRequest`.
 - Use `.ephemeral` or `.default` with `requestCachePolicy = .reloadIgnoringLocalCacheData` for live CMS synchronization.
+- IMPORTANT: API keys have 3 dot-separated parts (auradash_pk.xxx.yyy or auradash_ts.xxx.yyy). NEVER replace dots with underscores.
 - Base URL: `http://localhost:8787/api/public` (Dev Simulator) / `https://api.yourdomain.com/api/public` (Prod).
 
 iOS Architecture:
@@ -243,6 +254,7 @@ Read `./docs/agent/` and `./docs/agent/openapi.json`.
 
 MANDATORY STEP 2 — Clean Request Headers & Network Config:
 - OkHttpClient Interceptor adding `x-api-key` and `Content-Type: application/json`.
+- IMPORTANT: API keys have 3 dot-separated parts (auradash_pk.xxx.yyy or auradash_ts.xxx.yyy). NEVER replace dots with underscores.
 - Android Emulator Dev URL: `http://10.0.2.2:8787/api/public`
 - Physical Device Dev URL: `http://<YOUR_LOCAL_IP>:8787/api/public`
 - Production URL: `https://api.yourdomain.com/api/public`
@@ -280,12 +292,13 @@ Read `./docs/agent/README.md`, `03-services.md`, `04-inbox.md`, `09-field-schema
 MANDATORY STEP 2 — Clean Request Headers:
 - Send clean headers: `headers: { 'x-api-key': CONFIG.API_KEY, 'Content-Type': 'application/json' }`.
 - Do NOT add custom cache headers. Use standard browser fetch.
+- IMPORTANT: API keys have 3 dot-separated parts (auradash_pk.xxx.yyy or auradash_ts.xxx.yyy). NEVER replace dots with underscores.
 
 Environment Configuration (`config.js`):
 ```javascript
 const CONFIG = {
   BASE_URL: 'http://localhost:8787/api/public', // or https://api.yourdomain.com/api/public
-  API_KEY: '<YOUR_TEST_OR_PROD_API_KEY>'
+  API_KEY: '<YOUR_TEST_OR_PROD_API_KEY_auradash_ts_or_pk.xxx.yyy>'
 };
 ```
 

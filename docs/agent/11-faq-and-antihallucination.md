@@ -70,8 +70,8 @@
 
 ## ❓ Question 9: Why did my Production API Key receive a `403 DOMAIN_MISMATCH` error?
 > **✅ PRODUCTION KEYS ARE BOUND TO SPECIFIC DOMAINS.**  
-> - Production keys (`auradash_pk_*`) verify the HTTP `Origin` header against the domain declared when creating the key.  
-> - For local development (`localhost`), Postman, or mobile app simulators, **ALWAYS use a Test Key (`auradash_ts_*`)**, which bypasses domain binding.
+> - Production keys (`auradash_pk.*`) verify the HTTP `Origin` header against the domain declared when creating the key.  
+> - For local development (`localhost`), Postman, or mobile app simulators, **ALWAYS use a Test Key (`auradash_ts.*`)**, which bypasses domain binding.
 
 ---
 
