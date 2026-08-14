@@ -104,10 +104,10 @@
 
 ---
 
-## ❓ Question 14: What is the difference between Production Keys (`auradash_pk_*`) and Test Keys (`auradash_ts_*`)?
+## ❓ Question 14: What is the difference between Production Keys (`auradash_pk.*`) and Test Keys (`auradash_ts.*`)?
 > **✅ KEY TYPES COMPARISON:**  
-> - **Production Key (`auradash_pk_*`)**: Domain-bound to a specific live origin (e.g., `example.com`), **never expires** until manually revoked. Use for live client apps.  
-> - **Test Key (`auradash_ts_*`)**: Bypasses domain binding, expires in **≤ 24 hours**. Use for `localhost`, Postman, mobile simulators, and CI/CD pipelines.
+> - **Production Key (`auradash_pk.*`)**: Domain-bound to a specific live origin (e.g., `example.com`), **never expires** until manually revoked. Format: `auradash_pk.<payload>.<signature>`. Use for live client apps.  
+> - **Test Key (`auradash_ts.*`)**: Bypasses domain binding, expires in **≤ 24 hours**. Format: `auradash_ts.<payload>.<signature>`. Use for `localhost`, Postman, mobile simulators, and CI/CD pipelines.
 
 ---
 
@@ -150,7 +150,7 @@
 ## ❓ Question 20: What is the exact header key for sending API Keys?
 > **✅ `x-api-key` (or `Authorization: Bearer <key>`).**  
 > - Header names are case-insensitive in HTTP/2 and HTTP/3.  
-> - Standard practice: `x-api-key: auradash_pk_xxxxxxxxxxxx`
+> - Standard practice: `x-api-key: auradash_pk.eyJ...` (3 dot-separated parts: `prefix.payload.signature`)
 
 ---
 

@@ -141,7 +141,7 @@ When an API request fails, AI models and client applications must evaluate error
 
 When instructing an AI Agent to build a frontend client for AuraDash in ANY framework:
 1. 🚨 **CONNECT REAL API FIRST**: Always initialize and connect HTTP services (`GET /settings`, `GET /services`, `GET /articles`, `POST /inbox`, etc.) to live components BEFORE spending time on UI/CSS polish. Fallbacks are strictly an offline safety net.
-2. 🚫 **STRICT ZERO-CACHE POLICY**: Ensure all API requests and page routes have caching completely disabled (`cache: "no-store"`, `revalidate: 0`, `dynamic = "force-dynamic"`, `Cache-Control: no-cache, no-store, must-revalidate`) for real-time CMS sync.
+2. 🚫 **STRICT ZERO-CACHE POLICY**: Ensure all API requests and page routes have caching completely disabled at runtime (`cache: "no-store"`, `next: { revalidate: 0 }`, `dynamic = "force-dynamic"`, `staleTime: 0`) for real-time CMS sync. Do NOT attach `Cache-Control` in HTTP request headers.
 3. ✅ **Pass `x-api-key`** in default network headers.
 4. ✅ **Parse standard envelope** (`success`, `code`, `data`, `errors`).
 5. ✅ **Derive SEO metadata dynamically** using `seo_data` fallbacks.

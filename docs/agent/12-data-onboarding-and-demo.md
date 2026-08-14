@@ -93,7 +93,7 @@ Articles in AuraDash are composed of **Native Database Columns** combined with *
 - **Category (Optional)**: Group under an article category (e.g., `Oral Health Guides`) or leave empty as a standalone article.
 - **Author (`author_name`)**: Display name of the publishing author.
 - **Excerpt (`excerpt`)**: Short summary text for preview cards on blog grids and fallback meta description.
-- **Status & Order (`is_active`, `sort_order`)**: Visibility and priority controls.
+- **Status (`is_active`)**: Visibility control (Articles are sorted chronologically by `published_at DESC`).
 
 ##### 💡 Dynamic Custom Blocks (`meta_data`) as the Article Content Builder:
 In AuraDash, the **entire rich narrative and interactive layout of an article is assembled using modular `meta_data` blocks** in ANY order the author desires using all 9 supported custom field types:

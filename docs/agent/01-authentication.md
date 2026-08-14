@@ -177,7 +177,7 @@ API key validation in AuraDash is **100% mathematical and stateless**. It perfor
 
 | HTTP Status | Code | Meaning | Action / Fix |
 |:---|:---|:---|:---|
-| `401` | `MISSING_API_KEY` | No API key header provided | Add `x-api-key: <key>` to request headers |
+| `401` | `API_KEY_MISSING` | No API key header provided | Add `x-api-key: <key>` to request headers |
 | `401` | `INVALID_API_KEY` | Signature invalid, corrupted, or re-formatted with underscores | Generate a new key from Admin Dashboard and paste directly |
 | `401` | `API_KEY_EXPIRED` | Test API key lifetime (1–24h) exceeded | Generate a fresh Test Key from Admin Dashboard |
 | `403` | `ORIGIN_REQUIRED` | Production key used without `Origin` header | Ensure browser attaches `Origin` or send manually |

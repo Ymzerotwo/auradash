@@ -88,8 +88,8 @@ Before sending `POST` requests to submission endpoints (`/api/public/inbox`, `/a
 ## 🔄 Rule 9 — API Key Expiration & Master Secret Rotation
 
 - **API keys are verified statelessly via HMAC-SHA256** — there is no server-side key storage or lookup during verification.
-- **Production keys (`auradash_pk_*`) NEVER EXPIRE** unless manually revoked by an administrator from the Admin Dashboard.
-- **Test keys (`auradash_ts_*`) have a strict TTL of 1–24 hours** — generate fresh test keys for development sessions.
+- **Production keys (`auradash_pk.*`) NEVER EXPIRE** unless manually revoked by an administrator from the Admin Dashboard.
+- **Test keys (`auradash_ts.*`) have a strict TTL of 1–24 hours** — generate fresh test keys for development sessions.
 - If the server administrator **rotates `AURADASH_MASTER_SECRET`**, ALL previously issued API keys (both Production and Test) become instantly invalid globally. Your client will receive `401 INVALID_API_KEY` — handle this gracefully with a clear error message.
 
 ---
