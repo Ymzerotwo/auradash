@@ -62,7 +62,7 @@ describe('InboxService', () => {
 
       expect(result.id).toBeDefined();
       expect(mockDb.prepare).toHaveBeenCalled();
-      expect(sendAutoReplySpy).toHaveBeenCalledWith('api_key', 'ahmed@mail.com', 'Ahmed');
+      expect(sendAutoReplySpy).toHaveBeenCalledWith('api_key', 'ahmed@mail.com', 'Ahmed', expect.anything(), expect.anything());
       expect(publishEventSpy).toHaveBeenCalled();
     });
 

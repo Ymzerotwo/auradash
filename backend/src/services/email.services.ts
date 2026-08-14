@@ -194,8 +194,8 @@ export const EmailService = {
     }
 
     // 2. Secondary Fallback: Cloudflare REST API Client (if tokens are configured)
-    const accountId = env?.CF_ACCOUNT_ID;
-    if (!apiToken || !accountId || !recipientEmail.includes('@')) {
+    const accountId = env?.CF_ACCOUNT_ID || 'default_account';
+    if (!apiToken || !recipientEmail.includes('@')) {
       logger.warn('system', '[EMAIL SERVICE] Neither native EMAILER binding nor REST API tokens are available. Skipping email dispatch.');
       return false;
     }
