@@ -176,5 +176,106 @@ export const MediaController = {
     } catch (error: any) {
       return sendResponse(c, 500, 'INTERNAL_SERVER_ERROR', 'Failed to download media');
     }
+  },
+
+  /**
+   * Initializes a chunked multipart upload session.
+   */
+  initChunkedUpload: async (c: Context<AppContext>) => {
+    const bucket = c.env.STORAGE;
+    const body = await c.req.json().catch(() => ({}));
+    const { fileName, mimeType, fileSize, folder, altText } = body;
+
+    if (!fileName || !mimeType || !fileSize) {
+      return sendResponse(c, 400, 'VALIDATION_ERROR', 'fileName, mimeType, and fileSize are required');
+    }
+
+    try {
+      const result = await MediaService.initChunkedUpload(bucket, folder, fileName, mimeType, fileSize, altText);
+      if ((result as any).error) {
+        return sendResponse(c, (result as any).status || 400, (result as any).error, (result as any).message);
+      }
+      return sendResponse(c, 200, 'CHUNKED_INIT_SUCCESS', 'Chunked upload initialized', result);
+    } catch (error: any) {
+      return sendResponse(c, 500, 'INTERNAL_SERVER_ERROR', 'Failed to initialize chunked upload', null, error.message);
+    }
+  },
+
+  /**
+   * Uploads an individual chunk part.
+   */
+  uploadChunkPart: async (c: Context<AppContext>) => {
+    const bucket = c.env.STORAGE;
+    const body = await c.req.parseBody();
+    const key = body['key'] as string;
+    const uploadId = body['uploadId'] as string;
+    const partNumber = parseInt(body['partNumber'] as string, 10);
+    const mimeType = body['mimeType'] as string | undefined;
+    const chunk = body['chunk'];
+
+    if (!key || !uploadId || isNaN(partNumber) || !chunk || !(chunk instanceof File)) {
+      return sendResponse(c, 400, 'VALIDATION_ERROR', 'key, uploadId, partNumber, and chunk file are required');
+    }
+
+    try {
+      const chunkBuffer = await chunk.arrayBuffer();
+      const result = await MediaService.uploadChunkPart(bucket, key, uploadId, partNumber, chunkBuffer, mimeType);
+      if ((result as any).error) {
+        return sendResponse(c, (result as any).status || 400, (result as any).error, (result as any).message);
+      }
+      return sendResponse(c, 200, 'CHUNK_UPLOADED', 'Part uploaded successfully', result);
+    } catch (error: any) {
+      return sendResponse(c, 500, 'INTERNAL_SERVER_ERROR', 'Failed to upload chunk part', null, error.message);
+    }
+  },
+
+  /**
+   * Completes and finalizes the chunked upload.
+   */
+  completeChunkedUpload: async (c: Context<AppContext>) => {
+    const db = c.env.DB;
+    const bucket = c.env.STORAGE;
+    const user = c.get('user');
+
+    if (!user) {
+      return sendResponse(c, 401, 'UNAUTHORIZED', 'Authentication required');
+    }
+
+    const body = await c.req.json().catch(() => ({}));
+    const { key, uploadId, parts, fileName, mimeType, fileSize, folder, altText } = body;
+
+    if (!key || !uploadId || !Array.isArray(parts) || parts.length === 0 || !fileName || !mimeType || !fileSize) {
+      return sendResponse(c, 400, 'VALIDATION_ERROR', 'Missing required fields to complete multipart upload');
+    }
+
+    try {
+      const r2PublicUrl = c.env.R2_PUBLIC_URL || '';
+      const result = await MediaService.completeChunkedUpload(
+        db, bucket, user.id, r2PublicUrl, key, uploadId, parts, fileName, mimeType, fileSize, folder, altText
+      );
+      return sendResponse(c, 201, 'MEDIA_CREATED', 'Media file uploaded successfully', result.newMedia);
+    } catch (error: any) {
+      return sendResponse(c, 500, 'INTERNAL_SERVER_ERROR', 'Failed to complete chunked upload', null, error.message);
+    }
+  },
+
+  /**
+   * Aborts a chunked upload.
+   */
+  abortChunkedUpload: async (c: Context<AppContext>) => {
+    const bucket = c.env.STORAGE;
+    const body = await c.req.json().catch(() => ({}));
+    const { key, uploadId } = body;
+
+    if (!key || !uploadId) {
+      return sendResponse(c, 400, 'VALIDATION_ERROR', 'key and uploadId are required');
+    }
+
+    try {
+      await MediaService.abortChunkedUpload(bucket, key, uploadId);
+      return sendResponse(c, 200, 'CHUNKED_ABORTED', 'Upload aborted successfully');
+    } catch (error: any) {
+      return sendResponse(c, 500, 'INTERNAL_SERVER_ERROR', 'Failed to abort chunked upload');
+    }
   }
 };

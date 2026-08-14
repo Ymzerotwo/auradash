@@ -7,7 +7,9 @@ import { PermissionGuard } from "./PermissionGuard";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/stores/app.store";
 import { useAuthStore } from "@/lib/stores/auth.store";
+import { useUploadStore } from "@/lib/stores/upload.store";
 import { StatePolling } from "./StatePolling";
+import { FloatingUploadProgress } from "../media/FloatingUploadProgress";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { useLayoutContext } from "@/app/components/LayoutProvider";
 
@@ -26,6 +28,24 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
   const collapsed = useAppStore((s) => s.sidebarCollapsed);
   const toggleSidebar = useAppStore((s) => s.setSidebarCollapsed);
   const hydrate = useAuthStore((s) => s.hydrate);
+
+  const isUploading = useUploadStore((s) =>
+    s.uploadQueue.some((i) => i.status === "uploading" || i.status === "pending")
+  );
+
+  // Prevent accidental page reload or tab closing while an upload is active
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isUploading) {
+        e.preventDefault();
+        e.returnValue = "";
+        return "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isUploading]);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
@@ -85,6 +105,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-surface-base relative">
       <StatePolling />
+      <FloatingUploadProgress />
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/60 z-[39] backdrop-blur-[2px] animate-in fade-in duration-200"

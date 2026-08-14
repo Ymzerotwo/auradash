@@ -8,6 +8,9 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { updateMediaSchema } from "@/lib/validations/media.schema";
 import { extractZodErrors } from "@/lib/validations/common.schema";
 import type { Dictionary } from '../i18n/dictionaries';
+import { useUploadStore, type FileUploadItem } from '../stores/upload.store';
+
+export { type FileUploadItem } from '../stores/upload.store';
 
 export const mediaKeys = {
   all: ['media'] as const,
@@ -74,7 +77,8 @@ export function useDeleteMedia() {
 // ─── PAGE HOOK ─────────────────────────────────────────────────────────────
 
 export function useMediaPageState() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const qc = useQueryClient();
   
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -108,6 +112,14 @@ export function useMediaPageState() {
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Global upload store hooks
+  const uploadQueue = useUploadStore((s) => s.uploadQueue);
+  const isQueueExpanded = useUploadStore((s) => s.isQueueExpanded);
+  const setIsQueueExpanded = useUploadStore((s) => s.setIsQueueExpanded);
+  const enqueueFiles = useUploadStore((s) => s.enqueueFiles);
+  const cancelUploadItem = useUploadStore((s) => s.cancelUploadItem);
+  const clearUploadQueue = useUploadStore((s) => s.clearUploadQueue);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -182,31 +194,45 @@ export function useMediaPageState() {
     setCurrentPage(1);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const MAX_FILE_SIZE = 100 * 1024 * 1024;
+  // ─── Queue Progress Calculations ─────────────────────────
+  const isUploading = useMemo(() => {
+    return uploadQueue.some(item => item.status === 'uploading' || item.status === 'pending');
+  }, [uploadQueue]);
+
+  const handleMultipleFiles = useCallback((files: FileList | File[] | null) => {
+    if (!files || files.length === 0) return;
+    const fileArray = Array.from(files);
+    const MAX_FILE_SIZE = 100 * 1024 * 1024;
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
+
+    const validFiles: File[] = [];
+
+    for (const file of fileArray) {
       if (file.size > MAX_FILE_SIZE) {
-        toast.error(t.common.upload.file_too_large);
-        if (e.target) e.target.value = '';
-        return;
+        toast.error(`${file.name}: ${t.common.upload.file_too_large}`);
+        continue;
       }
-
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
       if (!allowedTypes.includes(file.type)) {
-        toast.error(t.common.upload.photo_allowed_types);
-        if (e.target) e.target.value = '';
-        return;
+        toast.error(`${file.name}: ${t.common.upload.photo_allowed_types}`);
+        continue;
       }
-
-      uploadMutation.mutate({ file }, {
-        onSuccess: () => {
-          setIsUploadModalOpen(false);
-        }
-      });
+      validFiles.push(file);
     }
-    if (e.target) e.target.value = '';
-  };
+
+    if (validFiles.length > 0) {
+      enqueueFiles(validFiles, () => {
+        void qc.invalidateQueries({ queryKey: mediaKeys.all });
+      });
+      setIsUploadModalOpen(false);
+    }
+  }, [t, enqueueFiles, qc]);
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      handleMultipleFiles(e.target.files);
+      e.target.value = '';
+    }
+  }, [handleMultipleFiles]);
 
   return {
     searchQuery, handleSearchChange,
@@ -223,6 +249,8 @@ export function useMediaPageState() {
     isLoading, mediaList, totalPages,
     uploadMutation, updateMutation, deleteMutation,
     handleDownload, openEditModal, saveEdit, openDeleteModal, confirmDelete, handleFileChange,
+    handleMultipleFiles, cancelUploadItem,
+    uploadQueue, isUploading, isQueueExpanded, setIsQueueExpanded, clearUploadQueue,
     itemsPerPage
   };
 }
@@ -279,6 +307,8 @@ export function useMediaPickerState({
   onSelect: (media: MediaPickerItem) => void;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useTranslation();
+  const qc = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "image" | "video">(type === "all" ? "all" : type);
@@ -308,6 +338,10 @@ export function useMediaPickerState({
   });
 
   const uploadMutation = useUploadMedia();
+  const enqueueFiles = useUploadStore((s) => s.enqueueFiles);
+  const isUploading = useUploadStore((s) =>
+    s.uploadQueue.some((i) => i.status === "uploading" || i.status === "pending")
+  );
 
   const mediaItems: MediaPickerItem[] = useMemo(() => {
     const apiItems = (paginatedData?.data || []).map(apiItemToPickerItem);
@@ -336,36 +370,34 @@ export function useMediaPickerState({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
+    const fileArray = Array.from(files);
     const MAX_FILE_SIZE = 100 * 1024 * 1024;
     const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
-
-    if (file.size > MAX_FILE_SIZE) {
-      toast.error(`File too large. Maximum size is ${formatBytes(MAX_FILE_SIZE)}.`);
-      if (e.target) e.target.value = "";
-      return;
-    }
-
     const allAllowed = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES];
-    if (!allAllowed.includes(file.type)) {
-      toast.error("Unsupported file format. Allowed: JPG, PNG, WEBP, GIF, MP4, WebM.");
-      if (e.target) e.target.value = "";
-      return;
+
+    const validFiles: File[] = [];
+
+    for (const file of fileArray) {
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(`${file.name}: ${t.common.upload.file_too_large}`);
+        continue;
+      }
+      if (!allAllowed.includes(file.type)) {
+        toast.error(`${file.name}: ${t.common.upload.photo_allowed_types}`);
+        continue;
+      }
+      validFiles.push(file);
     }
 
-    uploadMutation.mutate(
-      { file, folder },
-      {
-        onSuccess: (newMedia) => {
-          const newItem = apiItemToPickerItem(newMedia);
-          setUploadedMedia(prev => [newItem, ...prev]);
-          setSelectedId(newItem.id);
-        },
-      }
-    );
+    if (validFiles.length > 0) {
+      enqueueFiles(validFiles, () => {
+        void qc.invalidateQueries({ queryKey: mediaKeys.all });
+      });
+    }
 
     if (e.target) e.target.value = "";
   };
@@ -376,6 +408,7 @@ export function useMediaPickerState({
     selectedId, setSelectedId,
     fileInputRef,
     isLoading, mediaItems,
+    isUploading,
     uploadMutation,
     handleSelectConfirm,
     handleUploadNewClick,

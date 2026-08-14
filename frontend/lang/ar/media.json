@@ -91,5 +91,27 @@
     "too_long": "القيمة تتجاوز الحد المسموح به.",
     "file_required": "الملف مطلوب.",
     "ids_required": "المعرفات مطلوبة."
+  },
+  "uploadProgress": {
+    "uploadingMultiple": "رفع {count} ملفات",
+    "processing": "جاري المعالجة والحفظ السحابي...",
+    "done": "تم الرفع",
+    "dropFiles": "أفلت الملفات هنا لبدء الرفع",
+    "multiFileSupported": "يدعم رفع عدة ملفات معاً",
+    "speedUnit": "ث",
+    "remainingSec": "متبقي ~{seconds} ثانية",
+    "remainingMin": "متبقي ~{mins} د {seconds} ث",
+    "startedUploading": "بدأ رفع {count} ملف...",
+    "cancelUpload": "إلغاء الرفع",
+    "waiting": "في الانتظار",
+    "pauseUpload": "إيقاف مؤقت",
+    "resumeUpload": "استئناف الرفع",
+    "paused": "متوقف مؤقتاً",
+    "cancelTitle": "إلغاء رفع الملف",
+    "cancelDescription": "هل أنت متأكد من رغبتك في إلغاء رفع هذا الملف؟ سيتم إيقاف النقل وحذف الأجزاء المرفوعة.",
+    "cancelAllTitle": "إلغاء جميع عمليات الرفع",
+    "cancelAllDescription": "هل أنت متأكد من رغبتك في إلغاء كافة عمليات الرفع الجارية؟",
+    "confirmCancel": "نعم، إلغاء الرفع",
+    "keepUploading": "متابعة الرفع"
   }
 }

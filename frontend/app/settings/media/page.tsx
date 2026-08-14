@@ -9,11 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { Search, Plus, Image as ImageIcon, Video, File as FileIcon, Trash2, Download, Pencil, LayoutGrid, TableProperties, UploadCloud } from "lucide-react";
+import { Search, Plus, Image as ImageIcon, Video, File as FileIcon, Trash2, Download, Pencil, LayoutGrid, TableProperties, UploadCloud, CheckCircle2, AlertCircle, Loader2, ChevronUp, ChevronDown, X, ArrowUp, Clock, Play } from "lucide-react";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MediaItem } from "@/lib/services/media.service";
-import { useMediaPageState, useVideoPreview, useGifPreview } from "@/lib/hooks/useMedia";
+import { useMediaPageState, useGifPreview } from "@/lib/hooks/useMedia";
 import { API_BASE_URL } from "@/lib/api/client";
 import { type Dictionary } from "@/lib/i18n/dictionaries";
 import { useAuthStore } from "@/lib/stores/auth.store";
@@ -35,28 +35,50 @@ function getMediaIcon(mimeType: string) {
 
 /* ─── Video Preview Component ────────────────────────────────────── */
 function VideoPreview({ url }: { url: string }) {
-  const { isHovered, setIsHovered } = useVideoPreview();
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+
+  const handleMouseEnter = () => {
+    setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay may be restricted by browser until user gesture
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0.1;
+    }
+  };
 
   return (
     <div
-      className="w-full h-full relative flex items-center justify-center bg-gradient-to-br from-purple-500/10 to-indigo-500/10 dark:from-purple-500/5 dark:to-indigo-500/5 transition-all duration-300 animate-in fade-in"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="w-full h-full relative flex items-center justify-center bg-surface-subtle overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {isHovered ? (
-        <video
-          src={url}
-          className="w-full h-full object-cover animate-in fade-in duration-300"
-          muted
-          playsInline
-          autoPlay
-          loop
-        />
-      ) : (
-        <div className="w-full h-full flex items-center justify-center bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 transition-all duration-300">
-          <Video size={18} className="fill-purple-600/20 dark:fill-purple-400/20 group-hover:scale-110 transition-transform duration-300" />
+      <video
+        ref={videoRef}
+        src={`${url}#t=0.1`}
+        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        muted
+        playsInline
+        preload="metadata"
+        loop
+      />
+      <div 
+        className={`absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity duration-200 pointer-events-none ${
+          isPlaying ? "opacity-0" : "opacity-0 group-hover:opacity-100"
+        }`}
+      >
+        <div className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm text-white flex items-center justify-center shadow-lg">
+          <Play size={14} className="fill-white translate-x-0.5" />
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -183,6 +205,47 @@ export default function MediaPage() {
     const sizes = [m.units.bytes, m.units.kb, m.units.mb, m.units.gb, m.units.tb];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  };
+
+  const formatSpeed = (bytesPerSec: number) => {
+    if (!bytesPerSec || bytesPerSec <= 0) return `0 ${m.units.kb}/${m.uploadProgress.speedUnit}`;
+    if (bytesPerSec >= 1024 * 1024) {
+      return `${(bytesPerSec / (1024 * 1024)).toFixed(1)} ${m.units.mb}/${m.uploadProgress.speedUnit}`;
+    }
+    return `${Math.round(bytesPerSec / 1024)} ${m.units.kb}/${m.uploadProgress.speedUnit}`;
+  };
+
+  const formatTimeRemaining = (seconds: number) => {
+    if (!seconds || seconds <= 0) return '';
+    if (seconds < 60) {
+      return m.uploadProgress.remainingSec.replace('{seconds}', String(seconds));
+    }
+    const mins = Math.floor(seconds / 60);
+    const remSec = seconds % 60;
+    return m.uploadProgress.remainingMin.replace('{mins}', String(mins)).replace('{seconds}', String(remSec));
+  };
+
+  const [isDragging, setIsDragging] = React.useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      state.handleMultipleFiles(e.dataTransfer.files);
+    }
   };
 
   const formatDate = (dateStr?: string) => {
@@ -499,27 +562,61 @@ export default function MediaPage() {
 
         {/* Upload Modal */}
         <Dialog open={state.isUploadModalOpen} onOpenChange={state.setIsUploadModalOpen}>
-          <DialogContent className="sm:max-w-[500px]">
-            <DialogHeader>
-              <DialogTitle>{m.uploadModal.title}</DialogTitle>
+          <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-surface-card border border-border-default/80 shadow-2xl rounded-2xl">
+            <DialogHeader className="p-5 pb-2">
+              <DialogTitle className="text-base font-bold text-foreground flex items-center gap-2">
+                <UploadCloud size={18} className="text-primary" />
+                {m.uploadModal.title}
+              </DialogTitle>
             </DialogHeader>
-            <div 
-              onClick={() => state.fileInputRef.current?.click()}
-              className={`py-8 flex flex-col items-center justify-center border-2 border-dashed border-border-default rounded-xl bg-surface-card hover:bg-primary/5 hover:border-primary/50 transition-all cursor-pointer group mt-2 mb-2 ${state.uploadMutation.isPending ? 'opacity-50 pointer-events-none' : ''}`}
-            >
-              <input type="file" ref={state.fileInputRef as any} onChange={state.handleFileChange} className="hidden" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" />
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                {state.uploadMutation.isPending ? (
-                  <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <UploadCloud size={32} className="text-primary" />
-                )}
+            
+            <div className="p-5 pt-0">
+              <div 
+                onClick={() => state.fileInputRef.current?.click()}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`py-10 flex flex-col items-center justify-center border-2 border-dashed rounded-xl transition-all duration-200 cursor-pointer group select-none ${
+                  isDragging 
+                    ? 'border-primary bg-primary/10 scale-[1.01]' 
+                    : 'border-border-default bg-surface-subtle/30 hover:bg-primary/5 hover:border-primary/50'
+                }`}
+              >
+                <input 
+                  type="file" 
+                  ref={state.fileInputRef as any} 
+                  onChange={state.handleFileChange} 
+                  className="hidden" 
+                  multiple
+                  accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" 
+                />
+                
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-all duration-300 ${
+                  isDragging 
+                    ? 'bg-primary text-white scale-110 shadow-lg shadow-primary/30' 
+                    : 'bg-primary/10 text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-white'
+                }`}>
+                  <UploadCloud size={28} />
+                </div>
+                
+                <h3 className="text-sm font-semibold text-foreground mb-1.5 text-center px-4">
+                  {isDragging 
+                    ? m.uploadProgress.dropFiles
+                    : m.uploadModal.description
+                  }
+                </h3>
+                <p className="text-xs text-text-muted mb-3 text-center px-4">
+                  {m.uploadModal.supportedFormats}
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <Badge variant="secondary" className="font-mono text-[10px] shadow-sm">
+                    {m.uploadModal.maxSize}
+                  </Badge>
+                  <Badge variant="outline" className="text-[10px] text-primary border-primary/30 bg-primary/5 font-medium">
+                    {m.uploadProgress.multiFileSupported}
+                  </Badge>
+                </div>
               </div>
-              <h3 className="text-sm font-semibold text-foreground mb-1.5 text-center px-4">
-                {state.uploadMutation.isPending ? m.status.uploading : m.uploadModal.description}
-              </h3>
-              <p className="text-xs text-text-muted mb-3 text-center px-4">{m.uploadModal.supportedFormats}</p>
-              <Badge variant="secondary" className="font-mono text-[10px] mb-6 shadow-sm">{m.uploadModal.maxSize}</Badge>
             </div>
           </DialogContent>
         </Dialog>

@@ -4,13 +4,59 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Video, CheckCircle2, UploadCloud, Loader2, Image as ImageIcon } from "lucide-react";
+import { Search, Video, CheckCircle2, UploadCloud, Loader2, Image as ImageIcon, X, Play } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { useMediaPickerState, MediaPickerItem } from "@/lib/hooks/useMedia";
 import { useAuthStore } from "@/lib/stores/auth.store";
 
 export type MediaType = "image" | "video" | "all";
+
+function PickerVideoPreview({ url }: { url: string }) {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+
+  const handleMouseEnter = () => {
+    setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0.1;
+    }
+  };
+
+  return (
+    <div
+      className="w-full h-full relative flex items-center justify-center bg-surface-subtle overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <video 
+        ref={videoRef}
+        src={`${url}#t=0.1`} 
+        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+        muted 
+        playsInline 
+        preload="metadata" 
+        loop
+      />
+      <div 
+        className={`absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity duration-200 pointer-events-none ${
+          isPlaying ? "opacity-0" : "opacity-0 group-hover:opacity-100"
+        }`}
+      >
+        <div className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm text-white flex items-center justify-center shadow-lg">
+          <Play size={14} className="fill-white translate-x-0.5" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface MediaPickerDialogProps {
   open: boolean;
@@ -21,11 +67,11 @@ interface MediaPickerDialogProps {
 }
 
 export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, onSelect }: MediaPickerDialogProps) {
-  const { t, locale, dir } = useTranslation() as { t: Dictionary; locale: string; dir: "ltr" | "rtl" };
+  const { t, locale, dir } = useTranslation();
   const user = useAuthStore((state) => state.user);
   const isAdmin = user?.role?.toLowerCase() === "admin";
-  const pickerDict = t.media?.picker;
-  const mediaDict = t.media;
+  const m = t.media;
+  const pickerDict = m.picker;
 
   const state = useMediaPickerState({ type, folder, onSelect, onOpenChange });
 
@@ -33,13 +79,13 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
   const filterTabs: { label: string; value: "all" | "image" | "video" }[] = (() => {
     if (type !== "all") {
       return [
-        { label: type === "image" ? (pickerDict?.image || "Image") : (pickerDict?.video || "Video"), value: type },
+        { label: type === "image" ? pickerDict.image : pickerDict.video, value: type },
       ];
     }
     return [
-      { label: mediaDict?.search?.filterAll || "All", value: "all" },
-      { label: mediaDict?.search?.filterImages || "Images", value: "image" },
-      { label: mediaDict?.search?.filterVideos || "Videos", value: "video" },
+      { label: m.search.filterAll, value: "all" },
+      { label: m.search.filterImages, value: "image" },
+      { label: m.search.filterVideos, value: "video" },
     ];
   })();
 
@@ -73,33 +119,34 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
     return <UploadCloud size={16} />;
   };
 
-  const isUploading = state.uploadMutation.isPending;
+  const isUploading = state.isUploading;
   const { fileInputRef } = state;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-[820px] w-[calc(100vw-2rem)] !max-w-[820px] bg-surface-card border-border-default text-foreground p-0 overflow-hidden flex flex-col h-[85vh] sm:h-[620px] !rounded-2xl"
+        className="sm:max-w-[840px] w-[calc(100vw-2rem)] !max-w-[840px] bg-surface-card border-border-default text-foreground p-0 overflow-hidden flex flex-col h-[85vh] sm:h-[620px] !rounded-2xl"
         dir={dir}
         showCloseButton={false}
       >
-        {/* ── Page Header ────────────────────────────────────────── */}
+        {/* ── Header Area ────────────────────────────────────────── */}
         <DialogHeader className="relative px-5 pt-5 pb-0 flex-shrink-0">
           <DialogClose
             render={
-              <button className="dialog-close-btn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L13 13M1 13L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
+              <button 
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-text-muted hover:text-foreground hover:bg-surface-subtle transition-colors cursor-pointer absolute top-4 end-4"
+                aria-label={pickerDict.cancel}
+              >
+                <X size={16} />
               </button>
             }
           />
 
           <div className="flex flex-col gap-1 pe-10">
-            <DialogTitle className="text-xl font-bold text-foreground m-0 mb-1">
-              {pickerDict?.title || "Select Media"}
+            <DialogTitle className="text-lg sm:text-xl font-bold text-foreground m-0 leading-tight">
+              {pickerDict.title}
             </DialogTitle>
-            <p className="text-sm text-text-muted m-0">{mediaDict?.pageDescription || ""}</p>
+            <p className="text-xs sm:text-sm text-text-muted m-0">{m.pageDescription}</p>
           </div>
         </DialogHeader>
 
@@ -108,20 +155,21 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
           ref={fileInputRef}
           type="file"
           accept={getAcceptString()}
+          multiple
           className="hidden"
           onChange={state.handleFileChange}
         />
 
         {/* ── Search & Filter Bar ─────────────────────────────────── */}
         <div className="px-5 pt-4 pb-0 flex-shrink-0">
-          <div className="bg-surface-card border border-border-default rounded-xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="bg-surface-card border border-border-default rounded-xl p-2.5 sm:p-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
             <div className="flex-1">
               <Input
                 id="media-picker-search"
                 icon={Search}
                 value={state.searchQuery}
                 onChange={(e) => state.handleSearchChange(e.target.value)}
-                placeholder={pickerDict?.searchPlaceholder || "Search media..."}
+                placeholder={pickerDict.searchPlaceholder}
                 className="h-9 rounded-lg text-sm w-full"
               />
             </div>
@@ -132,8 +180,8 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
               disabled={isUploading}
               className="h-9 gap-1.5 shrink-0"
             >
-              {isUploading ? <Loader2 size={16} className="animate-spin" /> : getUploadIcon()}
-              {isUploading ? (mediaDict?.uploadModal?.title || "Uploading...") : (pickerDict?.uploadNew || "Upload New")}
+              {isUploading ? <Loader2 size={15} className="animate-spin" /> : getUploadIcon()}
+              <span>{isUploading ? m.uploadModal.title : pickerDict.uploadNew}</span>
             </Button>
 
             {filterTabs.length > 1 && (
@@ -157,10 +205,10 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
         </div>
 
         {/* ── Content Area ─────────────────────────────────────────── */}
-        <div className="flex-1 overflow-y-auto px-5 pt-4 pb-5">
+        <div className="flex-1 overflow-y-auto px-5 pt-4 pb-5 scrollbar-thin">
           {state.isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {Array.from({ length: 6 }).map((_, i) => (
+              {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="bg-surface-card border border-border-default rounded-xl overflow-hidden flex flex-col animate-pulse">
                   <div className="aspect-video bg-surface-subtle" />
                   <div className="p-3 flex flex-col gap-1.5">
@@ -175,7 +223,7 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
               <div className="w-14 h-14 rounded-full bg-surface-subtle flex items-center justify-center mb-3">
                 <Search size={22} className="text-text-muted" />
               </div>
-              <p className="text-sm text-text-muted m-0">{pickerDict?.emptyState || "No media found."}</p>
+              <p className="text-sm text-text-muted m-0">{pickerDict.emptyState}</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -197,14 +245,10 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
                           src={item.url}
                           alt={item.altText || item.name}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          loading="lazy"
                         />
                       ) : (
-                        <div className="w-full h-full relative group">
-                          <video src={`${item.url}#t=0.1`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" muted playsInline preload="metadata" />
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-                            <Video className="text-white drop-shadow-md" size={24} />
-                          </div>
-                        </div>
+                        <PickerVideoPreview url={item.url} />
                       )}
 
                       <Badge variant="secondary" className="absolute top-2 start-2 font-mono text-[10px] lowercase shadow-sm">
@@ -238,20 +282,20 @@ export function MediaPickerDialog({ open, onOpenChange, type = "all", folder, on
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="h-9 px-5 bg-background text-foreground border-border-default hover:bg-surface-subtle font-semibold"
+            className="h-9 px-5 bg-background text-foreground border-border-default hover:bg-surface-subtle font-semibold cursor-pointer"
           >
-            {pickerDict?.cancel || "Cancel"}
+            {pickerDict.cancel}
           </Button>
 
           <Button
             onClick={state.handleSelectConfirm}
             disabled={!state.selectedId}
-            className="h-9 px-6 font-semibold"
+            className="h-9 px-6 font-semibold cursor-pointer"
           >
-            {pickerDict?.select || "Select"}
+            {pickerDict.select}
           </Button>
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+}

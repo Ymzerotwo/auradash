@@ -91,5 +91,27 @@
     "too_long": "Value exceeds the allowed limit.",
     "file_required": "File is required.",
     "ids_required": "IDs are required."
+  },
+  "uploadProgress": {
+    "uploadingMultiple": "Uploading {count} files",
+    "processing": "Processing & saving...",
+    "done": "Done",
+    "dropFiles": "Drop files here to upload",
+    "multiFileSupported": "Multi-file upload supported",
+    "speedUnit": "s",
+    "remainingSec": "~{seconds}s left",
+    "remainingMin": "~{mins}m {seconds}s left",
+    "startedUploading": "Started uploading {count} file(s)...",
+    "cancelUpload": "Cancel upload",
+    "waiting": "Waiting",
+    "pauseUpload": "Pause upload",
+    "resumeUpload": "Resume upload",
+    "paused": "Paused",
+    "cancelTitle": "Cancel Upload",
+    "cancelDescription": "Are you sure you want to cancel uploading this file? Transfer will stop and partial progress will be discarded.",
+    "cancelAllTitle": "Cancel All Uploads",
+    "cancelAllDescription": "Are you sure you want to cancel all in-progress uploads?",
+    "confirmCancel": "Yes, Cancel",
+    "keepUploading": "Keep Uploading"
   }
 }

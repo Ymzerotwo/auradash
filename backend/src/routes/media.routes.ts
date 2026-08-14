@@ -40,8 +40,52 @@ mediaRoutes.get(
 mediaRoutes.get('/:id', requirePermission(['settings.media', 'cms.articles', 'cms.services']), MediaController.getMediaById);
 
 /**
+ * POST /api/media/chunked/init
+ * Initializes a chunked multipart upload.
+ */
+mediaRoutes.post(
+  '/chunked/init',
+  requirePermission(['settings.media', 'cms.articles', 'cms.services']),
+  MediaController.initChunkedUpload
+);
+
+/**
+ * POST /api/media/chunked/part
+ * Uploads an individual chunk part.
+ */
+mediaRoutes.post(
+  '/chunked/part',
+  requirePermission(['settings.media', 'cms.articles', 'cms.services']),
+  bodyLimit({
+    maxSize: 15 * 1024 * 1024, // 15MB limit per chunk part
+    onError: (c) => sendResponse(c, 413, 'PAYLOAD_TOO_LARGE', 'Chunk part exceeds size limit', null),
+  }),
+  MediaController.uploadChunkPart
+);
+
+/**
+ * POST /api/media/chunked/complete
+ * Completes and finalizes a chunked multipart upload.
+ */
+mediaRoutes.post(
+  '/chunked/complete',
+  requirePermission(['settings.media', 'cms.articles', 'cms.services']),
+  MediaController.completeChunkedUpload
+);
+
+/**
+ * POST /api/media/chunked/abort
+ * Aborts an in-progress chunked upload.
+ */
+mediaRoutes.post(
+  '/chunked/abort',
+  requirePermission(['settings.media', 'cms.articles', 'cms.services']),
+  MediaController.abortChunkedUpload
+);
+
+/**
  * POST /api/media
- * Uploads a new media asset.
+ * Uploads a new media asset (Direct Single File).
  */
 mediaRoutes.post(
   '/',

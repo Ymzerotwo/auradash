@@ -314,4 +314,86 @@ describe('Pentest: Media Controller & Routes Security', () => {
       expect(resData.data.data[0].created_at).toBe('2023-01-01');
     });
   });
+
+  describe('6. Chunked Multipart Upload Endpoints', () => {
+    let app: Hono<AppContext>;
+
+    beforeEach(() => {
+      app = new Hono<AppContext>();
+      app.use('*', async (c, next) => {
+        c.set('user', { id: 'admin-1', role: 'Admin', permissions: { settings: { media: true } } } as any);
+        await next();
+      });
+      app.route('/api/media', mediaRoutes);
+    });
+
+    it('should initialize chunked upload successfully', async () => {
+      vi.spyOn(MediaService, 'initChunkedUpload').mockResolvedValue({
+        uploadId: 'test-upload-id',
+        key: 'media/test-video.mp4',
+        chunkSizeBytes: 5242880
+      } as any);
+
+      const req = new Request('http://localhost/api/media/chunked/init', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fileName: 'test-video.mp4',
+          mimeType: 'video/mp4',
+          fileSize: 10485760
+        })
+      });
+
+      const res = await app.fetch(req, mockEnv);
+      const data: any = await res.json();
+
+      expect(res.status).toBe(200);
+      expect(data.data.uploadId).toBe('test-upload-id');
+      expect(data.data.key).toBe('media/test-video.mp4');
+    });
+
+    it('should complete chunked upload successfully', async () => {
+      vi.spyOn(MediaService, 'completeChunkedUpload').mockResolvedValue({
+        newMedia: { id: 'media-chunked-1', file_name: 'test-video.mp4' }
+      } as any);
+
+      const req = new Request('http://localhost/api/media/chunked/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: 'media/test-video.mp4',
+          uploadId: 'test-upload-id',
+          parts: [{ partNumber: 1, etag: 'etag-1' }, { partNumber: 2, etag: 'etag-2' }],
+          fileName: 'test-video.mp4',
+          mimeType: 'video/mp4',
+          fileSize: 10485760
+        })
+      });
+
+      const res = await app.fetch(req, mockEnv);
+      const data: any = await res.json();
+
+      expect(res.status).toBe(201);
+      expect(data.data.id).toBe('media-chunked-1');
+    });
+
+    it('should abort chunked upload cleanly', async () => {
+      vi.spyOn(MediaService, 'abortChunkedUpload').mockResolvedValue({ success: true } as any);
+
+      const req = new Request('http://localhost/api/media/chunked/abort', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: 'media/test-video.mp4',
+          uploadId: 'test-upload-id'
+        })
+      });
+
+      const res = await app.fetch(req, mockEnv);
+      const data: any = await res.json();
+
+      expect(res.status).toBe(200);
+      expect(data.slug).toBe('CHUNKED_ABORTED');
+    });
+  });
 });

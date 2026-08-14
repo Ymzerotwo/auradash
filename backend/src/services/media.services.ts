@@ -8,7 +8,7 @@
 
 import { D1Database } from '@cloudflare/workers-types';
 import { getPaginationOptions, paginateQuery } from '../utils/pagination';
-import { processAndStoreMedia, removeMedia, MediaUploadError } from '../utils/media-upload';
+import { processAndStoreMedia, removeMedia, MediaUploadError, validateMagicBytes } from '../utils/media-upload';
 import { escapeLikePattern } from '../utils/sanitize';
 
 // ==========================================
@@ -148,5 +148,88 @@ export const MediaService = {
       fileName: media.file_name as string, 
       mimeType: media.mime_type as string 
     };
+  },
+
+  /**
+   * Initializes a chunked multipart upload directly with Cloudflare R2.
+   */
+  initChunkedUpload: async (bucket: any, folder: string = '/', fileName: string, mimeType: string, fileSize: number, altText?: string) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
+    if (!allowedTypes.includes(mimeType)) {
+      return { error: 'INVALID_FILE_TYPE', message: 'File format not supported', status: 400 };
+    }
+    const maxSize = 100 * 1024 * 1024;
+    if (fileSize > maxSize) {
+      return { error: 'FILE_TOO_LARGE', message: 'File size exceeds 100MB limit', status: 400 };
+    }
+    const sanitizedName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const safeFolder = (folder || '').split('/').map(p => p.trim()).filter(p => p && p !== '.' && p !== '..').join('/');
+    const cleanFolder = safeFolder ? safeFolder + '/' : '';
+    const r2Key = `${cleanFolder}${crypto.randomUUID()}-${sanitizedName}`;
+
+    const mp = await bucket.createMultipartUpload(r2Key, {
+      httpMetadata: { contentType: mimeType }
+    });
+
+    return {
+      uploadId: mp.uploadId,
+      key: mp.key,
+      chunkSizeBytes: 5 * 1024 * 1024 // Standard 5MB chunk (R2 minimum part size)
+    };
+  },
+
+  /**
+   * Uploads a single chunk/part to Cloudflare R2 multipart upload.
+   */
+  uploadChunkPart: async (bucket: any, key: string, uploadId: string, partNumber: number, chunkBuffer: ArrayBuffer, mimeType?: string) => {
+    if (partNumber === 1 && mimeType) {
+      if (!validateMagicBytes(chunkBuffer, mimeType)) {
+        return { error: 'MIME_TYPE_MISMATCH', message: 'Invalid file signature detected', status: 400 };
+      }
+    }
+    const mp = bucket.resumeMultipartUpload(key, uploadId);
+    const uploadedPart = await mp.uploadPart(partNumber, chunkBuffer);
+    return {
+      partNumber: uploadedPart.partNumber,
+      etag: uploadedPart.etag
+    };
+  },
+
+  /**
+   * Completes the chunked multipart upload, merges parts in R2, and saves to D1 Database.
+   */
+  completeChunkedUpload: async (db: D1Database, bucket: any, userId: string, r2PublicUrl: string, key: string, uploadId: string, parts: { partNumber: number; etag: string }[], fileName: string, mimeType: string, fileSize: number, folder: string = '/', altText?: string) => {
+    const mp = bucket.resumeMultipartUpload(key, uploadId);
+    // Sort parts ascending by partNumber as required by Cloudflare R2 / S3 spec
+    const sortedParts = [...parts].sort((a, b) => a.partNumber - b.partNumber);
+    await mp.complete(sortedParts);
+
+    const baseUrl = r2PublicUrl ? (r2PublicUrl.endsWith('/') ? r2PublicUrl : r2PublicUrl + '/') : '/files/';
+    const file_url = `${baseUrl}${key}`;
+    const id = crypto.randomUUID();
+
+    await db.prepare(
+      `INSERT INTO Media (id, file_name, file_url, mime_type, size_bytes, alt_text, folder, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(id, fileName, file_url, mimeType, fileSize, altText || null, folder, userId).run();
+
+    const newMedia = await db.prepare(
+      `SELECT Media.*, Users.full_name as created_by_name FROM Media LEFT JOIN Users ON Media.created_by = Users.id WHERE Media.id = ?`
+    ).bind(id).first();
+
+    return { newMedia };
+  },
+
+  /**
+   * Aborts an in-progress multipart upload on Cloudflare R2 to clean up storage.
+   */
+  abortChunkedUpload: async (bucket: any, key: string, uploadId: string) => {
+    try {
+      const mp = bucket.resumeMultipartUpload(key, uploadId);
+      await mp.abort();
+      return { success: true };
+    } catch {
+      return { success: false };
+    }
   }
 };
