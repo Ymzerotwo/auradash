@@ -168,7 +168,10 @@ export const MediaService = {
     const r2Key = `${cleanFolder}${crypto.randomUUID()}-${sanitizedName}`;
 
     const mp = await bucket.createMultipartUpload(r2Key, {
-      httpMetadata: { contentType: mimeType }
+      httpMetadata: { 
+        contentType: mimeType,
+        cacheControl: 'public, max-age=31536000, immutable'
+      }
     });
 
     return {

@@ -122,9 +122,12 @@ export async function processAndStoreMedia(
 
   const r2Key = `${cleanFolder}${crypto.randomUUID()}-${sanitizedName}`;
 
-  // Store in Cloudflare R2
+  // Store in Cloudflare R2 with 1-year immutable Edge & Browser CDN Caching
   await bucket.put(r2Key, fileBuffer, {
-    httpMetadata: { contentType: file.type },
+    httpMetadata: { 
+      contentType: file.type,
+      cacheControl: 'public, max-age=31536000, immutable'
+    },
   });
 
   // Build the public-facing URL that points directly to R2 for fast delivery
