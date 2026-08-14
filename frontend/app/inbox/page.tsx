@@ -35,6 +35,33 @@ export default function InboxPage() {
 
   const [activeViewMessage, setActiveViewMessage] = useState<typeof viewMessage>(null);
 
+  const handleOpenViewMessage = (msg: any) => {
+    if (msg.status === "unread") {
+      handleUpdateStatus(msg.id, "read");
+    }
+    const metadata = msg.metadata ? (typeof msg.metadata === "string" ? JSON.parse(msg.metadata) : msg.metadata) : null;
+    setViewMessage({
+      id: msg.id,
+      content: msg.message || "",
+      author: msg.full_name,
+      inquiry_type: msg.inquiry_type,
+      metadata,
+      read_at: msg.read_at || new Date().toISOString(),
+      read_by: msg.read_by,
+      read_by_name: msg.read_by_name || user?.full_name || user?.username,
+      converted_at: msg.converted_at,
+      converted_by: msg.converted_by,
+      converted_by_name: msg.converted_by_name,
+      profile_created_at: msg.profile_created_at,
+      profile_created_by: msg.profile_created_by,
+      profile_created_by_name: msg.profile_created_by_name,
+      add_to_spam_at: msg.add_to_spam_at,
+      add_to_spam_by: msg.add_to_spam_by,
+      add_to_spam_by_name: msg.add_to_spam_by_name,
+      spam_reason: msg.spam_reason
+    });
+  };
+
   useEffect(() => {
     if (viewMessage) {
       setActiveViewMessage(viewMessage);
@@ -302,26 +329,7 @@ export default function InboxPage() {
                           <TableCell className="align-top pt-4 max-w-[300px]">
                             <p 
                               className="text-sm text-text-muted truncate cursor-pointer hover:text-foreground transition-colors m-0 font-normal" 
-                              onClick={() => setViewMessage({
-                                id: msg.id,
-                                content: msg.message || "",
-                                author: msg.full_name,
-                                inquiry_type: msg.inquiry_type,
-                                metadata,
-                                read_at: (msg as any).read_at,
-                                read_by: (msg as any).read_by,
-                                read_by_name: (msg as any).read_by_name,
-                                converted_at: (msg as any).converted_at,
-                                converted_by: (msg as any).converted_by,
-                                converted_by_name: (msg as any).converted_by_name,
-                                profile_created_at: (msg as any).profile_created_at,
-                                profile_created_by: (msg as any).profile_created_by,
-                                profile_created_by_name: (msg as any).profile_created_by_name,
-                                add_to_spam_at: (msg as any).add_to_spam_at,
-                                add_to_spam_by: (msg as any).add_to_spam_by,
-                                add_to_spam_by_name: (msg as any).add_to_spam_by_name,
-                                spam_reason: (msg as any).spam_reason
-                              })}
+                              onClick={() => handleOpenViewMessage(msg)}
                               title={msg.message || (dict?.actions?.clickToRead || "Click to read full message")}
                             >
                               {msg.message || "-"}
@@ -462,26 +470,7 @@ export default function InboxPage() {
                       id={`message-${msg.id}`} 
                       onClick={(e) => {
                         if ((e.target as HTMLElement).closest('.actions-menu')) return;
-                        setViewMessage({
-                          id: msg.id,
-                          content: msg.message || "",
-                          author: msg.full_name,
-                          inquiry_type: msg.inquiry_type,
-                          metadata,
-                          read_at: (msg as any).read_at,
-                          read_by: (msg as any).read_by,
-                          read_by_name: (msg as any).read_by_name,
-                          converted_at: (msg as any).converted_at,
-                          converted_by: (msg as any).converted_by,
-                          converted_by_name: (msg as any).converted_by_name,
-                          profile_created_at: (msg as any).profile_created_at,
-                          profile_created_by: (msg as any).profile_created_by,
-                          profile_created_by_name: (msg as any).profile_created_by_name,
-                          add_to_spam_at: (msg as any).add_to_spam_at,
-                          add_to_spam_by: (msg as any).add_to_spam_by,
-                          add_to_spam_by_name: (msg as any).add_to_spam_by_name,
-                          spam_reason: (msg as any).spam_reason
-                        });
+                        handleOpenViewMessage(msg);
                       }}
                       className={`bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3 shadow-sm cursor-pointer transition-all duration-200 hover:shadow-md hover:border-border-subtle group ${highlightedId === msg.id ? "ring-2 ring-primary" : ""}`}
                     >

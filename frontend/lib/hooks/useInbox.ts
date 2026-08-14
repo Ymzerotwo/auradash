@@ -44,6 +44,16 @@ export function useUpdateInboxStatus() {
       
       // 2. Snapshot previous values
       const previousQueries = qc.getQueriesData<PaginatedInbox>({ queryKey: ['inbox', 'list'] });
+      const previousCounters = useStateStore.getState().counters;
+
+      let wasUnread = false;
+      for (const [, oldData] of previousQueries) {
+        const targetMsg = oldData?.messages?.find((m) => m.id === id);
+        if (targetMsg) {
+          wasUnread = targetMsg.status === 'unread';
+          break;
+        }
+      }
       
       // 3. Optimistically update all lists containing this message
       qc.setQueriesData<PaginatedInbox>({ queryKey: ['inbox', 'list'] }, (old) => {
@@ -63,11 +73,18 @@ export function useUpdateInboxStatus() {
         };
       });
 
-      // Also optimistically update unread count if transitioning from/to unread
-      // Note: Full exact sync is complex here without knowing the old status of the specific message,
-      // but invalidation will fix it shortly after.
+      // 4. Optimistically update global unread count badge in useStateStore
+      if (wasUnread && status !== 'unread') {
+        useStateStore.getState().setCounters({
+          inbox: Math.max(0, (previousCounters.inbox || 0) - 1),
+        });
+      } else if (!wasUnread && status === 'unread') {
+        useStateStore.getState().setCounters({
+          inbox: (previousCounters.inbox || 0) + 1,
+        });
+      }
 
-      return { previousQueries };
+      return { previousQueries, previousCounters };
     },
     onError: (error: unknown, _variables, context) => {
       if (context?.previousQueries) {
@@ -75,15 +92,24 @@ export function useUpdateInboxStatus() {
           qc.setQueryData(queryKey, oldData);
         });
       }
+      if (context?.previousCounters) {
+        useStateStore.getState().setCounters(context.previousCounters);
+      }
       if (error instanceof ApiError && error.slug === 'VALIDATION_ERROR') return;
       toast.error(getErrorMessage(error, t as any, 'inbox'));
     },
     onSuccess: () => {
       toast.success(getSuccessMessage({ slug: 'THREAD_UPDATED' }, t as any, 'inbox'));
     },
-    onSettled: () => {
+    onSettled: async () => {
       // Re-fetch to get exact server state
       void qc.invalidateQueries({ queryKey: inboxKeys.all });
+      try {
+        const counters = await InboxService.getUnreadCount();
+        if (typeof counters?.count === 'number') {
+          useStateStore.getState().setCounters({ inbox: counters.count });
+        }
+      } catch {}
     },
   });
 }
@@ -97,6 +123,16 @@ export function useDeleteInboxMessage() {
       await qc.cancelQueries({ queryKey: inboxKeys.all });
       
       const previousQueries = qc.getQueriesData<PaginatedInbox>({ queryKey: ['inbox', 'list'] });
+      const previousCounters = useStateStore.getState().counters;
+
+      let wasUnread = false;
+      for (const [, oldData] of previousQueries) {
+        const targetMsg = oldData?.messages?.find((m) => m.id === id);
+        if (targetMsg) {
+          wasUnread = targetMsg.status === 'unread';
+          break;
+        }
+      }
       
       qc.setQueriesData<PaginatedInbox>({ queryKey: ['inbox', 'list'] }, (old) => {
         if (!old) return old;
@@ -106,7 +142,13 @@ export function useDeleteInboxMessage() {
         };
       });
 
-      return { previousQueries };
+      if (wasUnread) {
+        useStateStore.getState().setCounters({
+          inbox: Math.max(0, (previousCounters.inbox || 0) - 1),
+        });
+      }
+
+      return { previousQueries, previousCounters };
     },
     onError: (error: unknown, _id, context) => {
       if (context?.previousQueries) {
@@ -114,14 +156,23 @@ export function useDeleteInboxMessage() {
           qc.setQueryData(queryKey, oldData);
         });
       }
+      if (context?.previousCounters) {
+        useStateStore.getState().setCounters(context.previousCounters);
+      }
       if (error instanceof ApiError && error.slug === 'VALIDATION_ERROR') return;
       toast.error(getErrorMessage(error, t as any, 'inbox'));
     },
     onSuccess: (_, id) => {
       toast.success(getSuccessMessage({ slug: 'THREAD_DELETED' }, t as any, 'inbox'));
     },
-    onSettled: () => {
+    onSettled: async () => {
       void qc.invalidateQueries({ queryKey: inboxKeys.all });
+      try {
+        const counters = await InboxService.getUnreadCount();
+        if (typeof counters?.count === 'number') {
+          useStateStore.getState().setCounters({ inbox: counters.count });
+        }
+      } catch {}
     },
   });
 }
