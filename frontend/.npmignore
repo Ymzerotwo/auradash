@@ -1,0 +1,11 @@
+node_modules
+.next
+.wrangler
+.git
+package-lock.json
+*.tsbuildinfo
+.env.local
+.env.production
+.dev.vars
+.DS_Store
+Thumbs.db

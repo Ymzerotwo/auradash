@@ -1,0 +1,10 @@
+node_modules
+.wrangler
+.git
+package-lock.json
+wrangler.jsonc
+.dev.vars
+.DS_Store
+Thumbs.db
+!wrangler.jsonc.example
+!.dev.vars.example
