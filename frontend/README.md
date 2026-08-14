@@ -83,10 +83,8 @@ npm run start
 
 ## 🚀 One-Click Deployment
 
-Deploy the Next.js frontend instantly on Vercel or Cloudflare Pages:
+Deploy the Next.js frontend instantly on Cloudflare Pages:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-&nbsp;&nbsp;
 [![Deploy to Cloudflare Pages](https://img.shields.io/badge/Deploy_to-Cloudflare_Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://dash.cloudflare.com/)
 
 ## 🏗️ Project Structure

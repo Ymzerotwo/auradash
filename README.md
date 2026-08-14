@@ -596,19 +596,17 @@ Deploy the Hono API & D1 database to Cloudflare Edge in one click:
 </td>
 <td align="center" width="50%">
 
-#### 🎨 Deploy Frontend (Vercel & Cloudflare Pages)
+#### 🎨 Deploy Frontend (Cloudflare Pages)
 
 Deploy the Next.js frontend application in one click:
 
 <br/>
 
-[![Deploy Frontend with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FYmzerotwo%2Fauradash&root-directory=frontend&env=NEXT_PUBLIC_API_URL&envDescription=AuraDash%20Backend%20API%20URL%20(e.g.%20https%3A%2F%2Fauradash-backend.workers.dev%2Fapi))
-<br/><br/>
 [![Deploy Frontend to Cloudflare Pages](https://img.shields.io/badge/Deploy_to-Cloudflare_Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/pages)
 
 <br/>
 
-**Note:** Vercel will automatically set the root directory to `frontend`.
+**Note:** Set the root directory to `frontend` and the build command to `npm run build:cloudflare`.
 
 </td>
 </tr>
@@ -632,21 +630,21 @@ npm run deploy
 # or directly: npx wrangler deploy --minify
 ```
 
-#### 2. Frontend Deployment (Next.js / Cloudflare Pages / Vercel)
+#### 2. Frontend Deployment (Cloudflare Pages)
 
-Build and run the production bundle for the frontend application:
+Build and deploy the production bundle for the frontend application on Cloudflare Pages:
 
 ```bash
 cd frontend
 
-# 1. Build production bundle
-npm run build
+# 1. Build production bundle for Cloudflare
+npm run build:cloudflare
 
 # 2. Start production server locally
 npm run start
 ```
 
-> 💡 **Cloudflare Pages / Vercel**: Set `NEXT_PUBLIC_API_URL` to your production Cloudflare Worker URL (e.g. `https://api.yourdomain.com/api`).
+> 💡 **Cloudflare Pages**: Set `NEXT_PUBLIC_API_URL` in your Cloudflare Pages dashboard variables to your production Cloudflare Worker URL (e.g. `https://api.yourdomain.com/api`).
 
 ---
 
@@ -656,7 +654,7 @@ Need a tailored edition, custom feature development, or a dedicated engineer to 
 
 We provide end-to-end technical consulting and setup services:
 
-- 🚀 **Turnkey Production Launch**: Complete setup of Cloudflare Workers, D1 Database, R2 Storage, and Vercel/Pages deployment.
+- 🚀 **Turnkey Production Launch**: Complete setup of Cloudflare Workers, D1 Database, R2 Storage, and Cloudflare Pages deployment.
 - 🎨 **Custom Feature Development**: Custom integrations, tailored UI modules, and specific business workflows.
 - 🛠️ **Priority Support & Maintenance**: Ongoing technical assistance, security audits, and dedicated updates.
 
