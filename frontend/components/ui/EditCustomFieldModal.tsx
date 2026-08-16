@@ -248,16 +248,44 @@ export function EditCustomFieldModal({
                 <LongTextField label="" value={fieldValue as string} onChange={setFieldValue} placeholder={dict.textPlaceholder} />
               )}
               {field.type === "image" && (
-                <MediaField label="" value={fieldValue as string} onChange={setFieldValue} type="image" />
+                <MediaField 
+                  label="" 
+                  value={fieldValue as string} 
+                  onChange={setFieldValue} 
+                  type="image" 
+                  dict={{
+                    chooseImage: (dict as any).chooseImage,
+                  }}
+                />
               )}
               {field.type === "video" && (
-                <MediaField label="" value={fieldValue as string} onChange={setFieldValue} type="video" />
+                <MediaField 
+                  label="" 
+                  value={fieldValue as string} 
+                  onChange={setFieldValue} 
+                  type="video" 
+                  dict={{
+                    chooseVideo: (dict as any).chooseVideo,
+                  }}
+                />
               )}
               {field.type === "video-youtube" && (
                 <UrlField label="" value={fieldValue as string} onChange={setFieldValue} placeholder="https://youtube.com/watch?v=..." />
               )}
               {field.type === "icon" && (
-                <IconField label="" value={fieldValue as string} onChange={setFieldValue} />
+                <IconField 
+                  label="" 
+                  value={fieldValue as string} 
+                  onChange={setFieldValue} 
+                  dict={{
+                    chooseIcon: (dict as any).chooseIcon || (dict as any).addIcon,
+                    pickIcon: (dict as any).pickIcon || (dict as any).addIcon,
+                    searchPlaceholder: (dict as any).searchPlaceholder,
+                    select: (dict as any).select,
+                    close: (dict as any).close || dict.cancel,
+                    noResults: (dict as any).noResults,
+                  }}
+                />
               )}
               {field.type === "list" && (
                 <ListField

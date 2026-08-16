@@ -72,6 +72,10 @@ export interface MediaFieldProps extends BaseFieldProps {
   dict?: {
     chooseImage?: string;
     chooseVideo?: string;
+    imageLabel?: string;
+    videoLabel?: string;
+    change?: string;
+    remove?: string;
   };
 }
 
@@ -109,12 +113,12 @@ export function MediaField({ label, value, onChange, type, required, dict = {}, 
             )}
           </div>
           <div className="flex flex-col flex-1 min-w-0">
-            <span className="text-xs font-bold text-foreground truncate" dir="ltr">{displayName || value}</span>
-            <span className="text-[10px] text-text-muted">{isImage ? "Image" : "Video"}</span>
+            <span className="text-xs font-bold text-foreground truncate text-start" dir="ltr">{displayName || value}</span>
+            <span className="text-[10px] text-text-muted">{isImage ? (dict.imageLabel || "صورة") : (dict.videoLabel || "فيديو")}</span>
           </div>
           <div className="flex items-center gap-3 pe-2">
             <button type="button" onClick={() => setIsOpen(true)} className="text-xs font-bold text-text-muted hover:text-foreground transition-colors cursor-pointer outline-none">
-              Change
+              {dict.change || "تغيير"}
             </button>
             <button type="button" onClick={() => onChange("")} className="text-text-muted hover:text-destructive transition-colors cursor-pointer outline-none">
               <Trash2 size={16} />
@@ -136,7 +140,7 @@ export function MediaField({ label, value, onChange, type, required, dict = {}, 
             {isImage ? <ImageIcon size={20} /> : <VideoIcon size={20} />}
           </div>
           <span className="text-xs font-medium text-text-subtle">
-            {isImage ? (dict.chooseImage || "Choose Image") : (dict.chooseVideo || "Choose Video")}
+            {isImage ? (dict.chooseImage || "اختيار صورة") : (dict.chooseVideo || "اختيار فيديو")}
           </span>
         </Button>
       )}
@@ -172,6 +176,7 @@ export interface IconFieldProps extends BaseFieldProps {
     select?: string;
     close?: string;
     noResults?: string;
+    placeholder?: string;
   };
 }
 
@@ -186,14 +191,14 @@ export function IconField({ label, value, onChange, required, dict = {}, error }
         </Label>
       )}
 
-      <div className="relative">
+      <div className="relative w-full">
         <div className="flex items-center gap-2">
-          <div className="relative flex-1">
+          <div className="relative flex-1" dir="ltr">
             <Input
               value={value}
               onChange={(e) => onChange(e.target.value)}
-              placeholder="e.g. lucide-home, fas fa-user..."
-              className="h-10 !rounded-lg text-sm w-full pe-24"
+              placeholder={dict.placeholder || "lucide-home, fas fa-user..."}
+              className="h-10 !rounded-lg text-sm w-full !pr-28"
               dir="ltr"
               error={error}
               icon={value ? () => <LucideIcon name={value} size={16} className="text-primary" /> : undefined}
@@ -201,9 +206,9 @@ export function IconField({ label, value, onChange, required, dict = {}, error }
             <button
               type="button"
               onClick={() => setIsOpen(true)}
-              className="absolute inset-y-1 end-1 h-8 px-3 flex items-center justify-center text-xs font-bold text-text-muted hover:text-foreground transition-colors cursor-pointer outline-none"
+              className="absolute inset-y-1 right-1 h-8 px-2.5 flex items-center justify-center text-xs font-semibold rounded-md bg-surface-subtle border border-border-default text-text-muted hover:text-foreground hover:bg-surface-hover transition-colors cursor-pointer outline-none"
             >
-              {dict.chooseIcon || "Choose Icon"}
+              {dict.chooseIcon || "اختيار أيقونة"}
             </button>
           </div>
         </div>
@@ -215,11 +220,11 @@ export function IconField({ label, value, onChange, required, dict = {}, error }
         onSelect={(iconName: string) => onChange(iconName)}
         currentIcon={value}
         dict={{
-          title: dict.pickIcon || "Pick an Icon",
-          searchPlaceholder: dict.searchPlaceholder || "Search icons...",
-          select: dict.select || "Select",
-          close: dict.close || "Close",
-          noResults: dict.noResults || "No icons found.",
+          title: dict.pickIcon || "اختيار أيقونة",
+          searchPlaceholder: dict.searchPlaceholder || "البحث في الأيقونات...",
+          select: dict.select || "اختيار",
+          close: dict.close || "إغلاق",
+          noResults: dict.noResults || "لم يتم العثور على أيقونات.",
           iconsCount: "",
         }}
       />
