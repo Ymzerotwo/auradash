@@ -93,7 +93,7 @@ SELECT
     'admin@auradash.local',
     'System Administrator',
     'admin',
-    '1c1c44e38df284c6ccbf4b56b6bb70c0d32978c160e7c4f0001be2b4b968d1a0:5f883d3b72b610c6a738f71b270008d02a2f250d136527931c1c25b417d3643f',
+    '24c62f1485d8d848b5bcd573c087159fb501e9e8a13c88bea8af55a110af4649:6522ba925395bfeb7f9ecc4132675319e0a752dcc238b28073ad053236e12afe',
     'Admin',
     '{}',
     0
