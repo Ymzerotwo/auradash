@@ -10,9 +10,9 @@
     "fullName": "الاسم الكامل",
     "fullNamePlaceholder": "مثال: أحمد محمد",
     "email": "البريد الإلكتروني",
-    "emailPlaceholder": "مثال: example@domain.com",
+    "emailPlaceholder": "example@domain.com",
     "username": "اسم المستخدم",
-    "usernamePlaceholder": "مثال: ahmed_mohamed",
+    "usernamePlaceholder": "ahmed_mohamed",
     "jobTitle": "المسمى الوظيفي",
     "jobTitlePlaceholder": "مثال: مهندس برمجيات",
     "photoUrl": "رابط الصورة",
@@ -22,9 +22,9 @@
   "password": {
     "title": "تغيير كلمة المرور",
     "current": "كلمة المرور الحالية",
-    "currentPlaceholder": "مطلوبة لتغيير كلمة المرور",
+    "currentPlaceholder": "••••••••",
     "new": "كلمة المرور الجديدة",
-    "newPlaceholder": "أدخل كلمة المرور الجديدة"
+    "newPlaceholder": "••••••••"
   },
   "actions": {
     "updating": "جاري التحديث...",

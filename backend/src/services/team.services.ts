@@ -55,9 +55,9 @@ export const TeamService = {
     }
     
     if (search) {
-      filterClauses.push(`(u.email LIKE ? ESCAPE '\\' OR u.username LIKE ? ESCAPE '\\')`);
+      filterClauses.push(`(u.email LIKE ? ESCAPE '\\' OR u.username LIKE ? ESCAPE '\\' OR u.full_name LIKE ? ESCAPE '\\')`);
       const searchPattern = `%${escapeLikePattern(search)}%`;
-      params.push(searchPattern, searchPattern);
+      params.push(searchPattern, searchPattern, searchPattern);
     }
 
     if (status === 'active') {

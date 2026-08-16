@@ -2,7 +2,7 @@
   "meta_title": "تسجيل الدخول | أوراداش إنتربرايز",
   "title": "مرحباً بعودتك",
   "username_label": "اسم المستخدم",
-  "username_placeholder": "أدخل اسم المستخدم",
+  "username_placeholder": "username",
   "password_label": "كلمة المرور",
   "password_placeholder": "••••••••",
   "remember_me": "تذكرني لمدة 30 يوماً",

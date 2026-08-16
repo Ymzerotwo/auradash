@@ -1,7 +1,7 @@
 {
   "pageTitle": "Bookings Management",
   "noResults": "No bookings found matching the selected filters.",
-  "searchPlaceholder": "Search by booking number, customer name, phone, or email...",
+  "searchPlaceholder": "Search by booking #, client name, phone, or email...",
   "filterAll": "All",
   "filterPending": "Pending",
   "filterInProgress": "In Progress",

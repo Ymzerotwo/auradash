@@ -13,7 +13,7 @@
     "confirmDeleteButton": "Confirm Delete"
   },
   "search": {
-    "placeholder": "Search media by name...",
+    "placeholder": "Search by file name or alt text...",
     "filterAll": "All Media",
     "filterImages": "Images",
     "filterVideos": "Videos",

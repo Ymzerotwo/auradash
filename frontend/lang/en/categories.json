@@ -12,7 +12,7 @@
     "chooseShareImage": "Choose Share Image"
   },
   "search": {
-    "placeholder": "Search by name or slug...",
+    "placeholder": "Search by category name or slug...",
     "filterAll": "All",
     "filterActive": "Active",
     "filterInactive": "Inactive",

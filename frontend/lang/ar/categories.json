@@ -12,7 +12,7 @@
     "chooseShareImage": "اختر صورة المشاركة"
   },
   "search": {
-    "placeholder": "البحث بالاسم أو الرابط...",
+    "placeholder": "البحث باسم التصنيف أو الرابط...",
     "filterAll": "الكل",
     "filterActive": "نشط",
     "filterInactive": "غير نشط",
@@ -62,9 +62,9 @@
   },
   "form": {
     "title": "العنوان",
-    "titlePlaceholder": "أدخل عنوان التصنيف...",
+    "titlePlaceholder": "اسم التصنيف",
     "slug": "الرابط",
-    "slugPlaceholder": "أدخل-الرابط",
+    "slugPlaceholder": "category-slug",
     "slugTaken": "هذا الرابط مستخدم بالفعل.",
     "sortOrder": "ترتيب العرض",
     "isActive": "نشط",

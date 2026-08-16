@@ -6,7 +6,7 @@
     "spammed": "العملاء المحظورون"
   },
   "search": {
-    "placeholder": "البحث بالاسم، أو رقم الهاتف، أو البريد الإلكتروني...",
+    "placeholder": "البحث باسم العميل، الهاتف، أو البريد الإلكتروني...",
     "filterAll": "الكل",
     "filterActive": "نشط",
     "filterSpammed": "محظور",
@@ -62,8 +62,8 @@
     },
     "placeholders": {
       "fullName": "مثال: يوسف محمد",
-      "phone": "مثال: +201012345678",
-      "email": "مثال: customer@example.com",
+      "phone": "+20 101 234 5678",
+      "email": "customer@example.com",
       "city": "مثال: القاهرة، الجيزة",
       "acquisitionSource": "مثال: فيسبوك، جوجل، توصية صديق...",
       "tags": "مثال: عميل دائم، VIP",

@@ -6,7 +6,7 @@
     "spammed": "Banned Customers"
   },
   "search": {
-    "placeholder": "Search by name, phone, or email...",
+    "placeholder": "Search by client name, phone, or email...",
     "filterAll": "All",
     "filterActive": "Active",
     "filterSpammed": "Banned",

@@ -7,7 +7,7 @@
     "adminUsers": "المسؤولون"
   },
   "search": {
-    "placeholder": "البحث بالاسم أو البريد الإلكتروني أو اسم المستخدم...",
+    "placeholder": "البحث بالاسم، البريد الإلكتروني، أو اسم المستخدم...",
     "noResults": "لم يتم العثور على مستخدمين يطابقون بحثك.",
     "filterAll": "الكل",
     "filterActive": "نشط",
@@ -57,14 +57,14 @@
     "fullName": "الاسم الكامل",
     "fullNamePlaceholder": "مثال: أحمد محمد",
     "username": "اسم المستخدم",
-    "usernamePlaceholder": "أدخل اسم المستخدم للوصول",
+    "usernamePlaceholder": "username",
     "email": "البريد الإلكتروني",
-    "emailPlaceholder": "أدخل البريد الإلكتروني الرسمي",
+    "emailPlaceholder": "name@company.com",
     "jobTitle": "المسمى الوظيفي",
     "jobTitlePlaceholder": "مثال: مصمم واجهات، مدير مبيعات...",
     "password": "كلمة المرور",
-    "passwordPlaceholder": "8 أحرف كحد أدنى",
-    "passwordEditPlaceholder": "اتركه فارغاً للاحتفاظ بكلمة المرور الحالية دون تغيير",
+    "passwordPlaceholder": "••••••••",
+    "passwordEditPlaceholder": "اتركه فارغاً للاحتفاظ بكلمة المرور دون تغيير",
     "role": "مستوى الوصول",
     "selectRole": "اختر الدور الوظيفي",
     "roleHint": "يحدد الصلاحيات والصفحات المتاحة للعضو داخل لوحة التحكم."

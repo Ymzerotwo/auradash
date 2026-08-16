@@ -40,7 +40,7 @@
     "create": "Create Category"
   },
   "search": {
-    "placeholder": "Search by title or slug...",
+    "placeholder": "Search by article title or slug...",
     "filterAll": "All",
     "filterActive": "Active",
     "filterInactive": "Inactive",

@@ -15,7 +15,7 @@
     "chooseShareImage": "اختر صورة المشاركة"
   },
   "search": {
-    "placeholder": "البحث بالاسم أو الرابط...",
+    "placeholder": "البحث باسم الخدمة أو الرابط...",
     "filterAll": "الكل",
     "filterActive": "نشط",
     "filterInactive": "غير نشط",
@@ -47,14 +47,14 @@
   "form": {
     "fillDetails": "أدخل تفاصيل الخدمة",
     "title": "العنوان",
-    "titlePlaceholder": "أدخل العنوان",
+    "titlePlaceholder": "اسم الخدمة",
     "slug": "الرابط",
-    "slugPlaceholder": "أدخل-الرابط",
+    "slugPlaceholder": "service-slug",
     "slugTaken": "هذا الرابط مستخدم بالفعل",
     "description": "الوصف",
-    "descriptionPlaceholder": "أدخل الوصف...",
+    "descriptionPlaceholder": "اكتب وصف الخدمة هنا",
     "icon": "الأيقونة",
-    "iconPlaceholder": "مثال: FaCar",
+    "iconPlaceholder": "icon-name",
     "iconTextMode": "نص",
     "iconPickerMode": "منتقي",
     "iconTextTab": "إدخال يدوي",

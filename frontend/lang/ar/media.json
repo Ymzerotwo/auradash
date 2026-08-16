@@ -13,7 +13,7 @@
     "confirmDeleteButton": "تأكيد الحذف"
   },
   "search": {
-    "placeholder": "البحث في الوسائط بالاسم...",
+    "placeholder": "البحث باسم الملف أو النص البديل...",
     "filterAll": "كل الوسائط",
     "filterImages": "الصور",
     "filterVideos": "الفيديو",

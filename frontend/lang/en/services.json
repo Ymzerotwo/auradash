@@ -15,7 +15,7 @@
     "chooseShareImage": "Choose Share Image"
   },
   "search": {
-    "placeholder": "Search by name or slug...",
+    "placeholder": "Search by service name or slug...",
     "filterAll": "All",
     "filterActive": "Active",
     "filterInactive": "Inactive",
