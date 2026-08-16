@@ -282,8 +282,9 @@ export default function MediaPage() {
           </div>
 
           {/* Search & Filter Bar */}
-          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="flex-1">
+          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3">
+            {/* Search */}
+            <div className="w-full">
               <Input
                 id="media-search"
                 icon={Search}
@@ -298,45 +299,50 @@ export default function MediaPage() {
               />
             </div>
             
-            <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide self-start sm:self-auto max-w-full">
-              {filterTabs.map((tab) => (
+            {/* Filters (Left) & View Toggle (Right) */}
+            <div className="flex items-center justify-between gap-3 w-full">
+              {/* Type Filter */}
+              <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full">
+                {filterTabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => state.handleFilterChange(tab.value as any)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                      state.typeFilter === tab.value
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-transparent text-text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* View Toggle */}
+              <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 shrink-0">
                 <button
-                  key={tab.value}
-                  onClick={() => state.handleFilterChange(tab.value as any)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                    state.typeFilter === tab.value
+                  onClick={() => state.setViewMode("table")}
+                  title={m.search.viewTable}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                    state.viewMode === "table"
                       ? "bg-primary text-white shadow-sm"
                       : "bg-transparent text-text-muted hover:text-foreground"
                   }`}
                 >
-                  {tab.label}
+                  <TableProperties size={16} />
                 </button>
-              ))}
-            </div>
-
-            <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 ms-auto shrink-0">
-              <button
-                onClick={() => state.setViewMode("table")}
-                title={m.search.viewTable}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                  state.viewMode === "table"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-              >
-                <TableProperties size={16} />
-              </button>
-              <button
-                onClick={() => state.setViewMode("cards")}
-                title={m.search.viewCards}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                  state.viewMode === "cards"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-              >
-                <LayoutGrid size={16} />
-              </button>
+                <button
+                  onClick={() => state.setViewMode("cards")}
+                  title={m.search.viewCards}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                    state.viewMode === "cards"
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-transparent text-text-muted hover:text-foreground"
+                  }`}
+                >
+                  <LayoutGrid size={16} />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -347,12 +353,12 @@ export default function MediaPage() {
                 <Table className="min-w-[1000px]" columnWidths={isAdmin ? [30, 15, 12, 15, 20, 8] : [50, 15, 15, 20]}>
                   <TableHeader>
                     <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                      <TableHead>{m.table.file}</TableHead>
-                      <TableHead>{m.table.type}</TableHead>
-                      <TableHead>{m.table.size}</TableHead>
-                      {isAdmin && <TableHead>{m.table.uploaded}</TableHead>}
-                      {isAdmin && <TableHead>{m.table.uploadedBy}</TableHead>}
-                      <TableHead className="text-end">{m.table.actions}</TableHead>
+                      <TableHead className="whitespace-nowrap">{m.table.file}</TableHead>
+                      <TableHead className="whitespace-nowrap">{m.table.type}</TableHead>
+                      <TableHead className="whitespace-nowrap">{m.table.size}</TableHead>
+                      {isAdmin && <TableHead className="whitespace-nowrap">{m.table.uploaded}</TableHead>}
+                      {isAdmin && <TableHead className="whitespace-nowrap">{m.table.uploadedBy}</TableHead>}
+                      <TableHead className="text-end whitespace-nowrap">{m.table.actions}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -383,19 +389,19 @@ export default function MediaPage() {
                   <Table className="min-w-[1000px]" columnWidths={isAdmin ? [30, 15, 12, 15, 20, 8] : [50, 15, 15, 20]}>
                     <TableHeader>
                       <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                        <TableHead>{m.table.file}</TableHead>
-                        <TableHead>{m.table.type}</TableHead>
-                        <TableHead>{m.table.size}</TableHead>
-                        {isAdmin && <TableHead>{m.table.uploaded}</TableHead>}
-                        {isAdmin && <TableHead>{m.table.uploadedBy}</TableHead>}
-                        <TableHead className="text-end">{m.table.actions}</TableHead>
+                        <TableHead className="whitespace-nowrap">{m.table.file}</TableHead>
+                        <TableHead className="whitespace-nowrap">{m.table.type}</TableHead>
+                        <TableHead className="whitespace-nowrap">{m.table.size}</TableHead>
+                        {isAdmin && <TableHead className="whitespace-nowrap">{m.table.uploaded}</TableHead>}
+                        {isAdmin && <TableHead className="whitespace-nowrap">{m.table.uploadedBy}</TableHead>}
+                        <TableHead className="text-end whitespace-nowrap">{m.table.actions}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {state.mediaList.map((item) => (
                         <TableRow key={item.id} className="group hover:bg-transparent">
-                          <TableCell>
-                            <div className="flex items-center gap-3">
+                          <TableCell className="max-w-[280px] lg:max-w-[480px] overflow-hidden">
+                            <div className="flex items-center gap-3 min-w-0">
                               <div className="w-10 h-10 rounded-lg bg-surface-subtle border border-border-default flex items-center justify-center shrink-0 overflow-hidden relative">
                                 {item.mime_type === 'image/gif' ? (
                                   <GifPreview url={getFileUrl(item.file_url)} alt={item.alt_text || item.file_name} className="w-full h-full object-cover" />
@@ -408,32 +414,34 @@ export default function MediaPage() {
                                   getMediaIcon(item.mime_type)
                                 )}
                               </div>
-                              <div className="flex flex-col min-w-0">
-                                <span className="text-sm font-semibold text-foreground truncate max-w-[250px] lg:max-w-[450px] text-start" title={item.file_name} dir="ltr">{item.file_name}</span>
-                                {item.alt_text && <span className="text-xs text-text-muted truncate max-w-[250px] lg:max-w-[450px]" title={item.alt_text}>{item.alt_text}</span>}
+                              <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
+                                <span className="text-sm font-semibold text-foreground truncate block w-full text-start" title={item.file_name} dir="ltr" style={{ unicodeBidi: "isolate" }}>{item.file_name}</span>
+                                {item.alt_text && <span className="text-xs text-text-muted truncate block w-full text-start" title={item.alt_text} dir="auto">{item.alt_text}</span>}
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border border-border-default/40 bg-surface-subtle text-text-subtle font-mono lowercase">
+                          <TableCell className="whitespace-nowrap">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border border-border-default/40 bg-surface-subtle text-text-subtle font-mono lowercase" dir="ltr" style={{ unicodeBidi: "isolate" }}>
                               {item.mime_type.split('/')[1] || item.mime_type}
                             </span>
                           </TableCell>
-                          <TableCell>
-                            <span className="text-sm text-text-subtle font-mono">{formatBytes(item.size_bytes)}</span>
+                          <TableCell className="whitespace-nowrap">
+                            <span className="text-sm text-text-subtle font-mono" dir="ltr" style={{ unicodeBidi: "isolate" }}>{formatBytes(item.size_bytes)}</span>
                           </TableCell>
                           {isAdmin && (
-                            <TableCell>
-                              <span className="text-xs font-medium text-foreground">{formatDate(item.created_at)}</span>
+                            <TableCell className="whitespace-nowrap">
+                              <span className="text-xs font-medium text-foreground" dir="ltr" style={{ unicodeBidi: "isolate" }}>{formatDate(item.created_at)}</span>
                             </TableCell>
                           )}
                           {isAdmin && (
-                            <TableCell>
-                              <span className="text-xs font-medium text-foreground">{item.created_by_name || item.created_by || "—"}</span>
+                            <TableCell className="whitespace-nowrap max-w-[150px] overflow-hidden">
+                              <span className="text-xs font-medium text-foreground truncate block w-full text-start" dir="auto" title={item.created_by_name || item.created_by || undefined}>{item.created_by_name || item.created_by || "—"}</span>
                             </TableCell>
                           )}
-                          <TableCell className="text-end">
-                            <MediaActions item={item} t={t as any} onDownload={state.handleDownload} onEdit={state.openEditModal} onDelete={state.openDeleteModal} />
+                          <TableCell className="text-end whitespace-nowrap">
+                            <div className="flex items-center justify-end gap-1.5 shrink-0 whitespace-nowrap">
+                              <MediaActions item={item} t={t as any} onDownload={state.handleDownload} onEdit={state.openEditModal} onDelete={state.openDeleteModal} />
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -469,22 +477,22 @@ export default function MediaPage() {
                             {getMediaIcon(item.mime_type)}
                           </div>
                         )}
-                        <span className="absolute top-2 start-2 inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border border-border-default/40 bg-surface-subtle text-text-subtle font-mono lowercase shadow-sm">
+                        <span className="absolute top-2 start-2 inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border border-border-default/40 bg-surface-subtle text-text-subtle font-mono lowercase shadow-sm" dir="ltr" style={{ unicodeBidi: "isolate" }}>
                           {item.mime_type.split('/')[1] || item.mime_type}
                         </span>
                       </div>
                       <div className="p-4 flex flex-col gap-3 flex-1">
                         <div className="flex flex-col gap-0.5">
-                          <h3 className="text-sm font-semibold text-foreground truncate text-start" title={item.file_name} dir="ltr">
+                          <h3 className="text-sm font-semibold text-foreground truncate text-start" title={item.file_name} dir="ltr" style={{ unicodeBidi: "isolate" }}>
                             {item.file_name}
                           </h3>
-                          <p className="text-xs text-text-muted truncate">
+                          <p className="text-xs text-text-muted truncate text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>
                             {formatBytes(item.size_bytes)}{isAdmin && ` • ${formatDate(item.created_at)}`}
                           </p>
                         </div>
                         <div className="mt-auto pt-3 border-t border-border-subtle flex items-center justify-between">
                           {isAdmin ? (
-                            <span className="text-[11px] font-medium text-text-subtle truncate max-w-[100px]">
+                            <span className="text-[11px] font-medium text-text-subtle truncate max-w-[100px] text-start" dir="auto">
                               {item.created_by_name || item.created_by || "—"}
                             </span>
                           ) : (

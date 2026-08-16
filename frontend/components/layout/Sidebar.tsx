@@ -323,7 +323,7 @@ export function Sidebar({ collapsed, onCollapsedChange, suppressTransition }: Si
     return current === true;
   }, [userRole, userPermissions]);
 
-  const hasInboxPermission = isHydrated ? checkPerm('cms.inbox') : false;
+  const hasInboxPermission = isHydrated ? (checkPerm('inbox') || checkPerm('cms.inbox')) : false;
   const inboxUnreadCount = useStateStore((s) => s.counters.inbox);
 
   const navigation = useMemo(() => {

@@ -13,8 +13,8 @@ import { requirePermission } from '../middleware/permission';
 
 const customerRoutes = new Hono<AppContext>();
 
-// Require 'customers' permission for all routes within this file
-customerRoutes.use('*', requirePermission(['customers']));
+// Require 'customers' or 'customers.clients_directory' permission for all routes within this file
+customerRoutes.use('*', requirePermission(['customers', 'customers.clients_directory']));
 
 /**
  * GET /api/customers

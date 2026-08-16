@@ -119,8 +119,8 @@ export default function CategoryDetailsPage() {
           </div>
 
           {/* Search & Filter Bar */}
-          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="flex-1">
+          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3">
+            <div className="w-full">
               <Input
                 id="service-search"
                 icon={Search}
@@ -131,45 +131,48 @@ export default function CategoryDetailsPage() {
               />
             </div>
             
-            <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide self-start sm:self-auto max-w-full">
-              {filterTabs.map((tab) => (
+            {/* Filters (Left) & View Toggle (Right) */}
+            <div className="flex items-center justify-between gap-3 w-full">
+              <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full">
+                {filterTabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => handleFilterChange(tab.value)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                      statusFilter === tab.value
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-transparent text-text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 shrink-0">
                 <button
-                  key={tab.value}
-                  onClick={() => handleFilterChange(tab.value)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                    statusFilter === tab.value
+                  onClick={() => setViewMode("table")}
+                  title={dict.search.viewTable}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                    viewMode === "table"
                       ? "bg-primary text-white shadow-sm"
                       : "bg-transparent text-text-muted hover:text-foreground"
                   }`}
                 >
-                  {tab.label}
+                  <TableProperties size={16} />
                 </button>
-              ))}
-            </div>
-
-            <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 ms-auto shrink-0">
-              <button
-                onClick={() => setViewMode("table")}
-                title={dict.search.viewTable}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                  viewMode === "table"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-              >
-                <TableProperties size={16} />
-              </button>
-              <button
-                onClick={() => setViewMode("cards")}
-                title={dict.search.viewCards}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                  viewMode === "cards"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-              >
-                <LayoutGrid size={16} />
-              </button>
+                <button
+                  onClick={() => setViewMode("cards")}
+                  title={dict.search.viewCards}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                    viewMode === "cards"
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-transparent text-text-muted hover:text-foreground"
+                  }`}
+                >
+                  <LayoutGrid size={16} />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -245,34 +248,40 @@ export default function CategoryDetailsPage() {
               {/* Table View */}
               {viewMode === "table" && (
                 <div className="bg-surface-card border border-border-default rounded-xl overflow-x-auto hidden md:block">
-                  <Table className="min-w-[1100px]">
+                  <Table className="min-w-[1100px]" columnWidths={isAdmin ? [20, 16, 7, 9, 12, 10, 12, 10, 4] : [35, 25, 10, 15, 15]}>
                     <TableHeader>
                       <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                        <TableHead>{dict.table.title}</TableHead>
-                        <TableHead>{dict.table.slug}</TableHead>
-                        <TableHead>{dict.form?.sortOrder || "Order"}</TableHead>
-                        <TableHead>{dict.table.status}</TableHead>
-                        {isAdmin && <TableHead>{dict.table.createdBy}</TableHead>}
-                        {isAdmin && <TableHead>{dict.table.created}</TableHead>}
-                        {isAdmin && <TableHead>{dict.table.updatedBy}</TableHead>}
-                        {isAdmin && <TableHead>{dict.table.updated}</TableHead>}
-                        <TableHead className="text-end">{dict.table.actions}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.title}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.slug}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.form?.sortOrder || "Order"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.status}</TableHead>
+                        {isAdmin && <TableHead className="whitespace-nowrap">{dict.table.createdBy}</TableHead>}
+                        {isAdmin && <TableHead className="whitespace-nowrap">{dict.table.created}</TableHead>}
+                        {isAdmin && <TableHead className="whitespace-nowrap">{dict.table.updatedBy}</TableHead>}
+                        {isAdmin && <TableHead className="whitespace-nowrap">{dict.table.updated}</TableHead>}
+                        <TableHead className="text-end whitespace-nowrap">{dict.table.actions}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {itemList.map((item) => (
                         <TableRow key={item.id} className="group hover:bg-transparent">
-                          <TableCell className="font-medium text-foreground" title={item.name}>{item.name}</TableCell>
-                          <TableCell className="text-text-muted font-mono text-sm" title={item.slug}>{item.slug}</TableCell>
-                          <TableCell className="text-xs font-mono font-bold text-text-subtle">#{item.sort_order ?? 0}</TableCell>
-                          <TableCell>
+                          <TableCell className="font-medium text-foreground max-w-[220px] overflow-hidden">
+                            <span className="truncate block w-full text-start" dir="auto" title={item.name}>{item.name}</span>
+                          </TableCell>
+                          <TableCell className="text-text-muted font-mono text-sm max-w-[180px] overflow-hidden">
+                            <span className="truncate block w-full text-start" dir="ltr" style={{ unicodeBidi: "isolate" }} title={item.slug}>{item.slug}</span>
+                          </TableCell>
+                          <TableCell className="text-xs font-mono font-bold text-text-subtle whitespace-nowrap">#{item.sort_order ?? 0}</TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <Badge variant={item.is_active ? "default" : "secondary"}>
                               {item.is_active ? dict.search.filterActive : dict.search.filterInactive}
                             </Badge>
                           </TableCell>
                           {isAdmin && (
-                            <TableCell className="text-sm font-medium text-foreground">
-                              {(item as any).created_by_name || (item as any).created_by || "—"}
+                            <TableCell className="text-sm font-medium text-foreground max-w-[150px] overflow-hidden">
+                              <span className="truncate block w-full text-start" dir="auto" title={(item as any).created_by_name || (item as any).created_by || "—"}>
+                                {(item as any).created_by_name || (item as any).created_by || "—"}
+                              </span>
                             </TableCell>
                           )}
                           {isAdmin && (
@@ -281,8 +290,10 @@ export default function CategoryDetailsPage() {
                             </TableCell>
                           )}
                           {isAdmin && (
-                            <TableCell className="text-sm font-medium text-foreground">
-                              {(item as any).updated_by_name || (item as any).updated_by || "—"}
+                            <TableCell className="text-sm font-medium text-foreground max-w-[150px] overflow-hidden">
+                              <span className="truncate block w-full text-start" dir="auto" title={(item as any).updated_by_name || (item as any).updated_by || "—"}>
+                                {(item as any).updated_by_name || (item as any).updated_by || "—"}
+                              </span>
                             </TableCell>
                           )}
                           {isAdmin && (
@@ -290,8 +301,10 @@ export default function CategoryDetailsPage() {
                               {(item as any).updated_at ? formatDate((item as any).updated_at) : "—"}
                             </TableCell>
                           )}
-                          <TableCell className="text-end">
-                            <ActionsMenu item={item} t={t} onEdit={openEditModal} onDelete={openDeleteModal} onDuplicate={openDuplicateModal} />
+                          <TableCell className="text-end whitespace-nowrap">
+                            <div className="flex items-center justify-end gap-1.5 shrink-0 whitespace-nowrap">
+                              <ActionsMenu item={item} t={t} onEdit={openEditModal} onDelete={openDeleteModal} onDuplicate={openDuplicateModal} />
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -308,10 +321,10 @@ export default function CategoryDetailsPage() {
                       {/* Top: Details + Status */}
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex flex-col gap-0.5 min-w-0">
-                          <h3 className="text-base font-bold text-foreground line-clamp-1 m-0" title={item.name}>
+                          <h3 className="text-base font-bold text-foreground line-clamp-1 m-0 text-start" dir="auto" title={item.name}>
                             {item.name}
                           </h3>
-                          <p className="text-xs text-text-muted font-mono truncate m-0">
+                          <p className="text-xs text-text-muted font-mono truncate m-0 text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>
                             /{item.slug}
                           </p>
                         </div>
@@ -329,7 +342,7 @@ export default function CategoryDetailsPage() {
                       <div className="mt-auto pt-2.5 border-t border-border-subtle flex items-center justify-between min-h-[28px]">
                         <div className="text-[11px] text-text-muted truncate max-w-[150px]" title={(item as any)?.created_by_name || ""}>
                           {((item as any)?.created_by_name) && (
-                            <span><span className="font-semibold text-foreground">{dict.table?.createdBy || "Created by"}:</span> {(item as any).created_by_name}</span>
+                            <span><span className="font-semibold text-foreground">{dict.table?.createdBy || "Created by"}:</span> <span dir="auto">{(item as any).created_by_name}</span></span>
                           )}
                         </div>
                         <div className="actions-menu">

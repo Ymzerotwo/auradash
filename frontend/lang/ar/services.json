@@ -1,13 +1,13 @@
 {
   "pageTitle": "الخدمات",
   "actions": {
-    "createService": "إنشاء خدمة",
-    "createCategory": "إنشاء تصنيف",
+    "createService": "إنشاء خدمة جديدة",
+    "createCategory": "إنشاء تصنيف جديد",
     "edit": "تعديل الخدمة",
     "delete": "حذف",
-    "duplicate": "نسخ",
-    "duplicateDesc": "إنشاء خدمة جديدة بنفس الهيكل بقيم فارغة.",
-    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا العنصر؟",
+    "duplicate": "نسخ الخدمة",
+    "duplicateDesc": "إنشاء مسودة خدمة جديدة بنفس الهيكل والحقول المخصصة.",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذه الخدمة نهائياً؟ لا يمكن التراجع عن هذا الإجراء.",
     "cancel": "إلغاء",
     "saveChanges": "حفظ التغييرات",
     "changeImage": "تغيير الصورة",

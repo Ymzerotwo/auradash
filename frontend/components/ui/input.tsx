@@ -44,13 +44,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           autoCorrect="off"
           spellCheck={false}
           className={cn(
-            "h-12 w-full min-w-0 rounded-xl border border-input bg-background px-4 py-0 text-[15px] text-foreground transition-all duration-300 outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:shadow-[0_0_15px_rgba(79,70,229,0.25)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:shadow-[0_0_15px_rgba(220,38,38,0.25)] rtl:text-right ltr:text-left",
-            Icon && "rtl:pr-11 ltr:pl-11",
-            endAdornment && "rtl:pl-11 ltr:pr-11",
+            "h-12 w-full min-w-0 rounded-xl border border-input bg-background px-4 py-0 text-[15px] text-foreground transition-all duration-300 outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:shadow-[0_0_15px_rgba(79,70,229,0.25)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:shadow-[0_0_15px_rgba(220,38,38,0.25)] text-start",
+            Icon && "ps-11",
+            endAdornment && "pe-11",
             internalError && "border-destructive focus-visible:ring-destructive focus-visible:shadow-[0_0_15px_rgba(220,38,38,0.25)]",
             className
           )}
-          dir={props.dir || "auto"}
+          dir={props.dir}
           aria-invalid={!!internalError}
           ref={ref}
           onChange={handleChange}

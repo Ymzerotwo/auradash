@@ -16,23 +16,23 @@
     "all": "الكل",
     "unread": "غير مقروء",
     "read": "مقروء",
-    "converted": "مُحول",
-    "profile_created": "تم إنشاء الملف",
-    "spam": "مزعج"
+    "converted": "تم التحويل لحجز",
+    "profile_created": "تم إنشاء ملف عميل",
+    "spam": "رسالة مزعجة"
   },
   "actions": {
     "markRead": "تحديد كمقروء",
     "markUnread": "تحديد كغير مقروء",
-    "convert": "إنشاء حجز",
-    "convertToBooking": "إنشاء حجز",
-    "createProfile": "إنشاء ملف شخصي",
-    "markSpam": "تحديد كمزعج",
+    "convert": "تحويل إلى حجز",
+    "convertToBooking": "تحويل إلى حجز",
+    "createProfile": "إنشاء ملف عميل",
+    "markSpam": "تصنيف كمزعج",
     "delete": "حذف",
-    "confirmDelete": "هل أنت متأكد من حذف هذه الرسالة نهائياً؟",
-    "confirmConvert": "هل أنت متأكد من تحويل هذا الاستفسار إلى حجز؟",
-    "confirmSpam": "هل أنت متأكد من تحديد هذه الرسالة كمزعجة؟ سيؤدي ذلك إلى حظر المرسل.",
+    "confirmDelete": "هل أنت متأكد من حذف هذه الرسالة نهائياً؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirmConvert": "هل أنت متأكد من تحويل هذا الاستفسار إلى حجز جديد؟",
+    "confirmSpam": "هل أنت متأكد من تصنيف هذه الرسالة كمزعجة؟ سيتم حظر المرسل تلقائياً.",
     "spamReasonLabel": "سبب التصنيف كمزعج (اختياري)",
-    "spamReasonPlaceholder": "مثال: حساب وهمي، روابط احتيالية...",
+    "spamReasonPlaceholder": "مثال: حساب وهمي، رسائل إعلانية متكررة...",
     "expand": "قراءة الرسالة كاملة",
     "clickToRead": "انقر لقراءة الرسالة كاملة",
     "submitSpam": "تأكيد التصنيف كمزعج",
@@ -46,9 +46,9 @@
     "filterAll": "الكل",
     "filterUnread": "غير مقروء",
     "filterRead": "مقروء",
-    "filterConverted": "مُحول",
-    "filterProfileCreated": "تم إنشاء الملف",
-    "filterSpam": "مزعج"
+    "filterConverted": "محول لحجز",
+    "filterProfileCreated": "ملف عميل",
+    "filterSpam": "رسائل مزعجة"
   },
   "inquiryTypes": {
     "general": "استفسار عام",
@@ -56,7 +56,7 @@
     "offer": "استفسار عن عرض سعر"
   },
   "audit": {
-    "title": "سجل التدقيق (للمسؤولين فقط)",
+    "title": "سجل الإجراءات (للمسؤولين فقط)",
     "unread": "غير مقروء",
     "notConverted": "غير مُحول",
     "notSpammed": "غير مزعج",
@@ -65,7 +65,7 @@
     "actionBy": "تم الإجراء بواسطة",
     "readBy": "تمت القراءة بواسطة",
     "convertedBy": "تم التحويل بواسطة",
-    "spammedBy": "صُنف كمزعج بواسطة"
+    "spammedBy": "صُنفت كمزعجة بواسطة"
   },
   "success": {
     "inbox_message_created": "تم إرسال الرسالة بنجاح.",

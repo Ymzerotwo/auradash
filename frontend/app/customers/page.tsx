@@ -172,13 +172,13 @@ function MemberCard({
       {/* Top: Customer Details + Status */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-col gap-0.5 min-w-0">
-          <h3 className="text-base font-bold text-foreground line-clamp-1 m-0" title={customer.full_name}>
+          <h3 className="text-base font-bold text-foreground line-clamp-1 m-0 text-start" dir="auto" title={customer.full_name}>
             {customer.full_name}
           </h3>
-          <p className="text-xs text-text-muted font-mono truncate m-0">
+          <p className="text-xs text-text-muted font-mono truncate m-0 text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>
             {customer.email || "—"}
           </p>
-          <span className="text-xs font-mono text-foreground font-medium" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(customer.phone || "—", locale)}</span>
+          <span className="text-xs font-mono text-foreground font-medium text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(customer.phone || "—", locale)}</span>
         </div>
         <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border shrink-0 ${!customer.spam ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" : "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"} shadow-sm`}>
           {dict.status[!customer.spam ? "active" : "spammed"]}
@@ -188,7 +188,7 @@ function MemberCard({
       {/* Footer: Created By + Actions */}
       <div className="mt-auto pt-2.5 border-t border-border-subtle flex items-center justify-between min-h-[28px]">
         <div className="text-[11px] text-text-muted truncate max-w-[150px]" title={customer.created_by_name || "inbox"}>
-          <span><span className="font-semibold text-foreground">{dict.table?.createdBy || "Created by"}:</span> {customer.created_by_name || "inbox"}</span>
+          <span><span className="font-semibold text-foreground">{dict.table?.createdBy || "Created by"}:</span> <span dir="auto">{customer.created_by_name || "inbox"}</span></span>
         </div>
         <div className="actions-menu" onClick={(e) => e.stopPropagation()}>
           <CustomerActionsMenu customer={customer} dict={dict} onEdit={onEdit} onToggleStatus={onToggleStatus} onDelete={onDelete} />
@@ -260,9 +260,9 @@ export default function CustomersPage() {
           </div>
 
           {/* ── Search, Filter & View Toggle Bar ────────────────── */}
-          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3">
             {/* Search */}
-            <form autoComplete="off" onSubmit={(e) => e.preventDefault()} className="flex-1">
+            <form autoComplete="off" onSubmit={(e) => e.preventDefault()} className="w-full">
               <Input
                 id="customers-search-box"
                 name="search_query_ignore"
@@ -275,44 +275,47 @@ export default function CustomersPage() {
               />
             </form>
 
-            {/* Status Filter */}
-            <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide self-start sm:self-auto max-w-full">
-              {filterTabs.map((tab) => (
+            {/* Filters (Left) & View Toggle (Right) */}
+            <div className="flex items-center justify-between gap-3 w-full">
+              {/* Status Filter */}
+              <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full">
+                {filterTabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => setStatusFilter(tab.value)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${statusFilter === tab.value
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-transparent text-text-muted hover:text-foreground"
+                      }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* View Toggle */}
+              <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 shrink-0">
                 <button
-                  key={tab.value}
-                  onClick={() => setStatusFilter(tab.value)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${statusFilter === tab.value
+                  onClick={() => setViewMode("table")}
+                  title={dict.search.viewTable}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "table"
                       ? "bg-primary text-white shadow-sm"
                       : "bg-transparent text-text-muted hover:text-foreground"
                     }`}
                 >
-                  {tab.label}
+                  <TableProperties size={16} />
                 </button>
-              ))}
-            </div>
-
-            {/* View Toggle */}
-            <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1">
-              <button
-                onClick={() => setViewMode("table")}
-                title={dict.search.viewTable}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "table"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                  }`}
-              >
-                <TableProperties size={16} />
-              </button>
-              <button
-                onClick={() => setViewMode("cards")}
-                title={dict.search.viewCards}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "cards"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                  }`}
-              >
-                <LayoutGrid size={16} />
-              </button>
+                <button
+                  onClick={() => setViewMode("cards")}
+                  title={dict.search.viewCards}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "cards"
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-transparent text-text-muted hover:text-foreground"
+                    }`}
+                >
+                  <LayoutGrid size={16} />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -370,13 +373,13 @@ export default function CustomersPage() {
                   <Table className="min-w-[1200px]" columnWidths={columnWidths}>
                     <TableHeader>
                       <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                        <TableHead>{dict.table.customer}</TableHead>
-                        <TableHead>{dict.table.phone}</TableHead>
-                        <TableHead>{dict.table.source}</TableHead>
-                        <TableHead>{dict.table.status}</TableHead>
-                        <TableHead>{dict.table.createdBy || "Created By"}</TableHead>
-                        <TableHead>{dict.table.created || "Created At"}</TableHead>
-                        <TableHead className="text-end">{dict.table.actions}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.customer}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.phone}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.source}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.status}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.createdBy || "Created By"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.created || "Created At"}</TableHead>
+                        <TableHead className="text-end whitespace-nowrap">{dict.table.actions}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -386,32 +389,32 @@ export default function CustomersPage() {
                           className="group cursor-pointer hover:bg-surface-subtle/50 transition-colors"
                           onClick={() => router.push(`/customers/${customer.id}`)}
                         >
-                          <TableCell className="max-w-[200px]">
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="flex flex-col min-w-0">
-                                <span className="text-sm font-semibold text-foreground truncate" title={customer.full_name}>{customer.full_name}</span>
-                                <span className="text-xs text-text-muted truncate">{customer.email || "—"}</span>
+                          <TableCell className="max-w-[220px] overflow-hidden">
+                            <div className="flex items-center gap-3 min-w-0 w-full overflow-hidden">
+                              <div className="flex flex-col min-w-0 w-full overflow-hidden">
+                                <span className="text-sm font-semibold text-foreground truncate w-full block text-start" dir="auto" title={customer.full_name}>{customer.full_name}</span>
+                                <span className="text-xs text-text-muted truncate w-full block text-start" dir="ltr" style={{ unicodeBidi: "isolate" }} title={customer.email || "—"}>{customer.email || "—"}</span>
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <span className="text-xs font-medium text-foreground font-mono inline-block" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(customer.phone || "", locale)}</span>
+                          <TableCell className="whitespace-nowrap">
+                            <span className="text-xs font-medium text-foreground font-mono inline-block text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(customer.phone || "", locale)}</span>
                           </TableCell>
-                          <TableCell>
-                            <span className="text-xs font-medium text-foreground capitalize">{customer.acquisition_source || "—"}</span>
+                          <TableCell className="whitespace-nowrap">
+                            <span className="text-xs font-medium text-foreground capitalize text-start" dir="auto">{customer.acquisition_source || "—"}</span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border ${!customer.spam ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" : "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"}`}>
                               {dict.status[!customer.spam ? "active" : "spammed"]}
                             </span>
                           </TableCell>
-                          <TableCell className="max-w-[150px]">
-                            <span className="text-xs font-medium text-foreground truncate block" title={customer.created_by_name || "inbox"}>{customer.created_by_name || "inbox"}</span>
+                          <TableCell className="max-w-[150px] overflow-hidden">
+                            <span className="text-xs font-medium text-foreground truncate block w-full text-start" dir="auto" title={customer.created_by_name || "inbox"}>{customer.created_by_name || "inbox"}</span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className="text-xs font-medium text-foreground whitespace-nowrap">{formatDate(customer.created_at)}</span>
                           </TableCell>
-                          <TableCell className="text-end" onClick={(e) => e.stopPropagation()}>
+                          <TableCell className="text-end whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                             <CustomerActionsMenu customer={customer} dict={dict} onEdit={() => openEditDialog(customer)} onToggleStatus={handleToggleStatus} onDelete={handleDelete} />
                           </TableCell>
                         </TableRow>

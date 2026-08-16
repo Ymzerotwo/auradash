@@ -68,7 +68,7 @@ export function ProfileFormDialog({ open, onOpenChange }: ProfileFormDialogProps
                 className="relative group shrink-0 cursor-pointer"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center border-2 border-border-default overflow-hidden">
+                <div className="w-24 h-24 rounded-full bg-surface-subtle border-2 border-border-default flex items-center justify-center overflow-hidden transition-all duration-200 group-hover:border-border-strong group-hover:bg-surface-overlay">
                   {uploadPhoto.isPending ? (
                     <Loader2 className="w-6 h-6 animate-spin text-primary" />
                   ) : photoUrl ? (
@@ -81,11 +81,11 @@ export function ProfileFormDialog({ open, onOpenChange }: ProfileFormDialogProps
                       unoptimized
                     />
                   ) : (
-                    <User className="w-10 h-10 text-text-subtle" />
+                    <User className="w-10 h-10 text-text-muted transition-colors group-hover:text-foreground" />
                   )}
                 </div>
                 <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Camera className="w-7 h-7 text-white" />
+                  <Camera className="w-6 h-6 text-white" />
                 </div>
                 <input 
                   type="file" 

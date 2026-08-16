@@ -85,9 +85,9 @@ export default function CommentsPage() {
           </div>
 
           {/* ── Search, Filter & View Toggle Bar ────────────────── */}
-          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3">
             {/* Search */}
-            <div className="flex-1">
+            <div className="w-full">
               <Input
                 icon={Search}
                 value={searchQuery}
@@ -97,44 +97,47 @@ export default function CommentsPage() {
               />
             </div>
 
-            {/* Status Filter */}
-            <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide self-start sm:self-auto max-w-full">
-              {filterTabs.map((tab) => (
+            {/* Filters (Left) & View Toggle (Right) */}
+            <div className="flex items-center justify-between gap-3 w-full">
+              {/* Status Filter */}
+              <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full">
+                {filterTabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => { setFilterStatus(tab.value); setPage(1); }}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${filterStatus === tab.value
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-transparent text-text-muted hover:text-foreground"
+                      }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* View Toggle */}
+              <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 shrink-0">
                 <button
-                  key={tab.value}
-                  onClick={() => { setFilterStatus(tab.value); setPage(1); }}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${filterStatus === tab.value
+                  onClick={() => setViewMode("table")}
+                  title={dict?.search?.viewTable || "Table view"}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "table"
                       ? "bg-primary text-white shadow-sm"
                       : "bg-transparent text-text-muted hover:text-foreground"
                     }`}
                 >
-                  {tab.label}
+                  <TableProperties size={16} />
                 </button>
-              ))}
-            </div>
-
-            {/* View Toggle */}
-            <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1">
-              <button
-                onClick={() => setViewMode("table")}
-                title={dict?.search?.viewTable || "Table view"}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "table"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                  }`}
-              >
-                <TableProperties size={16} />
-              </button>
-              <button
-                onClick={() => setViewMode("cards")}
-                title={dict?.search?.viewCards || "Cards view"}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "cards"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                  }`}
-              >
-                <LayoutGrid size={16} />
-              </button>
+                <button
+                  onClick={() => setViewMode("cards")}
+                  title={dict?.search?.viewCards || "Cards view"}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "cards"
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-transparent text-text-muted hover:text-foreground"
+                    }`}
+                >
+                  <LayoutGrid size={16} />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -248,17 +251,17 @@ export default function CommentsPage() {
               {/* ── Desktop Table View ── */}
               {viewMode === "table" && (
                 <div className="bg-surface-card border border-border-default rounded-xl overflow-x-auto hidden md:block">
-                  <Table className="min-w-[1200px]" columnWidths={["18%", "24%", "14%", "10%", "10%", "10%", "10%", "10%"]}>
+                  <Table className="min-w-[1250px]" columnWidths={["18%", "24%", "14%", "10%", "10%", "10%", "10%", "10%"]}>
                     <TableHeader>
                       <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                        <TableHead>{dict?.table?.author || "Author"}</TableHead>
-                        <TableHead>{dict?.table?.comment || "Comment"}</TableHead>
-                        <TableHead>{dict?.table?.article || "Article"}</TableHead>
-                        <TableHead>{dict?.table?.status || "Status"}</TableHead>
-                        <TableHead>{dict?.table?.date || "Date"}</TableHead>
-                        <TableHead>{dict?.table?.approvedBy || "Approved By"}</TableHead>
-                        <TableHead>{dict?.table?.approvedAt || "Approved At"}</TableHead>
-                        <TableHead className="text-end">{dict?.table?.actions || "Actions"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict?.table?.author || "Author"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict?.table?.comment || "Comment"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict?.table?.article || "Article"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict?.table?.status || "Status"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict?.table?.date || "Date"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict?.table?.approvedBy || "Approved By"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict?.table?.approvedAt || "Approved At"}</TableHead>
+                        <TableHead className="text-end whitespace-nowrap">{dict?.table?.actions || "Actions"}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -268,64 +271,65 @@ export default function CommentsPage() {
                           id={`comment-${comment.id}`}
                           className="group transition-colors hover:bg-transparent"
                         >
-                          <TableCell className="max-w-[200px]">
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="flex flex-col min-w-0">
-                                <span className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5" title={comment.user_full_name || comment.user_name}>
-                                  {comment.user_full_name || comment.user_name}
+                          <TableCell className="max-w-[200px] overflow-hidden">
+                            <div className="flex items-center gap-3 min-w-0 w-full overflow-hidden">
+                              <div className="flex flex-col min-w-0 w-full overflow-hidden">
+                                <span className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5 w-full text-start" dir="auto" title={comment.user_full_name || comment.user_name}>
+                                  <span className="truncate">{comment.user_full_name || comment.user_name}</span>
                                   {comment.user_id && (
-                                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 bg-primary/10 text-primary border-none">
+                                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 bg-primary/10 text-primary border-none shrink-0">
                                       {dict?.table?.staff || 'Staff'}
                                     </Badge>
                                   )}
                                 </span>
-                                <span className="text-xs text-text-muted truncate" title={comment.user_email || "No email"}>{comment.user_email || "No email"}</span>
+                                <span className="text-xs text-text-muted truncate w-full block text-start" dir="ltr" style={{ unicodeBidi: "isolate" }} title={comment.user_email || "No email"}>{comment.user_email || "No email"}</span>
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="max-w-[300px]">
+                          <TableCell className="max-w-[300px] overflow-hidden">
                             {comment.parent_id && (
-                              <div className="flex items-center gap-1 text-[11px] text-text-subtle font-medium mb-1">
+                              <div className="flex items-center gap-1 text-[11px] text-text-subtle font-medium mb-1 min-w-0 w-full overflow-hidden text-start" dir="auto">
                                 <Reply className="h-3 w-3 shrink-0 scale-x-[-1] text-text-subtle/80" />
-                                <span>{dict?.actions?.replyTo || "Reply to"}: {comment.parent_user_name}</span>
+                                <span className="truncate">{dict?.actions?.replyTo || "Reply to"}: {comment.parent_user_name}</span>
                               </div>
                             )}
                             <p 
-                              className="text-sm text-text-muted line-clamp-2 cursor-pointer hover:text-foreground transition-colors m-0" 
+                              className="text-sm text-text-muted line-clamp-2 cursor-pointer hover:text-foreground transition-colors m-0 block w-full overflow-hidden text-start" 
+                              dir="auto"
                               onClick={() => setViewComment({id: comment.id, content: comment.content, author: comment.user_name})}
                               title="Click to read full comment"
                             >
                               {comment.content}
                             </p>
                           </TableCell>
-                          <TableCell className="max-w-[200px]">
-                            <div className="flex items-center gap-2 text-xs font-medium text-text-subtle min-w-0">
+                          <TableCell className="max-w-[200px] overflow-hidden">
+                            <div className="flex items-center gap-2 text-xs font-medium text-text-subtle min-w-0 w-full overflow-hidden">
                               <FileText className="h-3.5 w-3.5 shrink-0" />
-                              <span className="truncate" title={comment.article_title}>{comment.article_title}</span>
+                              <span className="truncate block w-full text-start" dir="auto" title={comment.article_title}>{comment.article_title}</span>
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border ${getStatusBadgeClasses(comment.status)}`}>
                               {getStatusText(comment.status)}
                             </span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className="text-sm text-text-muted whitespace-nowrap">
                               {new Date(comment.created_at).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
                             </span>
                           </TableCell>
-                          <TableCell className="max-w-[150px]">
-                            <span className="text-sm text-text-muted truncate block" title={comment.approved_by_name || "-"}>
+                          <TableCell className="max-w-[150px] overflow-hidden">
+                            <span className="text-sm text-text-muted truncate block w-full text-start" dir="auto" title={comment.approved_by_name || "-"}>
                               {comment.approved_by_name || "-"}
                             </span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className="text-sm text-text-muted whitespace-nowrap">
                               {comment.approved_at ? new Date(comment.approved_at).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US') : "-"}
                             </span>
                           </TableCell>
-                          <TableCell className="text-end">
-                            <div className="flex items-center justify-end gap-1.5">
+                          <TableCell className="text-end whitespace-nowrap">
+                            <div className="flex items-center justify-end gap-1.5 shrink-0 whitespace-nowrap">
                               <Tooltip>
                                 <TooltipTrigger render={
                                   <button 
@@ -378,7 +382,7 @@ export default function CommentsPage() {
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3 min-w-0">
                           <div className="flex flex-col min-w-0">
-                            <span className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                            <span className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5 text-start" dir="auto">
                               {comment.user_full_name || comment.user_name}
                               {comment.user_id && (
                                 <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 bg-primary/10 text-primary border-none">
@@ -386,11 +390,11 @@ export default function CommentsPage() {
                                 </Badge>
                               )}
                             </span>
-                            <span className="text-xs text-text-muted truncate">{comment.user_email || "No email"}</span>
+                            <span className="text-xs text-text-muted truncate text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>{comment.user_email || "No email"}</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                          <div className="flex items-center gap-1 text-[11px] font-medium text-text-subtle bg-surface-subtle border border-border-default/40 rounded px-2 py-0.5 max-w-[120px] truncate" title={comment.article_title}>
+                          <div className="flex items-center gap-1 text-[11px] font-medium text-text-subtle bg-surface-subtle border border-border-default/40 rounded px-2 py-0.5 max-w-[120px] truncate text-start" dir="auto" title={comment.article_title}>
                             <FileText className="h-3 w-3 shrink-0" />
                             <span className="truncate">{comment.article_title}</span>
                           </div>
@@ -402,13 +406,14 @@ export default function CommentsPage() {
 
                       <div className="bg-surface-subtle rounded-lg p-3 border border-border-subtle flex-1">
                         {comment.parent_id && (
-                          <div className="flex items-center gap-1 text-xs text-text-subtle font-medium mb-1">
+                          <div className="flex items-center gap-1 text-xs text-text-subtle font-medium mb-1 text-start" dir="auto">
                             <Reply className="h-3.5 w-3.5 shrink-0 scale-x-[-1] text-text-subtle/80" />
                             <span>{dict?.actions?.replyTo || "Reply to"}: {comment.parent_user_name}</span>
                           </div>
                         )}
                         <p 
-                          className="text-sm text-text-muted line-clamp-3 leading-relaxed m-0 cursor-pointer hover:text-foreground transition-colors"
+                          className="text-sm text-text-muted line-clamp-3 leading-relaxed m-0 cursor-pointer hover:text-foreground transition-colors text-start"
+                          dir="auto"
                           onClick={() => setViewComment({id: comment.id, content: comment.content, author: comment.user_name})}
                         >
                           {comment.content}
@@ -426,7 +431,7 @@ export default function CommentsPage() {
                       <div className="flex items-center justify-between pt-2.5 border-t border-border-subtle mt-auto min-h-[28px]">
                         <div className="text-[11px] text-text-muted truncate max-w-[150px]" title={comment.approved_by_name || ""}>
                           {comment.approved_by_name && (
-                            <span><span className="font-semibold text-foreground">{dict?.table?.approvedBy || "Approved"}:</span> {comment.approved_by_name}</span>
+                            <span><span className="font-semibold text-foreground">{dict?.table?.approvedBy || "Approved"}:</span> <span dir="auto">{comment.approved_by_name}</span></span>
                           )}
                         </div>
                         <div className="flex items-center gap-0.5 shrink-0">

@@ -173,8 +173,8 @@ export default function ArticleCategoryDetailsPage({ params }: { params: Promise
           </div>
 
           {/* Search & Filter Bar */}
-          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="flex-1">
+          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3">
+            <div className="w-full">
               <Input
                 id="article-search"
                 icon={Search}
@@ -185,45 +185,48 @@ export default function ArticleCategoryDetailsPage({ params }: { params: Promise
               />
             </div>
             
-            <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide self-start sm:self-auto max-w-full">
-              {filterTabs.map((tab) => (
+            {/* Filters (Left) & View Toggle (Right) */}
+            <div className="flex items-center justify-between gap-3 w-full">
+              <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full">
+                {filterTabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => handleFilterChange(tab.value as any)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                      statusFilter === tab.value
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-transparent text-text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 shrink-0">
                 <button
-                  key={tab.value}
-                  onClick={() => handleFilterChange(tab.value as any)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                    statusFilter === tab.value
+                  onClick={() => setViewMode("table")}
+                  title={dict.search?.viewTable || "Table view"}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                    viewMode === "table"
                       ? "bg-primary text-white shadow-sm"
                       : "bg-transparent text-text-muted hover:text-foreground"
                   }`}
                 >
-                  {tab.label}
+                  <TableProperties size={16} />
                 </button>
-              ))}
-            </div>
-
-            <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 ms-auto shrink-0">
-              <button
-                onClick={() => setViewMode("table")}
-                title={dict.search?.viewTable || "Table view"}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                  viewMode === "table"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-              >
-                <TableProperties size={16} />
-              </button>
-              <button
-                onClick={() => setViewMode("cards")}
-                title={dict.search?.viewCards || "Grid view"}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
-                  viewMode === "cards"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-              >
-                <LayoutGrid size={16} />
-              </button>
+                <button
+                  onClick={() => setViewMode("cards")}
+                  title={dict.search?.viewCards || "Grid view"}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${
+                    viewMode === "cards"
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-transparent text-text-muted hover:text-foreground"
+                  }`}
+                >
+                  <LayoutGrid size={16} />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -271,34 +274,36 @@ export default function ArticleCategoryDetailsPage({ params }: { params: Promise
             <>
               {viewMode === "table" && (
                 <div className="bg-surface-card border border-border-default rounded-xl overflow-x-auto hidden md:block">
-                  <Table className="min-w-[1200px]">
+                  <Table className="min-w-[1200px]" columnWidths={isAdmin ? [24, 18, 8, 10, 16, 14, 10] : [38, 28, 10, 12, 12]}>
                     <TableHeader>
                       <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                        <TableHead>{dict.table?.title || "Title"}</TableHead>
-                        <TableHead>{dict.table?.slug || "Slug"}</TableHead>
-                        <TableHead>{dict.form?.sortOrder || "Order"}</TableHead>
-                        <TableHead>{dict.table?.status || "Status"}</TableHead>
-                        {isAdmin && <TableHead>{dict.table?.createdBy || "Created By"}</TableHead>}
-                        {isAdmin && <TableHead>{dict.table?.created || "Created At"}</TableHead>}
-                        <TableHead className="text-end">{dict.table?.actions || "Actions"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table?.title || "Title"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table?.slug || "Slug"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.form?.sortOrder || "Order"}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table?.status || "Status"}</TableHead>
+                        {isAdmin && <TableHead className="whitespace-nowrap">{dict.table?.createdBy || "Created By"}</TableHead>}
+                        {isAdmin && <TableHead className="whitespace-nowrap">{dict.table?.created || "Created At"}</TableHead>}
+                        <TableHead className="text-end whitespace-nowrap">{dict.table?.actions || "Actions"}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {itemList.map((item) => (
                         <TableRow key={item.id} className="group hover:bg-transparent">
-                          <TableCell className="font-medium text-foreground" title={item.title}>{item.title}</TableCell>
-                          <TableCell className="text-text-muted font-mono text-sm" title={item.slug}>
-                            {item.slug}
+                          <TableCell className="font-medium text-foreground max-w-[220px] overflow-hidden">
+                            <span className="truncate block w-full text-start" dir="auto" title={item.title}>{item.title}</span>
                           </TableCell>
-                          <TableCell className="text-xs font-mono font-bold text-text-subtle">#{item.sort_order ?? 0}</TableCell>
-                          <TableCell>
+                          <TableCell className="text-text-muted font-mono text-sm max-w-[180px] overflow-hidden">
+                            <span className="truncate block w-full text-start" dir="ltr" style={{ unicodeBidi: "isolate" }} title={item.slug}>{item.slug}</span>
+                          </TableCell>
+                          <TableCell className="text-xs font-mono font-bold text-text-subtle whitespace-nowrap">#{item.sort_order ?? 0}</TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border ${item.is_active ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" : "bg-surface-subtle text-text-subtle border border-border-default/40"}`}>
                               {item.is_active ? dict.search?.filterActive || "Active" : dict.search?.filterInactive || "Inactive"}
                             </span>
                           </TableCell>
                           {isAdmin && (
-                            <TableCell className="text-sm font-medium text-foreground max-w-[150px] truncate" title={item.created_by_name || item.created_by || "—"}>
-                              {item.created_by_name || item.created_by || "—"}
+                            <TableCell className="text-sm font-medium text-foreground max-w-[150px] overflow-hidden">
+                              <span className="truncate block w-full text-start" dir="auto" title={item.created_by_name || item.created_by || "—"}>{item.created_by_name || item.created_by || "—"}</span>
                             </TableCell>
                           )}
                           {isAdmin && (
@@ -306,8 +311,10 @@ export default function ArticleCategoryDetailsPage({ params }: { params: Promise
                               {item.created_at ? formatDate(item.created_at) : "—"}
                             </TableCell>
                           )}
-                          <TableCell className="text-end">
-                            <ActionsMenu item={item} dict={dict} onEdit={openEditModal} onDelete={openDeleteModal} onDuplicate={openDuplicateModal} />
+                          <TableCell className="text-end whitespace-nowrap">
+                            <div className="flex items-center justify-end gap-1.5 shrink-0 whitespace-nowrap">
+                              <ActionsMenu item={item} dict={dict} onEdit={openEditModal} onDelete={openDeleteModal} onDuplicate={openDuplicateModal} />
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -326,10 +333,10 @@ export default function ArticleCategoryDetailsPage({ params }: { params: Promise
                       {/* Top: Details + Status */}
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex flex-col gap-0.5 min-w-0">
-                          <h3 className="text-base font-bold text-foreground line-clamp-1 m-0" title={item.title}>
+                          <h3 className="text-base font-bold text-foreground line-clamp-1 m-0 text-start" dir="auto" title={item.title}>
                             {item.title}
                           </h3>
-                          <p className="text-xs text-text-muted font-mono truncate m-0">
+                          <p className="text-xs text-text-muted font-mono truncate m-0 text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>
                             /{item.slug}
                           </p>
                         </div>
@@ -347,7 +354,7 @@ export default function ArticleCategoryDetailsPage({ params }: { params: Promise
                       <div className="mt-auto pt-2.5 border-t border-border-subtle flex items-center justify-between min-h-[28px]">
                         <div className="text-[11px] text-text-muted truncate max-w-[150px]" title={item.created_by_name || ""}>
                           {item.created_by_name && (
-                            <span><span className="font-semibold text-foreground">{dict.table?.createdBy || "Created by"}:</span> {item.created_by_name}</span>
+                            <span><span className="font-semibold text-foreground">{dict.table?.createdBy || "Created by"}:</span> <span dir="auto">{item.created_by_name}</span></span>
                           )}
                         </div>
                         <div className="actions-menu">

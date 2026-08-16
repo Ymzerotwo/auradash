@@ -98,57 +98,61 @@ export default function ApiKeysPage() {
               <Table className="min-w-[1000px]" columnWidths={[20, 20, 25, 15, 12, 8]}>
                 <TableHeader>
                   <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                    <TableHead className="font-semibold">{t.apikeys.table.name}</TableHead>
-                    <TableHead className="font-semibold">{t.apikeys.table.domain}</TableHead>
-                    <TableHead className="font-semibold">{t.apikeys.table.key}</TableHead>
-                    <TableHead className="font-semibold">{t.apikeys.table.created_by}</TableHead>
-                    <TableHead className="font-semibold">{t.apikeys.table.created_at}</TableHead>
-                    <TableHead className="text-end font-semibold">{t.apikeys.table.actions}</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">{t.apikeys.table.name}</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">{t.apikeys.table.domain}</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">{t.apikeys.table.key}</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">{t.apikeys.table.created_by}</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">{t.apikeys.table.created_at}</TableHead>
+                    <TableHead className="text-end font-semibold whitespace-nowrap">{t.apikeys.table.actions}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {keys.map((key) => (
                     <TableRow key={key.id} className="hover:bg-transparent transition-colors">
-                      <TableCell className="font-medium text-foreground truncate max-w-[200px]" title={key.name}>
-                        {key.name}
+                      <TableCell className="font-medium text-foreground max-w-[200px] overflow-hidden">
+                        <span className="truncate block w-full text-start" dir="auto" title={key.name}>{key.name}</span>
                       </TableCell>
-                      <TableCell className="text-text-muted font-mono text-xs truncate max-w-[200px]" title={key.domain}>
-                        {key.domain}
+                      <TableCell className="text-text-muted font-mono text-xs max-w-[200px] overflow-hidden">
+                        <span className="truncate block w-full text-start" dir="ltr" style={{ unicodeBidi: "isolate" }} title={key.domain}>{key.domain}</span>
                       </TableCell>
-                      <TableCell className="font-mono text-xs text-text-muted">
-                        <div className="flex items-center gap-2">
-                          <span dir="ltr" className="bg-surface-overlay border border-border-default px-2 py-1 rounded inline-block truncate max-w-[160px] font-mono text-xs text-start">
+                      <TableCell className="font-mono text-xs text-text-muted max-w-[220px] overflow-hidden">
+                        <div className="flex items-center gap-2 min-w-0 w-full overflow-hidden">
+                          <span dir="ltr" style={{ unicodeBidi: "isolate" }} className="bg-surface-overlay border border-border-default px-2 py-1 rounded inline-block truncate max-w-[160px] font-mono text-xs text-start">
                             {key.short_key}...
                           </span>
                           {key.is_expired && (
-                            <span className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide shrink-0">
+                            <span className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide shrink-0 whitespace-nowrap">
                               {t.apikeys.table.expired}
                             </span>
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="text-foreground font-medium text-xs whitespace-nowrap truncate max-w-[150px]" title={key.created_by_name || undefined}>
-                        {key.created_by_name || '-'}
+                      <TableCell className="text-foreground font-medium text-xs whitespace-nowrap max-w-[150px] overflow-hidden">
+                        <span className="truncate block w-full text-start" dir="auto" title={key.created_by_name || undefined}>{key.created_by_name || '-'}</span>
                       </TableCell>
                       <TableCell className="text-foreground font-medium text-xs whitespace-nowrap">
-                        {key.created_at ? new Intl.DateTimeFormat(locale === 'ar' ? 'ar-EG' : 'en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        }).format(new Date(key.created_at)) : '-'}
+                        <span dir="ltr" style={{ unicodeBidi: "isolate" }}>
+                          {key.created_at ? new Intl.DateTimeFormat(locale === 'ar' ? 'ar-EG' : 'en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          }).format(new Date(key.created_at)) : '-'}
+                        </span>
                       </TableCell>
-                      <TableCell className="text-end">
-                        <Tooltip>
-                          <TooltipTrigger render={
-                            <button
-                              onClick={() => setKeyToDelete(key.id)}
-                              className="inline-flex shrink-0 items-center justify-center w-7 h-7 rounded-lg bg-surface-subtle/50 border border-border-default/40 text-text-subtle hover:text-red-500 hover:bg-red-500/10 hover:border-red-500/30 transition-all duration-200 cursor-pointer"
-                            >
-                              <Trash2 size={13} />
-                            </button>
-                          } />
-                          <TooltipContent>{t.common?.delete}</TooltipContent>
-                        </Tooltip>
+                      <TableCell className="text-end whitespace-nowrap">
+                        <div className="flex items-center justify-end gap-1.5 shrink-0 whitespace-nowrap">
+                          <Tooltip>
+                            <TooltipTrigger render={
+                              <button
+                                onClick={() => setKeyToDelete(key.id)}
+                                className="inline-flex shrink-0 items-center justify-center w-7 h-7 rounded-lg bg-surface-subtle/50 border border-border-default/40 text-text-subtle hover:text-red-500 hover:bg-red-500/10 hover:border-red-500/30 transition-all duration-200 cursor-pointer"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            } />
+                            <TooltipContent>{t.common?.delete}</TooltipContent>
+                          </Tooltip>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}

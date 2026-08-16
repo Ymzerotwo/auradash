@@ -122,7 +122,6 @@ export const apiClient = {
   triggerAuthRefresh() {
     if (typeof window !== 'undefined') {
       import('../stores/auth.store').then(({ useAuthStore }) => {
-        useAuthStore.setState({ hydrated: false });
         useAuthStore.getState().hydrate();
       });
     }

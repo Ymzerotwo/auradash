@@ -34,7 +34,7 @@ export default function BookingsPage() {
     changeStatusMutation, handleConfirmBooking, handleCompleteBooking, handleCancelBooking
   } = useBookingsPage();
 
-  if (user && !hasPermission("bookings.view") && user.role !== "Admin") {
+  if (user && !hasPermission("bookings") && !hasPermission("bookings.view") && user.role !== "Admin") {
     return (
       <DashboardLayout pageTitle={dict?.pageTitle || "Bookings Management"}>
         <PermissionDenied />
@@ -79,9 +79,9 @@ export default function BookingsPage() {
             </div>
 
         {/* ── Search, Filter & View Toggle Bar ────────────────── */}
-        <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+        <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3">
           {/* Search */}
-          <div className="flex-1">
+          <div className="w-full">
             <Input
               icon={Search}
               value={searchQuery}
@@ -91,50 +91,53 @@ export default function BookingsPage() {
             />
           </div>
 
-          {/* Status Filter */}
-          <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide self-start lg:self-auto max-w-full">
-            {[
-              { id: "all", label: dict?.filterAll || "All" },
-              { id: "pending", label: dict?.filterPending || "Pending" },
-              { id: "in_progress", label: dict?.filterInProgress || "In Progress" },
-              { id: "completed", label: dict?.filterCompleted || "Completed" },
-              { id: "cancelled", label: dict?.filterCancelled || "Cancelled" },
-            ].map((tab) => (
+          {/* Filters (Left) & View Toggle (Right) */}
+          <div className="flex items-center justify-between gap-3 w-full">
+            {/* Status Filter */}
+            <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full">
+              {[
+                { id: "all", label: dict?.filterAll || "All" },
+                { id: "pending", label: dict?.filterPending || "Pending" },
+                { id: "in_progress", label: dict?.filterInProgress || "In Progress" },
+                { id: "completed", label: dict?.filterCompleted || "Completed" },
+                { id: "cancelled", label: dict?.filterCancelled || "Cancelled" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => { setFilterStatus(tab.id); setPage(1); }}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${filterStatus === tab.id
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-transparent text-text-muted hover:text-foreground"
+                    }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* View Toggle */}
+            <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 shrink-0">
               <button
-                key={tab.id}
-                onClick={() => { setFilterStatus(tab.id); setPage(1); }}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${filterStatus === tab.id
+                onClick={() => setViewMode("table")}
+                title="Table view"
+                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "table"
                     ? "bg-primary text-white shadow-sm"
                     : "bg-transparent text-text-muted hover:text-foreground"
                   }`}
               >
-                {tab.label}
+                <TableProperties size={16} />
               </button>
-            ))}
-          </div>
-
-          {/* View Toggle */}
-          <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 self-start lg:self-auto">
-            <button
-              onClick={() => setViewMode("table")}
-              title="Table view"
-              className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "table"
-                  ? "bg-primary text-white shadow-sm"
-                  : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-            >
-              <TableProperties size={16} />
-            </button>
-            <button
-              onClick={() => setViewMode("cards")}
-              title="Cards view"
-              className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "cards"
-                  ? "bg-primary text-white shadow-sm"
-                  : "bg-transparent text-text-muted hover:text-foreground"
-                }`}
-            >
-              <LayoutGrid size={16} />
-            </button>
+              <button
+                onClick={() => setViewMode("cards")}
+                title="Cards view"
+                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${viewMode === "cards"
+                    ? "bg-primary text-white shadow-sm"
+                    : "bg-transparent text-text-muted hover:text-foreground"
+                  }`}
+              >
+                <LayoutGrid size={16} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -158,15 +161,15 @@ export default function BookingsPage() {
                 <Table className="min-w-[1400px]" columnWidths={[9, 13, 21, 10, 9, 9, 9, 12, 8]}>
                   <TableHeader>
                     <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                      <TableHead className="font-semibold">{dict?.table?.bookingNumber}</TableHead>
-                      <TableHead className="font-semibold">{dict?.table?.customer}</TableHead>
-                      <TableHead className="font-semibold">{dict?.table?.dates}</TableHead>
-                      <TableHead className="font-semibold">{dict?.table?.financials}</TableHead>
-                      <TableHead className="font-semibold">{dict?.table?.status}</TableHead>
-                      <TableHead className="font-semibold">{dict?.table?.payment}</TableHead>
-                      <TableHead className="font-semibold">{dict?.table?.createdBy}</TableHead>
-                      <TableHead className="font-semibold">{dict?.table?.createdAt}</TableHead>
-                      <TableHead className="text-end font-semibold">{dict?.table?.actions}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.bookingNumber}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.customer}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.dates}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.financials}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.status}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.payment}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.createdBy}</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap">{dict?.table?.createdAt}</TableHead>
+                      <TableHead className="text-end font-semibold whitespace-nowrap">{dict?.table?.actions}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -176,52 +179,52 @@ export default function BookingsPage() {
                         onClick={() => router.push(`/bookings/${b.id}`)}
                         className="group cursor-pointer hover:bg-muted/30 transition-colors"
                       >
-                        <TableCell>
+                        <TableCell className="whitespace-nowrap">
                           <span className="text-sm font-mono font-bold text-foreground" dir="ltr" style={{ unicodeBidi: "isolate" }}>
                             {b.booking_number ? (b.booking_number.startsWith('#') ? b.booking_number : `#${b.booking_number}`) : "—"}
                           </span>
                         </TableCell>
-                        <TableCell className="max-w-[200px]">
-                          <div className="flex flex-col min-w-0 items-start">
-                            <span className="text-sm font-semibold text-foreground truncate" title={b.customer_name || "Unknown"}>{b.customer_name || "Unknown"}</span>
-                            <span className="text-xs text-text-muted truncate" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(b.customer_phone || "", locale)}</span>
+                        <TableCell className="max-w-[200px] overflow-hidden">
+                          <div className="flex flex-col min-w-0 w-full items-start overflow-hidden">
+                            <span className="text-sm font-semibold text-foreground truncate w-full block text-start" dir="auto" title={b.customer_name || "Unknown"}>{b.customer_name || "Unknown"}</span>
+                            <span className="text-xs text-text-muted truncate w-full block text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(b.customer_phone || "", locale)}</span>
                           </div>
                         </TableCell>
-                        <TableCell className="whitespace-normal">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-semibold text-foreground">
+                        <TableCell className="max-w-[240px] overflow-hidden whitespace-nowrap">
+                          <div className="flex flex-col min-w-0 w-full overflow-hidden">
+                            <span className="text-sm font-semibold text-foreground truncate block text-start" dir="auto" title={formatDateRange(b.scheduled_from, b.scheduled_to)}>
                               {formatDateRange(b.scheduled_from, b.scheduled_to)}
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
-                            <span className="text-sm font-bold text-foreground">${localizeNumber(b.total_paid?.toFixed(2) || "0.00", locale)}</span>
-                            <span className="text-xs text-text-muted">{dict?.payment?.paid || "Paid"}: ${localizeNumber(b.paid_amount?.toFixed(2) || "0.00", locale)}</span>
+                        <TableCell className="whitespace-nowrap">
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-sm font-bold text-foreground" dir="ltr" style={{ unicodeBidi: "isolate" }}>${localizeNumber(b.total_paid?.toFixed(2) || "0.00", locale)}</span>
+                            <span className="text-xs text-text-muted">{dict?.payment?.paid || "Paid"}: <span dir="ltr" style={{ unicodeBidi: "isolate" }}>${localizeNumber(b.paid_amount?.toFixed(2) || "0.00", locale)}</span></span>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="whitespace-nowrap">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border ${getStatusBadgeClasses(b.status)}`}>
                             {dict?.status?.[b.status as keyof typeof dict.status] || b.status}
                           </span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="whitespace-nowrap">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border ${getPaymentBadgeClasses(b.paid_status)}`}>
                             {dict?.payment?.[b.paid_status as keyof typeof dict.payment] || b.paid_status}
                           </span>
                         </TableCell>
-                        <TableCell className="max-w-[150px]">
-                          <span className="text-sm font-medium text-foreground truncate block" title={b.created_by_name || "System"}>
+                        <TableCell className="max-w-[150px] overflow-hidden">
+                          <span className="text-sm font-medium text-foreground truncate block w-full text-start" dir="auto" title={b.created_by_name || "System"}>
                             {b.created_by_name || "System"}
                           </span>
                         </TableCell>
-                        <TableCell>
-                          <span className="text-xs font-medium text-foreground whitespace-nowrap">
+                        <TableCell className="whitespace-nowrap">
+                          <span className="text-xs font-medium text-foreground whitespace-nowrap" dir="ltr" style={{ unicodeBidi: "isolate" }}>
                             {formatDate(b.created_at)}
                           </span>
                         </TableCell>
-                        <TableCell className="text-end" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
-                          <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+                        <TableCell className="text-end whitespace-nowrap" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+                          <div className="flex items-center justify-end gap-1.5 shrink-0 whitespace-nowrap" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
                             {b.status === "pending" && (
                               <Tooltip>
                                 <TooltipTrigger asChild>
@@ -319,8 +322,8 @@ export default function BookingsPage() {
                     {/* Header: Customer Details + Status & Booking Number */}
                     <div className="flex items-start justify-between gap-2 mb-2.5">
                       <div className="flex flex-col gap-0.5 min-w-0">
-                        <span className="text-sm font-extrabold text-foreground truncate">{b.customer_name || "Unknown"}</span>
-                        <span className="text-xs text-text-muted font-medium" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(b.customer_phone || "No phone", locale)}</span>
+                        <span className="text-sm font-extrabold text-foreground truncate text-start" dir="auto">{b.customer_name || "Unknown"}</span>
+                        <span className="text-xs text-text-muted font-medium text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>{localizeNumber(b.customer_phone || "No phone", locale)}</span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {b.booking_number && (
@@ -339,7 +342,7 @@ export default function BookingsPage() {
                       <div className="flex items-center justify-between text-xs gap-2 min-w-0">
                         <span className="font-semibold text-foreground shrink-0">{dict?.table?.createdBy || "Created by"}:</span>
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-text-muted truncate" title={b.created_by_name || ""}>{b.created_by_name || "—"}</span>
+                          <span className="text-text-muted truncate text-start" dir="auto" title={b.created_by_name || ""}>{b.created_by_name || "—"}</span>
                         <div className="flex items-center gap-0.5 shrink-0" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
                           {b.status === "pending" && (
                             <Tooltip>

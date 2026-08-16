@@ -1,17 +1,17 @@
 {
   "pageTitle": "المقالات",
   "actions": {
-    "createArticle": "إنشاء مقال",
-    "createCategory": "إنشاء تصنيف",
+    "createArticle": "إنشاء مقال جديد",
+    "createCategory": "إنشاء تصنيف جديد",
     "edit": "تعديل المقال",
     "editCategory": "تعديل التصنيف",
     "delete": "حذف",
-    "duplicate": "نسخ",
-    "duplicateDesc": "إنشاء مقال جديد بنفس الهيكل بقيم فارغة.",
-    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا العنصر؟",
+    "duplicate": "نسخ المقال",
+    "duplicateDesc": "إنشاء مسودة مقال جديد بنفس الهيكل والحقول المخصصة.",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا العنصر نهائياً؟ لا يمكن التراجع عن هذا الإجراء.",
     "cancel": "إلغاء",
     "saveChanges": "حفظ التغييرات",
-    "backToList": "العودة إلى المقالات"
+    "backToList": "العودة إلى قائمة المقالات"
   },
   "categoryForm": {
     "createCategory": "إنشاء تصنيف",
@@ -117,8 +117,8 @@
     "sectionCover": "صورة الغلاف",
     "sectionContent": "أقسام المحتوى",
     "sectionContentDesc": "إضافة وترتيب أقسام المحتوى.",
-    "addBlock": "إضافة قسم",
-    "noBlocks": "لا توجد أقسام محتوى. انقر على 'إضافة قسم' للبدء.",
+    "addBlock": "إضافة قسم جديد",
+    "noBlocks": "لا توجد أقسام محتوى بعد. انقر على 'إضافة قسم جديد' للبدء.",
     "blockLabel": "عنوان القسم",
     "blockLabelPlaceholder": "مثال: المقدمة، النقاط الرئيسية...",
     "collapseAll": "طي الكل",

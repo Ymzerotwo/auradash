@@ -34,11 +34,11 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         autoCorrect="off"
         spellCheck={false}
         className={cn(
-          "flex min-h-[100px] w-full rounded-xl border border-input bg-background px-4 py-3 text-[15px] text-foreground transition-all duration-300 outline-none placeholder:text-muted-foreground focus-visible:border-primary focus-visible:shadow-[0_0_15px_rgba(79,70,229,0.25)] disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:shadow-[0_0_15px_rgba(220,38,38,0.25)] md:text-sm dark:disabled:bg-input/80 rtl:text-right ltr:text-left resize-y",
+          "flex min-h-[100px] w-full rounded-xl border border-input bg-background px-4 py-3 text-[15px] text-foreground transition-all duration-300 outline-none placeholder:text-muted-foreground focus-visible:border-primary focus-visible:shadow-[0_0_15px_rgba(79,70,229,0.25)] disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:shadow-[0_0_15px_rgba(220,38,38,0.25)] md:text-sm dark:disabled:bg-input/80 text-start resize-y",
           internalError && "border-destructive focus-visible:border-destructive focus-visible:shadow-[0_0_15px_rgba(220,38,38,0.25)]",
           className
         )}
-      dir={props.dir || "auto"}
+      dir={props.dir}
       aria-invalid={!!internalError}
       ref={ref}
       onChange={handleChange}

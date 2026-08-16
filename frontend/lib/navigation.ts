@@ -43,13 +43,13 @@ export const getNavigation = (t: Record<string, string>): NavItem[] => [
     label: t.inbox,
     href: "/inbox",
     icon: MessageSquare,
-    permission: "cms.inbox",
+    permission: "inbox",
   },
   {
     label: t.bookings || "Bookings",
     href: "/bookings",
     icon: CalendarDays,
-    permission: "bookings.view",
+    permission: "bookings",
   },
   {
     label: t.clients_directory,

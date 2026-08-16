@@ -486,3 +486,17 @@ main::-webkit-scrollbar-thumb:hover {
   width: 0 !important;
   height: 0 !important;
 }
+
+/* 5) Bidirectional text & mixed language handling */
+[dir="auto"] {
+  unicode-bidi: isolate;
+  text-align: start;
+}
+
+[dir="ltr"] {
+  unicode-bidi: isolate;
+}
+
+[dir="rtl"] {
+  unicode-bidi: isolate;
+}

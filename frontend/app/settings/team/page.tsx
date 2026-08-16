@@ -219,13 +219,13 @@ function MemberCard({
             </Avatar>
           </div>
           <div className="flex flex-col min-w-0">
-            <h4 className="text-sm font-bold text-foreground truncate m-0 leading-tight">
+            <h4 className="text-sm font-bold text-foreground truncate m-0 leading-tight text-start" dir="auto">
               {user.full_name}
             </h4>
-            <span className="text-[11px] text-text-subtle/80 mt-0.5 truncate" dir="ltr">
+            <span className="text-[11px] text-text-subtle/80 mt-0.5 truncate text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>
               @{user.username}
             </span>
-            <span className="text-[11px] text-text-muted mt-0.5 truncate" dir="ltr">
+            <span className="text-[11px] text-text-muted mt-0.5 truncate text-start" dir="ltr" style={{ unicodeBidi: "isolate" }}>
               {user.email}
             </span>
           </div>
@@ -310,9 +310,9 @@ export default function UsersPage() {
           </div>
 
           {/* ── Search, Filter & View Toggle Bar ────────────────── */}
-          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="bg-surface-card border border-border-default rounded-xl p-4 flex flex-col gap-3">
             {/* Search */}
-            <div className="flex-1">
+            <div className="w-full">
               <Input
                 id="users-search"
                 name="users_search_field"
@@ -327,44 +327,47 @@ export default function UsersPage() {
               />
             </div>
 
-            {/* Status Filter */}
-            <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide self-start sm:self-auto max-w-full">
-              {filterTabs.map((tab) => (
+            {/* Filters (Left) & View Toggle (Right) */}
+            <div className="flex items-center justify-between gap-3 w-full">
+              {/* Status Filter */}
+              <div className="flex items-center gap-1 bg-surface-subtle rounded-lg p-1 overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full">
+                {filterTabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => { state.setStatusFilter(tab.value); state.setCurrentPage(1); }}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${state.statusFilter === tab.value
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-transparent text-text-muted hover:text-foreground"
+                      }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* View Toggle */}
+              <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1 shrink-0">
                 <button
-                  key={tab.value}
-                  onClick={() => { state.setStatusFilter(tab.value); state.setCurrentPage(1); }}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${state.statusFilter === tab.value
+                  onClick={() => state.setViewMode("table")}
+                  title={dict.search.viewTable}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${state.viewMode === "table"
                       ? "bg-primary text-white shadow-sm"
                       : "bg-transparent text-text-muted hover:text-foreground"
                     }`}
                 >
-                  {tab.label}
+                  <TableProperties size={16} />
                 </button>
-              ))}
-            </div>
-
-            {/* View Toggle */}
-            <div className="hidden md:flex items-center gap-1 bg-surface-subtle rounded-lg p-1">
-              <button
-                onClick={() => state.setViewMode("table")}
-                title={dict.search.viewTable}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${state.viewMode === "table"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                  }`}
-              >
-                <TableProperties size={16} />
-              </button>
-              <button
-                onClick={() => state.setViewMode("cards")}
-                title={dict.search.viewCards}
-                className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${state.viewMode === "cards"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-text-muted hover:text-foreground"
-                  }`}
-              >
-                <LayoutGrid size={16} />
-              </button>
+                <button
+                  onClick={() => state.setViewMode("cards")}
+                  title={dict.search.viewCards}
+                  className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer border-none outline-none ${state.viewMode === "cards"
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-transparent text-text-muted hover:text-foreground"
+                    }`}
+                >
+                  <LayoutGrid size={16} />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -426,63 +429,65 @@ export default function UsersPage() {
                   <Table className="min-w-[1200px]" columnWidths={[24, 12, 12, 10, 8, 12, 12, 10]}>
                     <TableHeader>
                       <TableRow className="bg-surface-subtle/50 hover:bg-surface-subtle/50">
-                        <TableHead>{dict.table.user}</TableHead>
-                        <TableHead>{dict.table.username}</TableHead>
-                        <TableHead>{dict.table.jobTitle}</TableHead>
-                        <TableHead>{dict.table.role}</TableHead>
-                        <TableHead>{dict.table.status}</TableHead>
-                        <TableHead>{dict.table.createdAt}</TableHead>
-                        <TableHead>{dict.table.createdBy}</TableHead>
-                        <TableHead className="text-end">{dict.table.actions}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.user}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.username}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.jobTitle}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.role}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.status}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.createdAt}</TableHead>
+                        <TableHead className="whitespace-nowrap">{dict.table.createdBy}</TableHead>
+                        <TableHead className="text-end whitespace-nowrap">{dict.table.actions}</TableHead>
                       </TableRow>
                       </TableHeader>
                     <TableBody>
                       {state.users.map((user) => (
                         <TableRow key={user.id} className="group cursor-pointer hover:bg-muted/30 transition-colors" onClick={() => state.openDetailDialog(user)}>
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <Avatar size="default" className="border border-border-default/80">
+                          <TableCell className="max-w-[240px] overflow-hidden">
+                            <div className="flex items-center gap-3 min-w-0 w-full overflow-hidden">
+                              <Avatar size="default" className="border border-border-default/80 shrink-0">
                                 {user.photo_url && <AvatarImage src={user.photo_url} alt={user.full_name} />}
                                 <AvatarFallback className="text-xs font-semibold bg-surface-subtle text-foreground border border-border-default/40">
                                   {getInitials(user.full_name)}
                                 </AvatarFallback>
                               </Avatar>
-                              <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-foreground">{user.full_name}</span>
-                                <span className="text-xs text-text-muted">{user.email}</span>
+                              <div className="flex flex-col min-w-0 w-full overflow-hidden">
+                                <span className="text-sm font-semibold text-foreground truncate block w-full text-start" dir="auto" title={user.full_name}>{user.full_name}</span>
+                                <span className="text-xs text-text-muted truncate block w-full text-start" dir="ltr" style={{ unicodeBidi: "isolate" }} title={user.email}>{user.email}</span>
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <span className="text-sm text-text-subtle font-mono" dir="ltr">@{user.username}</span>
+                          <TableCell className="whitespace-nowrap max-w-[140px] overflow-hidden">
+                            <span className="text-sm text-text-subtle font-mono truncate block w-full text-start" dir="ltr" style={{ unicodeBidi: "isolate" }} title={`@${user.username}`}>@{user.username}</span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="max-w-[150px] overflow-hidden">
                             {user.job_title ? (
-                              <span className="text-sm font-medium text-text-subtle truncate max-w-[150px] inline-block align-middle">
+                              <span className="text-sm font-medium text-text-subtle truncate block w-full text-start" dir="auto" title={user.job_title}>
                                 {user.job_title}
                               </span>
                             ) : (
                               <span className="text-text-muted text-xs">—</span>
                             )}
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border ${getRoleBadgeClasses(user.role)}`}>
                               {dict.roles[user.role]}
                             </span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold border ${user.is_banned === 0 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" : "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"}`}>
                               {dict.status[user.is_banned === 0 ? "active" : "banned"]}
                             </span>
                           </TableCell>
-                          <TableCell>
-                            <span className="text-xs font-medium text-foreground">{user.created_at ? formatDate(user.created_at) : "-"}</span>
+                          <TableCell className="whitespace-nowrap">
+                            <span className="text-xs font-medium text-foreground whitespace-nowrap" dir="ltr" style={{ unicodeBidi: "isolate" }}>{user.created_at ? formatDate(user.created_at) : "-"}</span>
                           </TableCell>
-                          <TableCell>
-                            <span className="text-xs font-medium text-foreground truncate block max-w-[120px]">{user.created_by || "-"}</span>
+                          <TableCell className="max-w-[130px] overflow-hidden">
+                            <span className="text-xs font-medium text-foreground truncate block w-full text-start" dir="auto" title={user.created_by || "-"}>{user.created_by || "-"}</span>
                           </TableCell>
-                          <TableCell className="text-end" onClick={(e) => e.stopPropagation()}>
-                            <UserActionsMenu user={user} dict={dict} onEdit={() => state.openEditDialog(user)} onToggleStatus={state.handleToggleStatus} onDelete={state.handleDelete} isToggling={state.toggleStatusMutation.isPending && state.toggleStatusMutation.variables?.id === user.id} />
+                          <TableCell className="text-end whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-end gap-1.5 shrink-0 whitespace-nowrap">
+                              <UserActionsMenu user={user} dict={dict} onEdit={() => state.openEditDialog(user)} onToggleStatus={state.handleToggleStatus} onDelete={state.handleDelete} isToggling={state.toggleStatusMutation.isPending && state.toggleStatusMutation.variables?.id === user.id} />
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}

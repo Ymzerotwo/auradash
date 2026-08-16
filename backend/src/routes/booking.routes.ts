@@ -18,8 +18,8 @@ import { sendResponse } from '../utils/response';
 
 const bookingRoutes = new Hono<AppContext>();
 
-// Require 'bookings' permission for all routes within this file
-bookingRoutes.use('*', requirePermission(['bookings']));
+// Require 'bookings' or 'bookings.view' permission for all routes within this file
+bookingRoutes.use('*', requirePermission(['bookings', 'bookings.view']));
 
 const getBookingsQuerySchema = paginationSchema.extend({
   status: z.string().optional(),

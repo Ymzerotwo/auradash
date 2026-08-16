@@ -38,7 +38,7 @@
     "viewAll": "عرض الكل",
     "emptyState": {
       "title": "لا توجد عمليات",
-      "description": "لم يتم تسجيل أي نشاطات هذا اليوم حتى الآن."
+      "description": "لم يتم تسجيل أي عمليات أو نشاطات جديدة حتى الآن."
     }
   },
   "topClients": {
@@ -61,9 +61,9 @@
     "rejected": "مرفوض",
     "unread": "غير مقروء",
     "read": "مقروء",
-    "spam": "بريد مزعج",
-    "converted": "محول",
-    "profile_created": "تم إنشاء الملف"
+    "spam": "رسائل مزعجة",
+    "converted": "تم التحويل لحجز",
+    "profile_created": "تم إنشاء ملف عميل"
   },
   "success": {
     "dashboard_stats_fetched": "تم جلب إحصائيات لوحة التحكم بنجاح.",

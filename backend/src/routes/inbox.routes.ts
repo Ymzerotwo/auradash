@@ -13,8 +13,8 @@ import { requirePermission } from '../middleware/permission';
 
 const inboxRoutes = new Hono<AppContext>();
 
-// Require 'inbox' permission for all routes within this file
-inboxRoutes.use('*', requirePermission(['inbox']));
+// Require 'inbox' or 'cms.inbox' permission for all routes within this file
+inboxRoutes.use('*', requirePermission(['inbox', 'cms.inbox']));
 
 /**
  * GET /api/inbox/unread-count
