@@ -1,7 +1,7 @@
 {
   "pageTitle": "Comments Management",
   "search": {
-    "placeholder": "Search by name, email, or comment content...",
+    "placeholder": "Search by name or email...",
     "filterAll": "All Comments",
     "filterPending": "Pending Review",
     "filterApproved": "Approved",

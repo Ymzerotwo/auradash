@@ -37,9 +37,9 @@ export const CommentsService = {
 
     // Protected against SQL wildcard abuse (e.g. % or _) using escapeLikePattern.
     if (searchStr) {
-      filterClauses.push(`(c.user_name LIKE ? ESCAPE '\\' OR c.user_email LIKE ? ESCAPE '\\' OR c.content LIKE ? ESCAPE '\\')`);
+      filterClauses.push(`(c.user_name LIKE ? ESCAPE '\\' OR c.user_email LIKE ? ESCAPE '\\')`);
       const searchPattern = `%${escapeLikePattern(searchStr)}%`;
-      params.push(searchPattern, searchPattern, searchPattern);
+      params.push(searchPattern, searchPattern);
     }
 
     if (filterClauses.length > 0) {
