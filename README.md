@@ -583,30 +583,38 @@ npm run test:coverage
 
 #### ⚡ Deploy Backend (Cloudflare Workers / Hono API)
 
-Deploy the Hono API & D1 database to Cloudflare Edge in one click:
+Connect your existing repository to Cloudflare Workers in one click:
 
 <br/>
 
-[![Deploy Backend to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Ymzerotwo/auradash)
+<a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/workers" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Deploy_to-Cloudflare_Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Deploy Backend to Cloudflare Workers" />
+</a>
 
 <br/>
 
-**Note:** After deploying, go to your Cloudflare Dashboard ➔ **Settings ➔ Variables** to add your `AURADASH_MASTER_SECRET`. The backend will automatically build and configure itself.
+**Note:** Select your existing repository, set the root directory to `backend`, and add your `AURADASH_MASTER_SECRET` in **Settings ➔ Variables**. The backend will automatically build and configure itself.
 
 </td>
 <td align="center" width="50%">
 
 #### 🎨 Deploy Frontend (Cloudflare Pages)
 
-Deploy the Next.js frontend application in one click:
+Connect your existing repository to Cloudflare Pages in one click:
 
 <br/>
 
-[![Deploy Frontend to Cloudflare Pages](https://img.shields.io/badge/Deploy_to-Cloudflare_Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/pages)
+<a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/pages" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Deploy_to-Cloudflare_Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Deploy Frontend to Cloudflare Pages" />
+</a>
 
 <br/>
 
-**Note:** Set the root directory to `frontend` and the build command to `npm run build:cloudflare`.
+**Build Settings**:
+- **Framework preset**: `None`
+- **Build command**: `npm run build:cloudflare`
+- **Build output directory**: `.open-next`
+- **Root directory**: `frontend`
 
 </td>
 </tr>
