@@ -1,8 +1,10 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "auradash-backend",
+	"name": "auradash",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-04-28",
+	"workers_dev": true,
+	"preview_urls": true,
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
