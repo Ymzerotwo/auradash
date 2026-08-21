@@ -4,7 +4,7 @@
 
 -- 1. Article_Comments Table
 -- Stores user comments and admin replies for blog articles, supporting moderation and nested threads.
-CREATE TABLE Article_Comments (
+CREATE TABLE IF NOT EXISTS Article_Comments (
     id TEXT PRIMARY KEY,                       -- Unique identifier (UUIDv4)
     article_id TEXT NOT NULL,                  -- Foreign key reference to the Articles table
     user_name TEXT,                            -- Display name of the commenter (guest or registered)
@@ -23,17 +23,17 @@ CREATE TABLE Article_Comments (
 );
 
 -- Optimize queries for fetching approved comments on an article
-CREATE INDEX idx_article_comments_article_status ON Article_Comments (article_id, status);
+CREATE INDEX IF NOT EXISTS idx_article_comments_article_status ON Article_Comments (article_id, status);
 
 -- Optimize queries for sorting comments chronologically
-CREATE INDEX idx_article_comments_created_at ON Article_Comments (created_at);
+CREATE INDEX IF NOT EXISTS idx_article_comments_created_at ON Article_Comments (created_at);
 
 -- Optimize lookups for nested replies
-CREATE INDEX idx_article_comments_parent_id ON Article_Comments (parent_id);
+CREATE INDEX IF NOT EXISTS idx_article_comments_parent_id ON Article_Comments (parent_id);
 
 -- Optimize tracking of comments made or approved by specific users
-CREATE INDEX idx_article_comments_user_id ON Article_Comments (user_id);
-CREATE INDEX idx_article_comments_approved_by ON Article_Comments (approved_by);
+CREATE INDEX IF NOT EXISTS idx_article_comments_user_id ON Article_Comments (user_id);
+CREATE INDEX IF NOT EXISTS idx_article_comments_approved_by ON Article_Comments (approved_by);
 
 -- Optimize queries for comments filtered by status globally
 CREATE INDEX IF NOT EXISTS idx_article_comments_status ON Article_Comments (status);

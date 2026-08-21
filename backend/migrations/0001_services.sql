@@ -7,7 +7,7 @@
 -- @CRITICAL: service_category form the root of the hierarchy. Deleting a user who created a category 
 -- will only SET NULL (to preserve the taxonomy), but deleting the Category itself 
 -- will CASCADE destroy all underlying services to avoid orphaned database records.
-CREATE TABLE
+CREATE TABLE IF NOT EXISTS
     service_category (
         id TEXT PRIMARY KEY, -- Unique identifier (UUIDv4)
         name TEXT NOT NULL, -- Display name of the category
@@ -25,15 +25,15 @@ CREATE TABLE
     );
 
 -- @CRITICAL: Optimization indexes ensuring blazing fast pagination and active filtering.
-CREATE INDEX idx_categories_is_active ON service_category (is_active);
-CREATE INDEX idx_categories_sort ON service_category (sort_order);
-CREATE INDEX idx_categories_created_by ON service_category (created_by);
-CREATE INDEX idx_categories_updated_by ON service_category (updated_by);
+CREATE INDEX IF NOT EXISTS idx_categories_is_active ON service_category (is_active);
+CREATE INDEX IF NOT EXISTS idx_categories_sort ON service_category (sort_order);
+CREATE INDEX IF NOT EXISTS idx_categories_created_by ON service_category (created_by);
+CREATE INDEX IF NOT EXISTS idx_categories_updated_by ON service_category (updated_by);
 CREATE INDEX IF NOT EXISTS idx_categories_created_at ON service_category (created_at DESC);
 
 -- 2. Services Table
 -- Stores all individual services offered under categories.
-CREATE TABLE
+CREATE TABLE IF NOT EXISTS
     Services (
         id TEXT PRIMARY KEY, -- Unique identifier (UUIDv4)
         service_category_id TEXT, -- Foreign key reference to service_category (relates to service_category.id)
@@ -54,10 +54,10 @@ CREATE TABLE
     );
 
 -- Optimize service queries and joins
-CREATE INDEX idx_services_is_active ON Services (is_active);
-CREATE INDEX idx_services_category_active ON Services (service_category_id, is_active);
-CREATE INDEX idx_services_slug ON Services (slug);
-CREATE INDEX idx_services_sort ON Services (sort_order);
-CREATE INDEX idx_services_created_by ON Services (created_by);
-CREATE INDEX idx_services_updated_by ON Services (updated_by);
+CREATE INDEX IF NOT EXISTS idx_services_is_active ON Services (is_active);
+CREATE INDEX IF NOT EXISTS idx_services_category_active ON Services (service_category_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_services_slug ON Services (slug);
+CREATE INDEX IF NOT EXISTS idx_services_sort ON Services (sort_order);
+CREATE INDEX IF NOT EXISTS idx_services_created_by ON Services (created_by);
+CREATE INDEX IF NOT EXISTS idx_services_updated_by ON Services (updated_by);
 CREATE INDEX IF NOT EXISTS idx_services_created_at ON Services (created_at DESC);

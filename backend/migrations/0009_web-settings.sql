@@ -3,7 +3,7 @@
 -- ==========================================
 
 -- Table for business settings (used to feed the landing page and general configurations)
-CREATE TABLE Business_Settings (
+CREATE TABLE IF NOT EXISTS Business_Settings (
     id TEXT PRIMARY KEY,                 -- Unique identifier for the settings record
     business_name TEXT NOT NULL,         -- The official name of the business
     logo_url TEXT,                       -- URL to the business logo image
@@ -17,7 +17,7 @@ CREATE TABLE Business_Settings (
 );
 
 -- Table for media files management (images, documents, etc. uploaded to the platform)
-CREATE TABLE Media (
+CREATE TABLE IF NOT EXISTS Media (
     id TEXT PRIMARY KEY,                 -- Unique identifier for the media file
     file_name TEXT NOT NULL,             -- The original name of the uploaded file (e.g., hero-bg.png)
     file_url TEXT NOT NULL,              -- The public CDN URL (e.g., from Cloudflare R2)
@@ -31,7 +31,7 @@ CREATE TABLE Media (
 
 -- Indexes to optimize filtering, sorting, and searching operations within the dashboard
 -- Indexes for Media table
-CREATE INDEX idx_media_mime ON Media(mime_type);       -- Speeds up filtering files by type (e.g., showing only images)
-CREATE INDEX idx_media_folder ON Media(folder);        -- Speeds up fetching files within a specific virtual folder
-CREATE INDEX idx_media_created ON Media(created_at);   -- Speeds up sorting files by upload date (e.g., newest first)
-CREATE INDEX idx_media_created_by ON Media(created_by); -- Speeds up finding all media uploaded by a specific user
+CREATE INDEX IF NOT EXISTS idx_media_mime ON Media(mime_type);       -- Speeds up filtering files by type (e.g., showing only images)
+CREATE INDEX IF NOT EXISTS idx_media_folder ON Media(folder);        -- Speeds up fetching files within a specific virtual folder
+CREATE INDEX IF NOT EXISTS idx_media_created ON Media(created_at);   -- Speeds up sorting files by upload date (e.g., newest first)
+CREATE INDEX IF NOT EXISTS idx_media_created_by ON Media(created_by); -- Speeds up finding all media uploaded by a specific user

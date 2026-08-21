@@ -3,9 +3,7 @@
 -- ==========================================
 
 -- 1. Notifications Table
--- Stores system alerts and event notifications for users and admins.
-DROP TABLE IF EXISTS Notifications;
-CREATE TABLE Notifications (
+CREATE TABLE IF NOT EXISTS Notifications (
     id TEXT PRIMARY KEY,                       -- Unique identifier (UUIDv4)
     user_id TEXT NOT NULL,                     -- Foreign key to the Users table (recipient of the notification)
     type TEXT NOT NULL,                        -- Type of notification (e.g., NEW_COMMENT, NEW_SERVICE_REQUEST, SYSTEM_ALERT)

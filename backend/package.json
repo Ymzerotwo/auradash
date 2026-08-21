@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
+    "deploy": "wrangler d1 migrations apply auradash --remote && wrangler deploy --minify",
     "db:init": "npx tsx src/db/init_db.ts",
     "db:remote": "npx tsx src/db/init_db.ts --remote",
     "db:reset": "npx tsx src/db/init_db.ts --reset-remote",

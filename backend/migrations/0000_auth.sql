@@ -4,7 +4,7 @@
 
 -- 1. Users Table
 -- Stores all system administrators and staff members.
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Users (
     id TEXT PRIMARY KEY,                       -- Unique identifier (UUIDv4)
     email TEXT UNIQUE NOT NULL,                -- User's email address (must be unique)
     full_name TEXT NOT NULL,                   -- User's full display name
@@ -28,14 +28,14 @@ CREATE TABLE Users (
 );
 
 -- Optimize login and lookup queries
-CREATE INDEX idx_users_username ON Users (username);
-CREATE INDEX idx_users_email ON Users (email);
-CREATE INDEX idx_users_role ON Users (role);
-CREATE INDEX idx_users_created_by ON Users (created_by);
-CREATE INDEX idx_users_updated_by ON Users (updated_by);
-CREATE INDEX idx_users_banned_by ON Users (banned_by);
-CREATE INDEX idx_users_created_at ON Users (created_at DESC);
-CREATE INDEX idx_users_is_banned ON Users (is_banned);
+CREATE INDEX IF NOT EXISTS idx_users_username ON Users (username);
+CREATE INDEX IF NOT EXISTS idx_users_email ON Users (email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON Users (role);
+CREATE INDEX IF NOT EXISTS idx_users_created_by ON Users (created_by);
+CREATE INDEX IF NOT EXISTS idx_users_updated_by ON Users (updated_by);
+CREATE INDEX IF NOT EXISTS idx_users_banned_by ON Users (banned_by);
+CREATE INDEX IF NOT EXISTS idx_users_created_at ON Users (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_users_is_banned ON Users (is_banned);
 
 -- 2. Sessions Table [DISABLED]
 -- Disallowed per project specifications; sessions are managed purely statelessly in Cloudflare KV.
@@ -57,7 +57,7 @@ CREATE INDEX idx_sessions_expires_at ON Sessions (expires_at);
 
 -- 3. Verification Codes Table
 -- Stores temporary 6-digit codes for password recovery and 2FA.
-CREATE TABLE VerificationCodes (
+CREATE TABLE IF NOT EXISTS VerificationCodes (
     id TEXT PRIMARY KEY,                       -- Unique identifier (UUIDv4)
     user_id TEXT NOT NULL,                     -- Foreign key reference to Users (relates to Users.id)
     code TEXT NOT NULL,                        -- Temporary 6-digit OTP verification code
@@ -67,9 +67,9 @@ CREATE TABLE VerificationCodes (
 );
 
 -- Optimize lookups on VerificationCodes table
-CREATE INDEX idx_verification_code ON VerificationCodes (code);
+CREATE INDEX IF NOT EXISTS idx_verification_code ON VerificationCodes (code);
 -- Composite index for fast OTP validation queries (WHERE user_id = ? AND code = ?)
-CREATE INDEX idx_verification_user_code ON VerificationCodes (user_id, code);
+CREATE INDEX IF NOT EXISTS idx_verification_user_code ON VerificationCodes (user_id, code);
 
 -- Seed the default System Administrator account on first deployment.
 -- This migration runs automatically when D1 migrations execute during deploy.

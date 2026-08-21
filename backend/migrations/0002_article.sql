@@ -4,7 +4,7 @@
 
 -- 1. Article_Categories Table
 -- Stores the parent categories for articles.
-CREATE TABLE Article_Categories (
+CREATE TABLE IF NOT EXISTS Article_Categories (
     id TEXT PRIMARY KEY,                       -- Unique identifier (UUIDv4)
     title TEXT NOT NULL,                       -- Main category title (displayed in page header)
     slug TEXT UNIQUE NOT NULL,                 -- Clean URL slug (e.g., tech-articles), must be unique for routing
@@ -23,15 +23,15 @@ CREATE TABLE Article_Categories (
 );
 
 -- Optimize queries for categories
-CREATE INDEX idx_article_categories_is_active ON Article_Categories (is_active);
-CREATE INDEX idx_article_categories_slug ON Article_Categories (slug);
-CREATE INDEX idx_article_categories_sort ON Article_Categories (sort_order);
-CREATE INDEX idx_article_categories_title ON Article_Categories (title);
+CREATE INDEX IF NOT EXISTS idx_article_categories_is_active ON Article_Categories (is_active);
+CREATE INDEX IF NOT EXISTS idx_article_categories_slug ON Article_Categories (slug);
+CREATE INDEX IF NOT EXISTS idx_article_categories_sort ON Article_Categories (sort_order);
+CREATE INDEX IF NOT EXISTS idx_article_categories_title ON Article_Categories (title);
 
 -- --------------------------------------------------------
 -- 2. Articles Table
 -- Stores individual articles linked to categories.
-CREATE TABLE Articles (
+CREATE TABLE IF NOT EXISTS Articles (
     id TEXT PRIMARY KEY,                       -- Unique identifier (UUIDv4)
     category_id TEXT,                          -- Foreign key reference to Article_Categories
     title TEXT NOT NULL,                       -- Main article title
@@ -56,14 +56,14 @@ CREATE TABLE Articles (
 );
 
 -- Optimize queries for articles
-CREATE INDEX idx_articles_is_active ON Articles (is_active);
-CREATE INDEX idx_articles_category_active ON Articles (category_id, is_active);
-CREATE INDEX idx_articles_published ON Articles (published_at DESC);
-CREATE INDEX idx_articles_slug ON Articles (slug);
-CREATE INDEX idx_articles_title ON Articles (title);
-CREATE INDEX idx_articles_author ON Articles (author_id);
+CREATE INDEX IF NOT EXISTS idx_articles_is_active ON Articles (is_active);
+CREATE INDEX IF NOT EXISTS idx_articles_category_active ON Articles (category_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_articles_published ON Articles (published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_articles_slug ON Articles (slug);
+CREATE INDEX IF NOT EXISTS idx_articles_title ON Articles (title);
+CREATE INDEX IF NOT EXISTS idx_articles_author ON Articles (author_id);
 -- Composite index for optimal category page rendering (filtering by category, active status, sorted by publish date)
-CREATE INDEX idx_articles_category_active_published ON Articles (category_id, is_active, published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_articles_category_active_published ON Articles (category_id, is_active, published_at DESC);
 
 -- Indexes for sorting by creation date and referencing audits
 CREATE INDEX IF NOT EXISTS idx_article_categories_created_at ON Article_Categories (created_at DESC);
