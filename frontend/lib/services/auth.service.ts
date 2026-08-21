@@ -1,5 +1,5 @@
 import { LoginInput } from '../validations/auth.schema';
-import { apiClient } from '../api/client';
+import { apiClient, ApiError } from '../api/client';
 
 /**
  * Authentication Service
@@ -11,7 +11,10 @@ export const AuthService = {
    * Note: The apiClient automatically handles CSRF tokens and HttpOnly cookies.
    */
   async loginWithCredentials(credentials: LoginInput): Promise<void> {
-    await apiClient.post('/auth/login', credentials);
+    const res = await apiClient.post<any>('/auth/login', credentials);
+    if (!res || res.success !== true) {
+      throw new ApiError('Login failed. Invalid response from server.', 'LOGIN_FAILED', 400);
+    }
 
     // Set a dummy cookie for Next.js Middleware so it knows the user is logged in.
     // The actual secure HttpOnly cookie is managed securely by the backend.

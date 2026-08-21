@@ -142,7 +142,7 @@ export function processApiResponse<T = unknown>(
   }
 
   const res = response as ApiResponse<T>;
-  const isSuccess = Boolean(res && res.success !== false);
+  const isSuccess = Boolean(res && typeof res === 'object' && res.success === true);
   const slug = res?.slug || (isSuccess ? 'SUCCESS' : 'UNKNOWN_ERROR');
   const code = res?.code || (isSuccess ? 200 : 500);
   const message = resolveSlugTranslation(slug, t, preferredDict, res?.message);

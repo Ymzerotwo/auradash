@@ -172,10 +172,30 @@ export const apiClient = {
       const newToken = response.headers.get('x-csrf-token');
       if (newToken) cachedCsrfToken = newToken;
 
-      const data = await response.json().catch(() => null);
+      const contentType = response.headers.get('content-type') || '';
+      let data: any = null;
+      if (contentType.includes('application/json')) {
+        data = await response.json().catch(() => null);
+      } else {
+        const text = await response.text().catch(() => '');
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = null;
+        }
+      }
 
-      if (!response.ok || (data && data.success === false)) {
-        
+      // STRICT VALIDATION: If response is not OK, or body is not a valid JSON object, or success !== true
+      if (!response.ok || !data || typeof data !== 'object' || data.success !== true) {
+        // If the server returned HTML or non-JSON (e.g. when NEXT_PUBLIC_API_URL points to frontend instead of backend)
+        if (!data || typeof data !== 'object') {
+          throw new ApiError(
+            'Invalid response from server. Please ensure NEXT_PUBLIC_API_URL points to the backend Worker API (e.g. https://api.yourdomain.com/api).',
+            'INVALID_API_RESPONSE',
+            response.status || 500
+          );
+        }
+
         // Handle CSRF Desynchronization: Clear old token, fetch a new one, and retry once transparently.
         if (response.status === 403 && data?.slug === 'CSRF_TOKEN_MISMATCH') {
           cachedCsrfToken = null;
