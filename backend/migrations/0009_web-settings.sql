@@ -11,8 +11,6 @@ CREATE TABLE IF NOT EXISTS Business_Settings (
     social_links JSON,                   -- JSON object storing social media profile links
     locations JSON,                      -- JSON array storing business branch locations or coordinates
     working_hours JSON,                  -- JSON object storing operational hours
-   -- currency TEXT DEFAULT 'USD',         -- Default currency used by the business
-   -- timezone TEXT DEFAULT 'UTC',         -- Default timezone of the business operations
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP -- Timestamp of the last update
 );
 

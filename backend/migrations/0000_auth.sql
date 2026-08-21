@@ -37,25 +37,7 @@ CREATE INDEX IF NOT EXISTS idx_users_banned_by ON Users (banned_by);
 CREATE INDEX IF NOT EXISTS idx_users_created_at ON Users (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_users_is_banned ON Users (is_banned);
 
--- 2. Sessions Table [DISABLED]
--- Disallowed per project specifications; sessions are managed purely statelessly in Cloudflare KV.
-/*
-CREATE TABLE Sessions (
-    id TEXT PRIMARY KEY,                       -- Unique session identifier
-    user_id TEXT NOT NULL,                     -- Foreign key reference to Users
-    expires_at DATETIME NOT NULL,              -- Session expiration timestamp
-    is_revoked INTEGER DEFAULT 0,              -- Revocation flag (1 = revoked, 0 = active)
-    user_agent TEXT,                           -- Client device browser signature
-    ip_address TEXT,                           -- Client connecting IP address
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- Timestamp of session creation
-    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE
-);
-
-CREATE INDEX idx_sessions_user_id ON Sessions (user_id);
-CREATE INDEX idx_sessions_expires_at ON Sessions (expires_at);
-*/
-
--- 3. Verification Codes Table
+-- 2. Verification Codes Table
 -- Stores temporary 6-digit codes for password recovery and 2FA.
 CREATE TABLE IF NOT EXISTS VerificationCodes (
     id TEXT PRIMARY KEY,                       -- Unique identifier (UUIDv4)
