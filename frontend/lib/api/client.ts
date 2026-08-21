@@ -73,21 +73,33 @@ export class ApiError extends Error {
 let cachedCsrfToken: string | null = null;
 
 export const apiClient = {
+  getCsrfToken(): string | null {
+    if (cachedCsrfToken) return cachedCsrfToken;
+    if (typeof document !== 'undefined') {
+      const match = document.cookie.match(/(?:^|; )csrf_token=([^;]*)/);
+      if (match && match[1]) {
+        cachedCsrfToken = match[1];
+        return cachedCsrfToken;
+      }
+    }
+    return null;
+  },
+
   /**
    * Resolves and sets the active CSRF token.
    * Attempts to read from cookies first to bypass network calls.
    * Safe to call on both client-side and server-side (no-op on SSR).
    */
-  async ensureCsrfToken(): Promise<void> {
-    if (typeof window === 'undefined') return; // CSRF token is not required or cached during SSR
-    if (cachedCsrfToken) return;
+  async ensureCsrfToken(): Promise<string | null> {
+    if (typeof window === 'undefined') return null; // CSRF token is not required or cached during SSR
+    if (cachedCsrfToken) return cachedCsrfToken;
     
     // Check if the csrf_token cookie exists first to bypass making a network request
     if (typeof document !== 'undefined') {
       const match = document.cookie.match(/(?:^|; )csrf_token=([^;]*)/);
       if (match && match[1]) {
         cachedCsrfToken = match[1];
-        return;
+        return cachedCsrfToken;
       }
     }
 
@@ -100,10 +112,12 @@ export const apiClient = {
       const data = await response.json();
       if (data?.data?.token) {
         cachedCsrfToken = data.data.token;
+        return cachedCsrfToken;
       }
     } catch (e) {
       console.warn("Failed to fetch CSRF token", e);
     }
+    return null;
   },
 
   /**

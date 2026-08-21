@@ -1,4 +1,4 @@
-import { apiClient } from '../api/client';
+import { apiClient, getApiBaseUrl } from '../api/client';
 
 export interface UploadProgressEvent {
   loaded: number;
@@ -81,12 +81,7 @@ export const MediaService = {
     onProgress?: (event: UploadProgressEvent) => void,
     signal?: AbortSignal
   ): Promise<MediaItem> {
-    await apiClient.ensureCsrfToken();
-    let csrfToken = '';
-    if (typeof document !== 'undefined') {
-      const match = document.cookie.match(/(?:^|; )csrf_token=([^;]*)/);
-      if (match && match[1]) csrfToken = match[1];
-    }
+    const csrfToken = await apiClient.ensureCsrfToken();
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -175,7 +170,7 @@ export const MediaService = {
         reject(new Error('Network connection error during upload'));
       };
 
-      const endpoint = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api'}/media`;
+      const endpoint = `${getApiBaseUrl()}/media`;
       xhr.open('POST', endpoint);
       xhr.withCredentials = true;
       if (csrfToken) {
@@ -193,14 +188,8 @@ export const MediaService = {
     signal?: AbortSignal,
     chunkSize: number = 5 * 1024 * 1024
   ): Promise<MediaItem> {
-    await apiClient.ensureCsrfToken();
-    let csrfToken = '';
-    if (typeof document !== 'undefined') {
-      const match = document.cookie.match(/(?:^|; )csrf_token=([^;]*)/);
-      if (match && match[1]) csrfToken = match[1];
-    }
-
-    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api';
+    const csrfToken = await apiClient.ensureCsrfToken();
+    const apiBase = getApiBaseUrl();
 
     // Step 1: Initialize multipart upload session
     const initRes = await fetch(`${apiBase}/media/chunked/init`, {
