@@ -33,7 +33,9 @@
     "not_found": "Route or requested resource was not found.",
     "internal_server_error": "An unexpected server error occurred. Please contact support.",
     "unknown_error": "An unknown error occurred. Please try again.",
-    "network_error": "Network error occurred. Please check your internet connection."
+    "network_error": "Network error occurred. Please check your internet connection.",
+    "invalid_api_response": "Invalid response from server. Please verify your API endpoint configuration.",
+    "login_failed": "Login failed. Invalid response from server."
   },
   "validation": {
     "required": "This field is required.",

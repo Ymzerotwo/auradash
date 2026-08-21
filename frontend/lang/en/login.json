@@ -24,7 +24,9 @@
     "rate_limit_exceeded": "You have exceeded the allowed number of attempts. Please try again later.",
     "username_required": "Username is required.",
     "password_required": "Password is required.",
-    "too_long": "Text is too long."
+    "too_long": "Text is too long.",
+    "network_error": "Network error occurred. Please check your internet connection.",
+    "invalid_api_response": "Invalid response from server. Please verify your API endpoint configuration."
   },
   "validation": {
     "username_required": "Username is required.",
