@@ -593,7 +593,20 @@ Connect your existing repository to Cloudflare Workers in one click:
 
 <br/>
 
-**Note:** Select your existing repository, set the root directory to `backend`, and add your `AURADASH_MASTER_SECRET` in **Settings ➔ Variables**. The backend will automatically build and configure itself.
+**Build Settings**:
+- **Build / Deploy command**: `npm run deploy`
+- **Root directory**: `backend`
+
+<br/>
+
+**Environment Variables** (*Settings ➔ Variables*):
+- `AURADASH_MASTER_SECRET`: 64-character high-entropy cryptographic secret for HMAC-SHA256 API keys & sessions.
+- `ALLOWED_ORIGINS`: Actual custom domain(s) for CORS & cookie credentials (e.g. `https://yourdomain.com,https://auradash.yourdomain.com`).
+- `R2_PUBLIC_URL`: Public domain connected to your `auradash-storage` bucket (e.g. `https://media.yourdomain.com`).
+- `EMAIL_FROM_ADDRESS`: Verified domain sender address for OTPs & notifications (e.g. `noreply@yourdomain.com`).
+- `APP_FRONTEND_URL`: Actual production dashboard URL for password reset links (e.g. `https://auradash.yourdomain.com`).
+- `CLOUDFLARE_API_TOKEN`: Cloudflare API token for automated worker & D1 operations.
+- `CF_ACCOUNT_ID`: Your Cloudflare Account ID.
 
 </td>
 <td align="center" width="50%">
@@ -616,13 +629,18 @@ Connect your existing repository to Cloudflare Pages in one click:
 - **Build output directory**: `.open-next`
 - **Root directory**: `frontend`
 
+<br/>
+
+**Environment Variables** (*Settings ➔ Environment variables*):
+- `NEXT_PUBLIC_API_URL`: Backend Worker API endpoint on custom domain ending in `/api` (e.g. `https://api.yourdomain.com/api` or `https://auradash-backend.yourdomain.com/api`).
+
 </td>
 </tr>
 </table>
 
 #### 1. Backend Deployment (Cloudflare Workers & D1)
 
-Deploy your Hono API to Cloudflare's global edge network via CLI:
+Deploy your Hono API to Cloudflare's global edge network:
 
 ```bash
 cd backend
@@ -630,12 +648,8 @@ cd backend
 # 1. Generate Cloudflare binding TypeScript types
 npm run cf-typegen
 
-# 2. Apply D1 database migrations to production
-npx wrangler d1 migrations apply auradash --remote
-
-# 3. Deploy worker script (minified)
+# 2. Deploy worker & auto-apply D1 database migrations to production
 npm run deploy
-# or directly: npx wrangler deploy --minify
 ```
 
 #### 2. Frontend Deployment (Cloudflare Pages)
