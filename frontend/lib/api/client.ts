@@ -1,7 +1,17 @@
-const getApiBaseUrl = () => {
+export const getApiBaseUrl = (): string => {
+  // 1. Client-side runtime injected global from server (supports Cloudflare Secret / Runtime Env)
+  if (typeof window !== 'undefined' && (window as any).__AURADASH_API_URL__) {
+    return (window as any).__AURADASH_API_URL__;
+  }
+  // 2. Build-time inlined environment variable
   if (process.env.NEXT_PUBLIC_API_URL) {
     return process.env.NEXT_PUBLIC_API_URL;
   }
+  // 3. Server-side runtime environment variable
+  if (typeof process !== 'undefined' && process.env && process.env.API_URL) {
+    return process.env.API_URL;
+  }
+  // 4. Localhost fallback or error reporting
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
     console.error('[CONFIG ERROR] NEXT_PUBLIC_API_URL environment variable is not configured.');
     return '';
@@ -82,7 +92,8 @@ export const apiClient = {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/csrf`, {
+      const baseUrl = getApiBaseUrl();
+      const response = await fetch(`${baseUrl}/auth/csrf`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -133,7 +144,8 @@ export const apiClient = {
    * and automatic request timeouts for offline/network issues.
    */
   async fetch<T = unknown>(endpoint: string, options: RequestInit & { timeoutMs?: number } = {}, isRetry = false): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
+    const baseUrl = getApiBaseUrl();
+    const url = `${baseUrl}${endpoint}`;
     const headers = new Headers(options.headers || {});
     const method = (options.method || 'GET').toUpperCase();
     const timeoutMs = options.timeoutMs || 25000; // 25 seconds timeout default

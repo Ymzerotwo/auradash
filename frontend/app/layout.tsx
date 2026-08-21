@@ -74,6 +74,14 @@ export default async function RootLayout({
     >
       <head>
         <ThemeScript />
+        <script
+          id="auradash-runtime-config"
+          dangerouslySetInnerHTML={{
+            __html: `window.__AURADASH_API_URL__ = ${JSON.stringify(
+              process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || ""
+            )};`,
+          }}
+        />
         <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
         <meta name="googlebot" content="noindex, nofollow" />
         <meta name="bingbot" content="noindex, nofollow" />
