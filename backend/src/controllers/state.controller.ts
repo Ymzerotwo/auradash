@@ -27,7 +27,7 @@ export const StateController = {
 
     try {
       const state = await StateService.getStateHash(k1, user.id);
-      return c.json(state);
+      return sendResponse(c, 200, 'STATE_HASH_FETCHED', 'State hash retrieved successfully', state);
     } catch (error: any) {
       return sendResponse(c, 500, 'INTERNAL_SERVER_ERROR', 'Failed to fetch state hash', null, error.message);
     }

@@ -46,38 +46,42 @@ export function StatePolling() {
         
         if (isHydrated && currentUser && !currentPath.startsWith('/login') && !currentPath.startsWith('/banned')) {
           if (typeof document === 'undefined' || document.visibilityState === 'visible') {
-            const newState = await apiClient.get<any>('/state/hash');
+            const newStateRes = await apiClient.get<any>('/state/hash');
+            const newState = newStateRes?.data ?? newStateRes;
             
-            let hasChanges = false;
-            if (
-              newState.notifications_version !== currentVersions.notifications_version ||
-              newState.inbox_version !== currentVersions.inbox_version ||
-              newState.comments_version !== currentVersions.comments_version ||
-              newState.bookings_version !== currentVersions.bookings_version
-            ) {
-              hasChanges = true;
-              
-              if (newState.notifications_version !== currentVersions.notifications_version) {
-                queryClient.invalidateQueries({ queryKey: notificationsKeys.all });
+            if (newState && typeof newState === 'object') {
+              let hasChanges = false;
+              if (
+                newState.notifications_version !== currentVersions.notifications_version ||
+                newState.inbox_version !== currentVersions.inbox_version ||
+                newState.comments_version !== currentVersions.comments_version ||
+                newState.bookings_version !== currentVersions.bookings_version
+              ) {
+                hasChanges = true;
+                
+                if (newState.notifications_version !== currentVersions.notifications_version) {
+                  queryClient.invalidateQueries({ queryKey: notificationsKeys.all });
+                }
+
+                setVersions({
+                  notifications_version: newState.notifications_version,
+                  inbox_version: newState.inbox_version,
+                  comments_version: newState.comments_version,
+                  bookings_version: newState.bookings_version,
+                });
               }
 
-              setVersions({
-                notifications_version: newState.notifications_version,
-                inbox_version: newState.inbox_version,
-                comments_version: newState.comments_version,
-                bookings_version: newState.bookings_version,
-              });
-            }
-
-            if (hasChanges || !currentVersions.notifications_version) {
-              const countersRes = await apiClient.get<{ data: any }>('/state/counters');
-              if (countersRes?.data) {
-                setCounters({
-                  notifications: countersRes.data.notifications || 0,
-                  inbox: countersRes.data.inbox || 0,
-                  comments: countersRes.data.comments || 0,
-                  bookings: countersRes.data.bookings || 0,
-                });
+              if (hasChanges || !currentVersions.notifications_version) {
+                const countersRes = await apiClient.get<any>('/state/counters');
+                const countersData = countersRes?.data ?? countersRes;
+                if (countersData && typeof countersData === 'object') {
+                  setCounters({
+                    notifications: countersData.notifications || 0,
+                    inbox: countersData.inbox || 0,
+                    comments: countersData.comments || 0,
+                    bookings: countersData.bookings || 0,
+                  });
+                }
               }
             }
           }
